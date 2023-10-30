@@ -10,6 +10,7 @@ public enum Faculty {
     SCSE ("School of Computer Science and Engineering"),
     EEE ("School of Electrical and Electronic Engineering"),
     SoH ("School of Humanities"),
+    SSS ("School of Social Sciences"),
     SPMS ("School of Physical and Mathematical Sciences"),
     WKWSCI ("Wee Kim Wee School of Communication and Information");
 

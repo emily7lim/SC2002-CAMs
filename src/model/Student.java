@@ -1,7 +1,19 @@
 package model;
 
+import java.util.ArrayList;
+
+import model.enums.Faculty;
+import model.enums.Role;
+
 public class Student extends User {
     private int points;
+    private ArrayList<String> campIds;
+
+    public Student(String userId, String name, String password, Faculty faculty) {
+        super(userId, name, password, faculty, Role.STUDENT);
+        this.points = 0;
+        this.campIds = new ArrayList<String> ();
+    }
 
     public int getPoints() {
         return points;
@@ -9,5 +21,13 @@ public class Student extends User {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public ArrayList<String> getCampIds() {
+        return campIds;
+    }
+
+    public void setCampIds(ArrayList<String> campIds) {
+        this.campIds = campIds;
     }
 }

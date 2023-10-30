@@ -1,8 +1,9 @@
 package model.enums;
 
 public enum Role {
-    STUDENT("Student"),
-    STAFF("Staff");
+    STUDENT ("Student"),
+    STAFF ("Staff"),
+    COMMITTEE ("Camp Committee");
 
     private final String roleStr;
 

@@ -6,14 +6,19 @@ import model.enums.Faculty;
 import model.enums.Role;
 
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String userId;
-    private String password;
-    private Faculty faculty;
-    private Role role;
+    protected static final long serialVersionUID = 1L;
+    protected String userId;
+    protected String name;
+    protected String password;
+    protected Faculty faculty;
+    protected Role role;
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    public User(String userId, String name, String password, Faculty faculty, Role role) {
+        this.userId = userId;
+        this.name = name;
+        this.password = password;
+        this.faculty = faculty;
+        this.role = role;
     }
 
     public String getUserId() {
@@ -22,6 +27,14 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
