@@ -2,8 +2,16 @@ package model;
 
 import java.util.ArrayList;
 
+import model.enums.Faculty;
+import model.enums.Role;
+
 public class Staff extends User{
-    private ArrayList<Camp> createdCamps = new ArrayList<Camp>();
+    private ArrayList<Camp> createdCamps;
+
+    public Staff(String userId, String name, String password, Faculty faculty, Role role) {
+        super(userId, name, password, faculty, Role.STAFF);
+        createdCamps = new ArrayList<Camp>();
+    }
 
     public ArrayList<Camp> getCreatedCamps() {
         return createdCamps;
