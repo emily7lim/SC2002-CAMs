@@ -15,6 +15,8 @@ public class Database {
     private static final String fileExtension = ".dat";
 
     public static HashMap<String, User> USERS = new HashMap<String, User>();
+    public static HashMap<String, Student> STUDENTS = new HashMap<String, Student>();
+    public static HashMap<String, Staff> STAFFS = new HashMap<String, Staff>();
     public static HashMap<String, Camp> CAMPS = new HashMap<String, Camp>();
 
     public Database() {
@@ -23,6 +25,8 @@ public class Database {
 
     public static void readAllFromDatabase() {
         readFromDatabase(FileName.USERS);
+        readFromDatabase(FileName.STUDENTS);
+        readFromDatabase(FileName.STAFFS);
         readFromDatabase(FileName.CAMPS);
     }
 
@@ -45,6 +49,12 @@ public class Database {
                 case USERS:
                     USERS = (HashMap<String, User>) object;
                     break;
+                case STUDENTS:
+                    STUDENTS = (HashMap<String, Student>) object;
+                    break;
+                case STAFFS:
+                    STAFFS = (HashMap<String, Staff>) object;
+                    break;
                 case CAMPS:
                     CAMPS = (HashMap<String, Camp>) object;
                     break;
@@ -59,6 +69,12 @@ public class Database {
             switch(fileName) {
                 case USERS:
                     USERS = new HashMap<String, User>();
+                    break;
+                case STUDENTS:
+                    STUDENTS = new HashMap<String, Student>();
+                    break;
+                case STAFFS:
+                    STAFFS = new HashMap<String, Staff>();
                     break;
                 case CAMPS:
                     CAMPS = new HashMap<String, Camp>();
@@ -81,27 +97,36 @@ public class Database {
     }
 
     public static void saveAllToDatabase() {
-        saveToDatabase(FileName.USERS);
-        saveToDatabase(FileName.CAMPS);
+        saveToDatabase(FileName.USERS, Database.USERS);
+        saveToDatabase(FileName.STUDENTS, Database.STUDENTS);
+        saveToDatabase(FileName.STAFFS, Database.STAFFS);
+        saveToDatabase(FileName.CAMPS, Database.CAMPS);
     }
 
-    public static boolean saveToDatabase(FileName fileName) {
+    public static boolean saveToDatabase(FileName fileName, Object whattosave) {
         String filePath = getFilePath(fileName);
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
+            objectOutputStream.writeObject(whattosave);
+            /*
             switch(fileName) {
                 case USERS:
-                    objectOutputStream.writeObject(USERS);
+                    break;
+                case STUDENTS:
+                    objectOutputStream.writeObject(STUDENTS);
+                    break;
+                case STAFFS:
+                    objectOutputStream.writeObject(STAFFS);
                     break;
                 case CAMPS:
                     objectOutputStream.writeObject(CAMPS);
                     break;
                 default:
                     break;
-            }
+            }*/
 
             objectOutputStream.close();
             fileOutputStream.close();
