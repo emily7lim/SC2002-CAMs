@@ -17,7 +17,7 @@ public class Database {
     public static HashMap<String, User> USERS = new HashMap<String, User>();
     public static HashMap<String, Student> STUDENTS = new HashMap<String, Student>();
     public static HashMap<String, Staff> STAFFS = new HashMap<String, Staff>();
-    public static HashMap<String, Camp> CAMPS = new HashMap<String, Camp>();
+    public static HashMap<Integer, Camp> CAMPS = new HashMap<Integer, Camp>();
 
     public Database() {
         readAllFromDatabase();
@@ -56,7 +56,7 @@ public class Database {
                     STAFFS = (HashMap<String, Staff>) object;
                     break;
                 case CAMPS:
-                    CAMPS = (HashMap<String, Camp>) object;
+                    CAMPS = (HashMap<Integer, Camp>) object;
                     break;
                 default:
                     break;
@@ -77,7 +77,7 @@ public class Database {
                     STAFFS = new HashMap<String, Staff>();
                     break;
                 case CAMPS:
-                    CAMPS = new HashMap<String, Camp>();
+                    CAMPS = new HashMap<Integer, Camp>();
                     break;
                 default:
                     break;
