@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import model.*;
 import model.enums.Faculty;
+import model.enums.Role;
 // just for us to use to set the .dat
 public class DatabaseMenu {
     private static HashMap<String, Staff> dbTable;
@@ -37,7 +38,7 @@ public class DatabaseMenu {
                 Faculty fal = Faculty.valueOf(choices[2]);
                 String uid = getUID(choices[1]);
                 System.out.println("user id: "+uid);
-                Staff staff = new Staff(uid, choices[0], "password", fal);
+                Staff staff = new Staff(uid, choices[0], "password", fal,Role.STAFF);
                 
                 dbTable.put(staff.getUserId(), staff);
             }
