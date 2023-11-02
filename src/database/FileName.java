@@ -4,7 +4,9 @@ public enum FileName {
     USERS ("Users"),
     STUDENTS ("Students"),
     STAFFS ("Staffs"),
-    CAMPS ("Camps");
+    CAMPS ("Camps"),
+    ENQUIRYS ("Enquirys"),
+    SUGGESTIONS ("Suggestions");
 
     private final String fileNameStr;
 
