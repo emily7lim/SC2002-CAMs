@@ -1,91 +1,112 @@
 package controller;
 
 import model.Camp;
+import model.enums.Faculty;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
+import database.CampDAO;
 
 public class CampController {
-    private List<Camp> camps;
-
-    public CampController() {
-        camps = new ArrayList<>();
+    /**
+     * Creates a new Camp and add to the database
+     * @param campId The Camp ID of the new Camp
+     * @param name The name of the new Camp
+     * @param startDate The start date of the new Camp
+     * @param endDate The end date of the new Camp
+     * @param registrationCloseDate The date that registration closes for the new Camp
+     * @param userGroup The user group of the new Camp
+     * @param location The location of the new Camp
+     * @param totalSlots The total number of slots for the new Camp
+     * @param commSlots The number of committee member slots for the new Camp
+     * @param description The description of the new Camp
+     * @param staffInCharge The staff in charge of the new Camp
+     */
+    public void createCamp(String campId, String name, Date startDate, Date endDate, Date registrationCloseDate,
+            Faculty userGroup, String location, int totalSlots, int commSlots, String description,
+            String staffInCharge) {
+        Camp camp = new Camp(campId, name, startDate, endDate, registrationCloseDate, userGroup, location,
+                totalSlots, commSlots, description, staffInCharge);
+        CampDAO.createCamp(camp);
     }
 
-    // Create a new camp and add it to the list
-    public Camp createCamp(int campId, String name, Date startDate, Date endDate, Date registrationCloseDate,
-                           String userGroup, String location, int totalSlots, int campCommSlots, String description, String staffIC) {
-        if (isCampIdUnique(campId)) {
-            Camp camp = new Camp(campId, name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots, campCommSlots, description, staffIC);
-            camps.add(camp);
-            return camp; //Camp successfully added
-        } else {
-            System.out.println("Camp ID already exists. Please choose a unique ID.");
-            return null; //Camp not added
-        }
+    /**
+     * Retrieves a list of all Camps from the database
+     * @return ArrayList<Camp> The list of all the Camps
+     */
+    public ArrayList<Camp> getAllCamps() {
+        return CampDAO.getAllCamps();
     }
 
-    // Get a list of all camps
-    public List<Camp> getAllCamps() {
-        return camps;
+    /**
+     * Finds a Camp from the database by the Camp ID 
+     * @param campId The Camp ID of the Camp
+     * @return The corresponding Camp object, NULL if not found
+     */
+    public Camp getCampById(String campId) {
+        return CampDAO.getCampbyId(campId);
     }
 
-    // Find a camp by its ID
-    public Camp findCampById(int campId) {
-        for (Camp camp : camps) {
-            if (camp.getCampId() == campId) {
-                return camp;
-            }
-        }
-        return null; //No such camp
+    /**
+     * Updates the information of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param name The new name of the Camp
+     * @param startDate The new start date of the Camp
+     * @param endDate The new end date of the Camp
+     * @param registrationCloseDate The new date that registration closes for the Camp
+     * @param userGroup The new user group of the Camp
+     * @param location The new location of the Camp
+     * @param totalSlots The new total number of slots for the Camp
+     * @param commSlots The new number of committee member slots for the Camp
+     * @param description The new description of the Camp
+     * @return boolean Whether the Camp information is successfully updated
+     */
+    public boolean updateCampInformation(String campId, String name, Date startDate, Date endDate,
+            Date registrationCloseDate, Faculty userGroup, String location, int totalSlots, int commSlots,
+            String description) {
+        if (!checkCampExists(campId))
+            return false;
+
+        Camp camp = new Camp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
+                commSlots, description);
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
     }
 
-    // Update camp information, making sure campId remains the same or is changed to a unique ID
-    public boolean updateCampInformation(int oldCampId, int newCampId, String name, Date startDate, Date endDate,
-                                         Date registrationCloseDate, String userGroup, String location, int totalSlots,
-                                         int campCommSlots, String description, String staffIC) {
-        if (newCampId == oldCampId || isCampIdUnique(newCampId)) { //CampID is reused or a new unique ID
-            Camp camp = findCampById(oldCampId);
-            if (camp != null) {
-                camp.setCampId(newCampId);
-                camp.setName(name);
-                camp.setStartDate(startDate);
-                camp.setEndDate(endDate);
-                camp.setRegistrationCloseDate(registrationCloseDate);
-                camp.setUserGroup(userGroup);
-                camp.setLocation(location);
-                camp.setTotalSlots(totalSlots);
-                camp.setCampCommSlots(campCommSlots);
-                camp.setDescription(description);
-                camp.setStaffIC(staffIC);
-                return true; //Updated camp information
-            } else {
-                System.out.println("Camp not found for update.");
-            }
-        } else {
-            System.out.println("New Camp ID is not unique. Please choose a unique ID.");
-        }
-        return false;
+    /**
+     * Updates the visibility of the Camp
+     * @param campId The Camp ID of the Camp
+     * @param visible The visibility of the Camp
+     * @return boolean Whether the Camp visibility is successfully updated
+     */
+    public boolean updateCampVisiblity(String campId, boolean visible) {
+        if (!checkCampExists(campId))
+            return false;
+
+        CampDAO.updateCampVisiblity(campId, visible);
+        return true;
     }
 
-    // Remove a camp from the list
-    public boolean deleteCamp(int campId) {
-        Camp camp = findCampById(campId);
-        if (camp != null) {
-            camps.remove(camp);
-            return true; //Camp is removed
-        }
-        return false; // Camp not found
+    /**
+     * Deletes a Camp from the database
+     * @param campId The Camp ID of the Camp
+     * @return boolean Whether the Camp was successfully deleted
+     */
+    public boolean deleteCamp(String campId) {
+        if (!checkCampExists(campId))
+            return false;
+
+        CampDAO.deleteCamp(campId);
+        return true;
     }
 
-    // Check if a camp ID is unique
-    private boolean isCampIdUnique(int campId) {
-        for (Camp camp : camps) {
-            if (camp.getCampId() == campId) {
-                return false; // Camp ID is not unique
-            }
-        }
-        return true; // Camp ID is unique
+    /**
+     * Check if the Camp with Camp ID exists in the database
+     * @param campId The Camp ID of the Camp
+     * @return boolean Whether the Camp exists in the database
+     */
+    public boolean checkCampExists(String campId) {
+        return CampDAO.checkCamp(campId);
     }
 }

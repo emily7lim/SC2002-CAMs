@@ -12,7 +12,13 @@ public class Student extends User {
     public Student(String userId, String name, String password, Faculty faculty) {
         super(userId, name, password, faculty, Role.STUDENT);
         this.points = 0;
-        this.campIds = new ArrayList<String> ();
+        this.campIds = new ArrayList<String>();
+    }
+
+    public Student(String userId, String name, String password, Faculty faculty, Role role) {
+        super(userId, name, password, faculty, role);
+        this.points = 0;
+        this.campIds = new ArrayList<String>();
     }
 
     public int getPoints() {
@@ -29,5 +35,13 @@ public class Student extends User {
 
     public void setCampIds(ArrayList<String> campIds) {
         this.campIds = campIds;
+    }
+
+    public void addPoint() {
+        this.points = this.points + 1;
+    }
+
+    public void addCamp(String campId) {
+        this.campIds.add(campId);
     }
 }

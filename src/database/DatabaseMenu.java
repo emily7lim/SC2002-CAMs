@@ -5,13 +5,12 @@ import java.util.HashMap;
 
 import model.*;
 import model.enums.Faculty;
-import model.enums.Role;
 // just for us to use to set the .dat
 public class DatabaseMenu {
-    private static HashMap<String, Staff> dbTable;
+    private static HashMap<String, User> dbTable;
     public static void main(String[] args) {
         new Database();
-        dbTable = Database.STAFFS;
+        dbTable = Database.USERS;
         
         Scanner sc = new Scanner(System.in);
 
@@ -26,7 +25,7 @@ public class DatabaseMenu {
                 DatabaseMenu.printdb();
                 continue;
             } else if (choice.equals("clear")){
-                Database.STAFFS.clear();
+                Database.USERS.clear();
                 System.out.println("db table clear");
                 continue;
             }
@@ -37,8 +36,8 @@ public class DatabaseMenu {
 
                 Faculty fal = Faculty.valueOf(choices[2]);
                 String uid = getUID(choices[1]);
-                System.out.println("user id: "+uid);
-                Staff staff = new Staff(uid, choices[0], "password", fal,Role.STAFF);
+                System.out.println("user ID: "+uid);
+                Staff staff = new Staff(uid, choices[0], "password", fal);
                 
                 dbTable.put(staff.getUserId(), staff);
             }

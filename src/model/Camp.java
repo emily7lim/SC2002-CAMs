@@ -1,22 +1,43 @@
 package model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class Camp {
-    private int campId;
+import model.enums.Faculty;
+
+public class Camp implements Serializable {
+    protected static final long serialVersionUID = 2L;
+    private String campId;
     private String name;
     private Date startDate;
     private Date endDate;
     private Date registrationCloseDate;
-    private String userGroup;
+    private Faculty userGroup;
     private String location;
     private int totalSlots;
-    private int campCommSlots;
+    private int commSlots;
     private String description;
-    private String staffIC;
+    private String staffInCharge;
+    private ArrayList<String> participantIds;
+    private ArrayList<String> committeeIds;
+    private boolean visible;
 
-    public Camp(int campId, String name, Date startDate, Date endDate, Date registrationCloseDate,
-            String userGroup, String location, int totalSlots, int campCommSlots, String description, String staffIC) {
+    public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
+            String location, int totalSlots, int commSlots, String description) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.registrationCloseDate = registrationCloseDate;
+        this.userGroup = userGroup;
+        this.location = location;
+        this.totalSlots = totalSlots;
+        this.commSlots = commSlots;
+        this.description = description;
+    }
+
+    public Camp(String campId, String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
+            String location, int totalSlots, int commSlots, String description, String staffInCharge) {
         this.campId = campId;
         this.name = name;
         this.startDate = startDate;
@@ -25,16 +46,19 @@ public class Camp {
         this.userGroup = userGroup;
         this.location = location;
         this.totalSlots = totalSlots;
-        this.campCommSlots = campCommSlots;
+        this.commSlots = commSlots;
         this.description = description;
-        this.staffIC = staffIC;
+        this.staffInCharge = staffInCharge;
+        this.participantIds = new ArrayList<>();
+        this.committeeIds = new ArrayList<>();
+        this.visible = true;
     }
 
-    public int getCampId() {
+    public String getCampId() {
         return campId;
     }
 
-    public void setCampId(int campId) {
+    public void setCampId(String campId) {
         this.campId = campId;
     }
 
@@ -70,11 +94,11 @@ public class Camp {
         this.registrationCloseDate = registrationCloseDate;
     }
 
-    public String getUserGroup() {
+    public Faculty getUserGroup() {
         return userGroup;
     }
 
-    public void setUserGroup(String userGroup) {
+    public void setUserGroup(Faculty userGroup) {
         this.userGroup = userGroup;
     }
 
@@ -94,12 +118,12 @@ public class Camp {
         this.totalSlots = totalSlots;
     }
 
-    public int getCampCommSlots() {
-        return campCommSlots;
+    public int getCommSlots() {
+        return commSlots;
     }
 
-    public void setCampCommSlots(int campCommSlots) {
-        this.campCommSlots = campCommSlots;
+    public void setCommSlots(int commSlots) {
+        this.commSlots = commSlots;
     }
 
     public String getDescription() {
@@ -110,12 +134,35 @@ public class Camp {
         this.description = description;
     }
 
-    public String getStaffIC() {
-        return staffIC;
+    public String getStaffInCharge() {
+        return staffInCharge;
     }
 
-    public void setStaffIC(String staffIC) {
-        this.staffIC = staffIC;
+    public void setStaffInCharge(String staffInCharge) {
+        this.staffInCharge = staffInCharge;
     }
 
+    public ArrayList<String> getParticipantIds() {
+        return participantIds;
+    }
+
+    public void setParticipantIds(ArrayList<String> participantIds) {
+        this.participantIds = participantIds;
+    }
+
+    public ArrayList<String> getCommitteeIds() {
+        return committeeIds;
+    }
+
+    public void setCommitteeIds(ArrayList<String> committeeIds) {
+        this.committeeIds = committeeIds;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

@@ -1,45 +1,55 @@
 package model;
 
-public class Suggestion 
-{
+import java.io.Serializable;
 
-	private int suggestionId;
-	private String sender;
-	private String receiver;
+import model.enums.SuggestionStatus;
+
+public class Suggestion implements Serializable {
+    protected static final long serialVersionUID = 4L;
+	private String suggestionId;
+	private String creatorId;
+	private String responderId;
 	private String message;
-	private String status;
-	
-	public Suggestion(int suggestionId, String sender, String receiver, String message, String status)
-	{
+	private SuggestionStatus status;
+
+	public Suggestion(String suggestionId, String creatorId, String message) {
 		this.suggestionId = suggestionId;
-		this.sender = sender;
-		this.receiver = receiver;
+		this.creatorId = creatorId;
+		this.responderId = null;
+		this.message = message;
+		this.status = SuggestionStatus.PENDING;
+	}
+
+	public Suggestion(String suggestionId, String creatorId, String responderId, String message, SuggestionStatus status) {
+		this.suggestionId = suggestionId;
+		this.creatorId = creatorId;
+		this.responderId = responderId;
 		this.message = message;
 		this.status = status;
 	}
-	
-	public int getSuggestionId() {
+
+	public String getSuggestionId() {
 		return suggestionId;
 	}
 
-	public void setSuggestionId(int suggestionId) {
+	public void setSuggestionId(String suggestionId) {
 		this.suggestionId = suggestionId;
 	}
 
-	public String getSender() {
-		return sender;
+	public String getcreatorId() {
+		return creatorId;
 	}
 
-	public void setSender(String sender) {
-		this.sender = sender;
+	public void setcreatorId(String creatorId) {
+		this.creatorId = creatorId;
 	}
 
-	public String getReceiver() {
-		return receiver;
+	public String getresponderId() {
+		return responderId;
 	}
 
-	public void setReceiver(String receiver) {
-		this.receiver = receiver;
+	public void setresponderId(String responderId) {
+		this.responderId = responderId;
 	}
 
 	public String getMessage() {
@@ -50,17 +60,11 @@ public class Suggestion
 		this.message = message;
 	}
 
-	public String getStatus() {
+	public SuggestionStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(SuggestionStatus status) {
 		this.status = status;
 	}
-	
-	public void processSuggestion()
-	{
-        
-    }
-    
 }

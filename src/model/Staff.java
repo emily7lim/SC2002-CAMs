@@ -5,28 +5,32 @@ import java.util.ArrayList;
 import model.enums.Faculty;
 import model.enums.Role;
 
-public class Staff extends User{
-    private ArrayList<Camp> createdCamps;
+public class Staff extends User {
+    private ArrayList<String> createdCampIds;
 
-    public Staff(String userId, String name, String password, Faculty faculty, Role role) {
+    public Staff(String userId, String name, String password, Faculty faculty) {
         super(userId, name, password, faculty, Role.STAFF);
-        createdCamps = new ArrayList<Camp>();
+        createdCampIds = new ArrayList<>();
     }
 
-    public ArrayList<Camp> getCreatedCamps() {
-        return createdCamps;
+    public ArrayList<String> getCreatedCampIds() {
+        return createdCampIds;
     }
 
-    public void setCreatedCamps(ArrayList<Camp> createdCamps) {
-        this.createdCamps = createdCamps;
+    public void setCreatedCampIds(ArrayList<String> createdCampIds) {
+        this.createdCampIds = createdCampIds;
     }
 
-    public Boolean checkCamp(Camp camp){
+    public void addCamp(String campId) {
+        this.createdCampIds.add(campId);
+    }
+
+    public Boolean checkCamp(Camp camp) {
         int i;
-        for(i=0;i<createdCamps.size();i++){
+        for (i = 0; i < createdCampIds.size(); i++) {
             // TODO
             // need to implement the comparing part of the camp
-            if(createdCamps.get(i) == camp){
+            if (createdCampIds.get(i) == camp.getCampId()) {
                 return true;
             }
         }

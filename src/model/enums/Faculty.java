@@ -20,7 +20,7 @@ public enum Faculty {
         this.facultyStr = facultyStr;
     }
 
-    public String getFacultyStr() {
+    public String getFaculty() {
         return facultyStr;
     }
 }

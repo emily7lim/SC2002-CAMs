@@ -1,57 +1,85 @@
 package controller;
 
-import model.Enquiry;
-
 import java.util.ArrayList;
-import java.util.List;
+
+import model.Enquiry;
+import model.enums.EnquiryStatus;
+import database.EnquiryDAO;
 
 public class EnquiryController {
-    private List<Enquiry> enquiries;
-
-    public EnquiryController() {
-        enquiries = new ArrayList<>();
+    /**
+     * Creates a new Enquiry and add to the database
+     * @param enquiryId The Enquiry ID of the new Enquiry
+     * @param creatorId The User ID of the creator of the new Enquiry
+     * @param message The message of the new Enquiry
+     */
+    public void createEnquiry(String enquiryId, String creatorId, String message) {
+        Enquiry enquiry = new Enquiry(enquiryId, creatorId, message);
+        EnquiryDAO.createEnquiry(enquiry);
     }
 
-    // Create a new enquiry and add it to the list
-    public Enquiry createEnquiry(int enquiryId, String sender, String receiver, String message, String status) {
-        Enquiry enquiry = new Enquiry(enquiryId, sender, receiver, message, status);
-        enquiries.add(enquiry);
-        return enquiry;
+    /**
+     * Retrieves a list of all Enquiries from the database
+     * @return ArrayList<Enquiry> The list of all the Enquiries
+     */
+    public ArrayList<Enquiry> getAllEnquiries() {
+        return EnquiryDAO.getAllEnquiries();
     }
 
-    // Get a list of all enquiries
-    public List<Enquiry> getAllEnquiries() {
-        return enquiries;
+    /**
+     * Finds an Enquiry from the database by the Enquiry ID 
+     * @param enquiryId The Enquiry Id of the Enquiry
+     * @return Enquiry The corresponding Enquiry object, NULL if not found
+     */
+    public Enquiry getEnquiryById(String enquiryId) {
+        return EnquiryDAO.getEnquirybyId(enquiryId);
     }
 
-    // Find an enquiry by its ID
-    public Enquiry findEnquiryById(int enquiryId) {
-        for (Enquiry enquiry : enquiries) {
-            if (enquiry.getEnquiryId() == enquiryId) {
-                return enquiry; //Enquiry found
-            }
-        }
-        return null; //No enquiry with such ID
+    /**
+     * Updates the message of an Enquiry
+     * @param enquiryId The Enquiry ID of the Enquiry
+     * @param message The new message of the Enquiry
+     * @return boolean Whether the Enquiry message was successfully updated
+     */
+    public boolean updateEnquiryMessage(String enquiryId, String message) {
+        if (!checkEnquiryExists(enquiryId)) return false;
+
+        EnquiryDAO.updateEnquiryMessage(enquiryId, message);
+        return true;
     }
 
-    // Update enquiry information
-    public boolean updateEnquiryInformation(int enquiryId, String newMessage, String newStatus) {
-        Enquiry enquiry = findEnquiryById(enquiryId);
-        if (enquiry != null) {
-            enquiry.setMessage(newMessage);
-            enquiry.setStatus(newStatus);
-            return true;
-        }
-        return false; // Enquiry not found
+    /**
+     * Updates the reply to an Enquiry
+     * @param enquiryId The Enquiry ID of the Enquiry
+     * @param reply The reply to the Enquiry
+     * @param responderId The User ID of the User adding the reply
+     * @return boolean Whether the Enquiry reply was successfully updated
+     */
+    public boolean replyEnquiry(String enquiryId, String reply, String responderId) {
+        if (!checkEnquiryExists(enquiryId)) return false;
+
+        EnquiryDAO.updateEnquiryResponse(enquiryId, reply, EnquiryStatus.CLOSED, responderId);
+        return true;
     }
 
-    // Remove an enquiry from the list
-    public boolean deleteEnquiry(int enquiryId) {
-        Enquiry enquiry = findEnquiryById(enquiryId);
-        if (enquiry != null) {
-            enquiries.remove(enquiry);
-            return true;
-        }
-        return false; // Enquiry not found
+    /**
+     * Deletes an Enquiry from the database
+     * @param enquiryId The Enquiry ID of the Enquiry
+     * @return boolean Whether the Enquiry was successfully deleted
+     */
+    public boolean deleteEnquiry(String enquiryId) {
+        if (!checkEnquiryExists(enquiryId)) return false;
+
+        EnquiryDAO.deleteEnquiry(enquiryId);
+        return true;
+    }
+
+    /**
+     * Check if the Enquiry with Enquiry ID exists in the database
+     * @param enquiryId The Enquiry ID of the Enquiry
+     * @return boolean Whether the Enquiry exists in the database
+     */
+    public boolean checkEnquiryExists(String enquiryId) {
+        return EnquiryDAO.checkEnquiry(enquiryId);
     }
 }

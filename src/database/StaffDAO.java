@@ -1,30 +1,66 @@
 package database;
 
+import java.util.ArrayList;
+
 import model.Staff;
+import model.User;
+import model.enums.Role;
 
 public class StaffDAO {
-    /** 
-     * Finds a Staff from the database using the id
-     * @param staffId The Staff id of the Staff  
-     * @return Staff The corresponding Staff object, NULL if not found
-     */
-    public static Staff getUserbyId(String staffId) {
-        return Database.STAFFS.get(staffId);
-    }
+    public static Role staffRole = Role.STAFF;
     
     /** 
-     * Adds a Staff to the database
+     * Adds a staff to the database
      * @param staff The Staff Object to save
      */
-    public static void createUser(Staff staff) {
-        Database.STAFFS.put(staff.getUserId(), staff);
+    public static void createStaff(Staff staff) {
+        Database.USERS.put(staff.getUserId(), staff);
     }
 
     /** 
-     * Removes a Staff from the database using the id
-     * @param staffId The Staff id of the Staff
+     * Retrieve all Staffs from the database
+     * @return ArrayList<Staff> The list of all Staffs
      */
-    public static void deleteUser(String staffId) {
-        Database.STAFFS.remove(staffId);
+    public static ArrayList<Staff> getAllStaffs() {
+        ArrayList<Staff> staffs = new ArrayList<>();
+
+        for (User user : Database.USERS.values()) {
+            if (user.getRole() == staffRole) staffs.add((Staff) user);
+        }
+
+        return staffs;
+    }
+
+    /** 
+     * Finds a Staff from the database using the ID
+     * @param userId The User ID of the Staff
+     * @return Staff The corresponding Staff object, NULL if not found
+     */
+    public static Staff getStaffbyId(String userId) {
+        User user = Database.USERS.get(userId);
+
+        if (user != null && user.getRole() == staffRole) return (Staff) user;
+        else return null;
+    }
+
+    /** 
+     * Check if a Staff exists in the database using the ID
+     * @param userId The User ID of the Staff
+     * @return boolean Whether the Staff exists
+     */
+    public static boolean checkStaff(String userId) {
+        User user = Database.USERS.get(userId);
+
+        if (user != null && user.getRole() == staffRole) return true;
+        else return false;
+    }
+
+    /**
+     * Update the Camp IDs of a Staff in the database using the ID 
+     * @param userId The User ID of the Staff
+     * @param campId The Camp ID of the Camp created by the Staff
+     */
+    public static void updateStaffCamps(String userId, String campId) {
+        ((Staff) Database.USERS.get(userId)).addCamp(campId);
     }
 }
