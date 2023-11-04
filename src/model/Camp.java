@@ -165,4 +165,12 @@ public class Camp implements Serializable {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+
+    public void addParticipant(String userId) {
+        this.participantIds.add(userId);
+    }
+
+    public void addCommittee(String userId) {
+        this.committeeIds.add(userId);
+    }
 }

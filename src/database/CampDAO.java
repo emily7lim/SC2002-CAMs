@@ -40,7 +40,7 @@ public class CampDAO {
     }
 
     /**
-     * Update the information of a Camp in the database using the ID
+     * Updates the information of a Camp in the database using the ID
      * @param campId The Camp ID of the Camp
      * @param campInfo Camp object with new Camp information
      */
@@ -58,12 +58,30 @@ public class CampDAO {
     }
 
     /**
-     * Update the visibility of a Camp in the database using the ID
+     * Updates the visibility of a Camp in the database using the ID
      * @param campId The Camp ID of the Camp
      * @param visible The new visibility of the Camp
      */
     public static void updateCampVisiblity(String campId, boolean visible) {
         Database.CAMPS.get(campId).setVisible(visible);
+    }
+
+    /**
+     * Updates the participants of a Camp in the database using the ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the new participant
+     */
+    public static void updateCampParticipants(String campId, String userId) {
+        Database.CAMPS.get(campId).addParticipant(userId);
+    }
+
+    /**
+     * Updates the committee members of a Camp in the database using the ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the new committee member
+     */
+    public static void updateCampCommittee(String campId, String userId) {
+        Database.CAMPS.get(campId).addCommittee(userId);
     }
 
     /**

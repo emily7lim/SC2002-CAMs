@@ -89,6 +89,32 @@ public class CampController {
     }
 
     /**
+     * Adds a User to the list of participants for a Camp
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the participant
+     * @return boolean Whether the Camp participants is successfully updated
+     */
+    public boolean addParticipant(String campId, String userId) {
+        if (!checkCampExists(campId)) return false;
+
+        CampDAO.updateCampParticipants(campId, userId);
+        return true;
+    }
+
+    /**
+     * Adds a User to the list of committee members for a Camp
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the committee cember
+     * @return boolean Whether the Camp committee members is successfully updated
+     */
+    public boolean addCommittee(String campId, String userId) {
+        if (!checkCampExists(campId)) return false;
+
+        CampDAO.updateCampCommittee(campId, userId);
+        return true;
+    }
+
+    /**
      * Deletes a Camp from the database
      * @param campId The Camp ID of the Camp
      * @return boolean Whether the Camp was successfully deleted
