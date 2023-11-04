@@ -9,5 +9,7 @@ public class LoginView {
             System.out.print("Password: ");
 
         } while (!loggedIn);
+
+        //on login pg, faculty info can take from database
     }
 }

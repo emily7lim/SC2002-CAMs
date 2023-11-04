@@ -1,6 +1,7 @@
 package view;
 
 import controller.CampController;
+import model.Camp;
 
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class StaffView {
         boolean stop = true;
         while (stop) {
 
-            System.out.println("------------------Staff Menu------------------\n1) View all camps\n2) See list of camps created\n3) Toggle visibility of camp\n4) Enquiries from student\n5) Generate report of students\n6) Generate performance report \n7) Suggestions from camp committee\n8) Quit");
+            System.out.println("------------------Staff Menu------------------\n1) View all camps\n2) See list of camps I created\n3) Toggle visibility of camp\n4) Enquiries from student\n5) Generate report of students\n6) Generate performance report of committee members\n7) Suggestions from camp committee\n8) Create,edit,delete camps\n9)Quit");
             System.out.println("----------------------------------------------\nSelect your choice:");
 
             Integer choice = sc.nextInt();
@@ -22,7 +23,7 @@ public class StaffView {
                     break;
 
                 case 2: // see list of camps that he/she created in separate menu list so they can edit camp they created
-                    
+                    StaffCreated.main(null);
                     break;
 
                 case 3: // toggle visibility of camp, reflected in camp list that will be visible to students
@@ -94,7 +95,36 @@ public class StaffView {
                 case 7: // view&approve suggestions to changes to camp details from camp comm
                     break;
 
-                case 8:
+                case 8: //create, edit,del camps
+                    while (stop) {
+                        System.out.println("1) Create\n2) Edit\n3) Delete\n4) Quit");
+                        Integer edit = sc.nextInt();
+                        switch (edit) {
+                            case 1:
+                                
+                                break;
+                        
+                            case 2:
+                                
+                                break;
+                        
+                            case 3:
+                                
+                                break;
+                        
+                            case 4:
+                                stop = false;
+                                break;
+                        
+                            default:
+                                System.out.println("Invalid!");
+                                break;
+                        }
+                    }
+                    stop = true;
+                    break;
+
+                case 9:
                     stop = false;
                     break;
 
