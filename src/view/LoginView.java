@@ -11,5 +11,12 @@ public class LoginView {
         } while (!loggedIn);
 
         //on login pg, faculty info can take from database
+        // if (user == "student") {
+        //     if (user == "committee") CommitteeView.main(null);
+        //     else StudentView.main(null);
+        // }
+        // else if (user == "staff") StaffView.main(null);
+        // else relogin?
+        
     }
 }
