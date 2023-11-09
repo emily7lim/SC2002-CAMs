@@ -13,8 +13,8 @@ public class EnquiryController {
      * @param creatorId The User ID of the creator of the new Enquiry
      * @param message The message of the new Enquiry
      */
-    public void createEnquiry(String enquiryId, String creatorId, String message) {
-        Enquiry enquiry = new Enquiry(enquiryId, creatorId, message);
+    public void createEnquiry(String creatorId, String message) {
+        Enquiry enquiry = new Enquiry(creatorId, message);
         EnquiryDAO.createEnquiry(enquiry);
     }
 

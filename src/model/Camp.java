@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import model.enums.Faculty;
 
@@ -23,8 +24,10 @@ public class Camp implements Serializable {
     private ArrayList<String> committeeIds;
     private boolean visible;
 
+    // Updating camp information
     public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
             String location, int totalSlots, int commSlots, String description) {
+        this.campId = UUID.randomUUID().toString();
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -36,9 +39,9 @@ public class Camp implements Serializable {
         this.description = description;
     }
 
-    public Camp(String campId, String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
+    public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
             String location, int totalSlots, int commSlots, String description, String staffInCharge) {
-        this.campId = campId;
+        this.campId = UUID.randomUUID().toString();
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;

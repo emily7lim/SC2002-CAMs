@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import model.enums.SuggestionStatus;
 
@@ -12,16 +13,16 @@ public class Suggestion implements Serializable {
 	private String message;
 	private SuggestionStatus status;
 
-	public Suggestion(String suggestionId, String creatorId, String message) {
-		this.suggestionId = suggestionId;
+	public Suggestion(String creatorId, String message) {
+		this.suggestionId = UUID.randomUUID().toString();
 		this.creatorId = creatorId;
 		this.responderId = null;
 		this.message = message;
 		this.status = SuggestionStatus.PENDING;
 	}
 
-	public Suggestion(String suggestionId, String creatorId, String responderId, String message, SuggestionStatus status) {
-		this.suggestionId = suggestionId;
+	public Suggestion(String creatorId, String responderId, String message, SuggestionStatus status) {
+		this.suggestionId = UUID.randomUUID().toString();
 		this.creatorId = creatorId;
 		this.responderId = responderId;
 		this.message = message;

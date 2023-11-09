@@ -13,8 +13,8 @@ public class SuggestionController {
      * @param creatorId The User ID of the creator of the new Suggestion
      * @param message The message of the new Suggestion
      */
-    public void createSuggestion(String suggestionId, String creatorId, String message) {
-        Suggestion suggestion = new Suggestion(suggestionId, creatorId, message);
+    public void createSuggestion(String creatorId, String message) {
+        Suggestion suggestion = new Suggestion(creatorId, message);
         SuggestionDAO.createSuggestion(suggestion);
     }
 

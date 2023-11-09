@@ -23,10 +23,10 @@ public class CampController {
      * @param description The description of the new Camp
      * @param staffInCharge The staff in charge of the new Camp
      */
-    public void createCamp(String campId, String name, Date startDate, Date endDate, Date registrationCloseDate,
+    public void createCamp(String name, Date startDate, Date endDate, Date registrationCloseDate,
             Faculty userGroup, String location, int totalSlots, int commSlots, String description,
             String staffInCharge) {
-        Camp camp = new Camp(campId, name, startDate, endDate, registrationCloseDate, userGroup, location,
+        Camp camp = new Camp(name, startDate, endDate, registrationCloseDate, userGroup, location,
                 totalSlots, commSlots, description, staffInCharge);
         CampDAO.createCamp(camp);
     }

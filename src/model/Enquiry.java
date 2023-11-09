@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import model.enums.EnquiryStatus;
 
@@ -13,8 +14,8 @@ public class Enquiry implements Serializable {
 	private String reply;
 	private EnquiryStatus status;
 
-	public Enquiry(String enquiryId, String creatorId, String message) {
-		this.enquiryId = enquiryId;
+	public Enquiry(String creatorId, String message) {
+		this.enquiryId = UUID.randomUUID().toString();
 		this.creatorId = creatorId;
 		this.responderId = null;
 		this.message = message;
@@ -22,8 +23,8 @@ public class Enquiry implements Serializable {
 		this.status = EnquiryStatus.PENDING;
 	}
 
-	public Enquiry(String enquiryId, String creatorId, String responderId, String message, String reply, EnquiryStatus status) {
-		this.enquiryId = enquiryId;
+	public Enquiry(String creatorId, String responderId, String message, String reply, EnquiryStatus status) {
+		this.enquiryId = UUID.randomUUID().toString();
 		this.creatorId = creatorId;
 		this.responderId = responderId;
 		this.message = message;
