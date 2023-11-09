@@ -6,6 +6,7 @@ import model.enums.Faculty;
 import model.enums.Role;
 
 public class Student extends User {
+    protected static final long serialVersionUID = 6L;
     private int points;
     private ArrayList<String> campIds;
 
