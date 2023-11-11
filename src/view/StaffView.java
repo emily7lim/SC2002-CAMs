@@ -1,14 +1,16 @@
 package view;
 
 import controller.*;
+import model.enums.EnquiryStatus;
 import model.enums.Faculty;
+import model.enums.SuggestionStatus;
 import report.ReportController;
 import report.enums.ReportOutputType;
+import report.enums.ReportType;
 
 // import java.io.IOException;
 // import org.apache.commons.lang.WordUtils;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class StaffView {
@@ -16,64 +18,44 @@ public class StaffView {
     public static void main(String[] args) throws ParseException {
         Scanner sc = new Scanner(System.in);
         String loggedID = "ARVI"; // note:take from login detail
-        CampController campc = new CampController();
         EnquiryController enquiryc = new EnquiryController();
+        CampController campc = new CampController();
+        StudentController studentc = new StudentController();
         SuggestionController suggestc = new SuggestionController();
+        CommonUse common = new CommonUse();
 
         boolean continues = true;
 
         while (continues) {
-
             System.out.println(
-                    "\n------------------Staff Menu------------------\n1) View all camps\n2) See list of camps I created\n3) Toggle visibility of camp\n4) Enquiries from student\n5) Generate report of students\n6) Generate performance report of committee members\n7) Suggestions from camp committee\n8) Results of enquiries/suggestions\n9) Quit");
+                    "\n------------------Staff Menu------------------\n1) View all camps and students registered\n2) See list of camps I created\n3) Profile\n4) Enquiries from student\n5) Generate report of students\n6) Generate performance report of committee members\n7) Suggestions from camp committee\n8) Results of enquiries/suggestions\n9) Change password\n10) Quit");
             System.out.println("----------------------------------------------\nSelect your choice:");
-
+            
             Integer choice = sc.nextInt();
             switch (choice) {
-                case 1: // view all camps
-
-                    ArrayList<String> getcampname = new ArrayList<>();
-                    ArrayList<Date> getcampsdate = new ArrayList<>();
-                    ArrayList<Date> getcampedate = new ArrayList<>();
-                    ArrayList<Date> getcampdeadline = new ArrayList<>();
-                    ArrayList<Faculty> getcampgrp = new ArrayList<>();
-                    ArrayList<String> getcamplocation = new ArrayList<>();
-                    ArrayList<Integer> getcampslot = new ArrayList<>();
-                    ArrayList<Integer> getcampcommslot = new ArrayList<>();
-                    ArrayList<String> getcampdesc = new ArrayList<>();
-                    ArrayList<String> getcampic = new ArrayList<>();
-
-                    for (int i = 0; i < campc.getAllCamps().size(); i++) {
-                        getcamplocation.add(campc.getAllCamps().get(i).getLocation());
-                        getcampname.add(campc.getAllCamps().get(i).getName());
-                        getcampdesc.add(campc.getAllCamps().get(i).getDescription());
-                        getcampgrp.add(campc.getAllCamps().get(i).getUserGroup());
-                        getcampic.add(campc.getAllCamps().get(i).getStaffInCharge());
-                        getcampslot.add(campc.getAllCamps().get(i).getTotalSlots());
-                        getcampcommslot.add(campc.getAllCamps().get(i).getCommSlots());
-                        getcampsdate.add(campc.getAllCamps().get(i).getStartDate());
-                        getcampedate.add(campc.getAllCamps().get(i).getEndDate());
-                        getcampdeadline.add(campc.getAllCamps().get(i).getRegistrationCloseDate());
-                    }
-                    
-                    SimpleDateFormat strdate = new SimpleDateFormat("dd/MM/yyyy");
-                    for (int i = 0; i < getcamplocation.size(); i++) {
-                        System.out.println("\n*****Details of camp " + i +"*******");
-                        System.out.println("Camp Name: " + getcampname.get(i) + "\nStart date: " +
-                                strdate.format(getcampsdate.get(i)) + "\nEnd date: "+ strdate.format(getcampedate.get(i))+ "\nRegistration deadline: "+ strdate.format(getcampdeadline.get(i))+ "\nUser group: "+ getcampgrp.get(i)+ "\nLocation: "+
-                                getcamplocation.get(i)+ "\nTotal slots: "+ getcampslot.get(i)+ "\nCommittee slots: "+ getcampcommslot.get(i)+ "\nCamp IC: "+ getcampic.get(i)+ "\nDescription: "+
-                                getcampdesc.get(i));
+                case 1: // view all camps n list of students
+                System.out.println("1) View all camps\n2) View list of students");
+                    Integer view = sc.nextInt();
+                    if (view == 1)
+                    common.ViewingCamps();
+                    else if (view==2) {
+                        ArrayList<String> getparticipant = new ArrayList<>();
+                        ArrayList<String> getcommittee = new ArrayList<>();
+                        for (int i = 0; i < campc.getAllCamps().size(); i++) {
+                            getparticipant.addAll(campc.getAllCamps().get(i).getParticipantIds());
+                            getcommittee.addAll(campc.getAllCamps().get(i).getCommitteeIds());
+                        }
+                        for (int i = 0; i < getcommittee.size(); i++) {
+                            System.out.println(i + ")" + getcommittee.get(i) + "Participant: " + getparticipant.get(i));
+                        }
                     }
                     break;
 
                 case 2: // see list of camps that he/she created in separate menu list so they can edit
-                        // camp they created
                     StaffCreated.main(null);
-                    // think case 8 can shift here
                     break;
 
-                case 3: // toggle visibility of camp, reflected in camp list that will be visible to
-                        // students
+                case 3: // profile
 
                     break;
 
@@ -86,7 +68,7 @@ public class StaffView {
                         getenquiryid.add(enquiryc.getAllEnquiries().get(i).getEnquiryId());
                         getenquirymsg.add(enquiryc.getAllEnquiries().get(i).getMessage());
                     }
-                    System.out.println("*********Your enquiries*********");
+                    System.out.println("*********Your enquiries***********");
                     for (int i = 0; i < getenquirymsg.size(); i++) {
 
                         System.out.println(i + ") " + getenquirymsg.get(i));
@@ -109,7 +91,7 @@ public class StaffView {
                                         if (input == i) {
                                             String replyenquiry = "";
                                             replyenquiry += scan.nextLine();
-                                            enquiryc.replyEnquiry(getenquiryid.get(0), replyenquiry, loggedID);
+                                            enquiryc.replyEnquiry(getenquiryid.get(i), replyenquiry, loggedID);
                                         }
                                     }
                                 }
@@ -187,6 +169,36 @@ public class StaffView {
                     break;
 
                 case 6: // performance report of camp comm members
+                    ArrayList<String> getcomm = new ArrayList<>();
+                    ArrayList<Integer> getpts = new ArrayList<>();
+                        for (int i = 0; i < enquiryc.getAllEnquiries().size(); i++) {
+                            getcomm.add("UserID" + studentc.getAllStudents().get(i).getUserId() + "Name: " + studentc.getAllStudents().get(i).getName() );
+                            getpts.add(studentc.getAllStudents().get(i).getPoints() );
+                        }
+                     System.out.println("\nSelect your format\n1) .txt \n2) .csv");
+
+                    while (continues) {
+                        
+                        int format = sc.nextInt();
+                        switch (format) {
+                            case 1: // txt
+                                ReportController rp = new ReportController(ReportOutputType.TXT);
+                                // rp.generateAndWriteReports(camps, ReportType.PERFORMANCE_REPORT);
+                                continues = false;
+                                break;
+
+                            case 2: // csv
+                                rp = new ReportController(ReportOutputType.CSV);
+                                continues = false;
+                                break;
+
+                            default:
+                                System.out.print("Please select file format 1 or 2: ");
+                                break;
+                        }
+                    }
+                    // rp.generateAndWriteReports();
+                    continues = true;
                     break;
 
                 case 7: // view&approve suggestions to changes to camp details from camp comm
@@ -194,8 +206,11 @@ public class StaffView {
                     ArrayList<String> getsuggestid = new ArrayList<>();
 
                     for (int i = 0; i < suggestc.getAllSuggestions().size(); i++) {
-                        getsuggestid.add(suggestc.getAllSuggestions().get(i).getSuggestionId());
-                        getsuggestmsg.add(suggestc.getAllSuggestions().get(i).getMessage());
+                        if (suggestc.getAllSuggestions().get(i).getStatus() == SuggestionStatus.PENDING) {
+                            getsuggestid.add(suggestc.getAllSuggestions().get(i).getSuggestionId());
+                            getsuggestmsg.add(suggestc.getAllSuggestions().get(i).getMessage());
+                        }
+
                     }
                     System.out.println("*********Suggestion from camp committee*********");
                     for (int i = 0; i < getsuggestmsg.size(); i++) {
@@ -254,28 +269,14 @@ public class StaffView {
                     break;
 
                 case 8: // view replies
-                    System.out.println("1) View replies to enquiries\n 2) View approved/rejected suggestions");
-                    choice = sc.nextInt();
-                    switch (choice) {
-                        case 1: //enquiry
-                            
-                            break;
-                    
-                        case 2: // suggestion
-                            
-                            break;
-                    
-                        case 3:
-                            
-                            break;
-                    
-                        default:
-                            break;
-                    }
+                    common.Result();
+                    break;
+
+                case 9: // change password
                     
                     break;
 
-                case 9:
+                case 10:
                     continues = false;
                     break;
 

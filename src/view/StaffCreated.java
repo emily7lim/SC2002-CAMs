@@ -23,6 +23,7 @@ public class StaffCreated {
             System.out.println("Created Camps");
             System.out.println("______________");
 
+            ArrayList<String> getcampid = new ArrayList<>();
             ArrayList<String> getcampname = new ArrayList<>();
             ArrayList<Date> getcampsdate = new ArrayList<>();
             ArrayList<Date> getcampedate = new ArrayList<>();
@@ -33,9 +34,11 @@ public class StaffCreated {
             ArrayList<Integer> getcampcommslot = new ArrayList<>();
             ArrayList<String> getcampdesc = new ArrayList<>();
             ArrayList<String> getcampic = new ArrayList<>();
+            ArrayList<Boolean> getcampvisible = new ArrayList<>();
 
             for (int i = 0; i < campc.getAllCamps().size(); i++) {
                 if (campc.getAllCamps().get(i).getStaffInCharge() == loggedID) {
+                    getcampid.add(campc.getAllCamps().get(i).getCampId());
                     getcamplocation.add(campc.getAllCamps().get(i).getLocation());
                     getcampname.add(campc.getAllCamps().get(i).getName());
                     getcampdesc.add(campc.getAllCamps().get(i).getDescription());
@@ -46,6 +49,7 @@ public class StaffCreated {
                     getcampsdate.add(campc.getAllCamps().get(i).getStartDate());
                     getcampedate.add(campc.getAllCamps().get(i).getEndDate());
                     getcampdeadline.add(campc.getAllCamps().get(i).getRegistrationCloseDate());
+                    getcampvisible.add(campc.getAllCamps().get(i).isVisible());
                 }
 
             }
@@ -57,10 +61,10 @@ public class StaffCreated {
                         + getcampgrp.get(i) + "\nLocation: " +
                         getcamplocation.get(i) + "\nTotal slots: " + getcampslot.get(i) + "\nCommittee slots: "
                         + getcampcommslot.get(i) + "\nCamp IC: " + getcampic.get(i) + "\nDescription: " +
-                        getcampdesc.get(i));
+                        getcampdesc.get(i) + "\nVisibility: " + getcampvisible.get(i));
 
             }
-            System.out.println("\n1) Create\n2) Edit\n3) Delete\n4) Quit");
+            System.out.println("\n1) Create\n2) Edit\n3) Delete\n4) Toggle Visibility\n5) Quit\nSelect your choice:");
             Integer edit = sc.nextInt();
             switch (edit) {
                 case 1:
@@ -115,14 +119,59 @@ public class StaffCreated {
                     break;
 
                 case 2:
-
+                    scan = new Scanner(System.in);
+                    System.out.println("Choose the camp you want to edit");
+                    Integer input = sc.nextInt();
+                    if (input >= getcampic.size())
+                        System.out.println("No such suggestion");
+                    else {
+                        // note: let user choose info to edit
+                    }
                     break;
 
                 case 3:
+                    System.out.println("Choose the camp you want to delete:");
+                    input = sc.nextInt();
+                    if (input >= getcampic.size())
+                        System.out.println("No such camp");
+                    else {
+                        for (int j = 0; j < getcampic.size(); j++) {
+                            if (input == j) {
+                                campc.deleteCamp(getcampid.get(j));
+                                System.out.println("Camp deleted");
+                            }
+                        }
 
+                    }
+                    break;
+                case 4: // toggle visibility of camp, reflected in camp list that will be visible to students
+                    System.out.println("Choose the camp you want to toggle visibility:");
+                    input = sc.nextInt();
+                    if (input >= getcampic.size())
+                        System.out.println("No such camp");
+                    else {
+                        System.out.println("Choose 0 to turn off, choose 1 to turn on:");
+                        for (int j = 0; j < getcampic.size(); j++) {
+                            if (input == j) {
+                                Integer toggle = sc.nextInt();
+                                if (toggle == 0) {
+                                    campc.updateCampVisiblity(getcampid.get(j), false);
+                                    System.out.println("Camp visibility turned off");
+                                }
+                                else if (toggle == 1) {
+                                    campc.updateCampVisiblity(getcampid.get(j), true);
+                                    System.out.println("Camp visibility turned on");
+                                    
+                                }
+                                else System.out.println("Invalid input");
+                                
+                            }
+                        }
+
+                    }
                     break;
 
-                case 4:
+                case 5:
                     continues = false;
                     break;
 
