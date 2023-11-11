@@ -71,6 +71,7 @@ public class CommitteeView {
                                         replyenquiry += scan.nextLine(); 
                                         enquiryc.replyEnquiry(getenquiryid.get(0), replyenquiry, loggedID);
                                         studentc.addPoint(loggedID);
+                                        //note: change status to replied
                                          System.out.println("You have replied 1 enquiry! +1 points");
                                     }
                                 }
