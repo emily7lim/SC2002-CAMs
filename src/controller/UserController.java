@@ -45,7 +45,7 @@ public class UserController {
     public static boolean validateUserCredentials(String userId, String password) {
         if (!checkUserExists(userId)) return false;
 
-        return UserDAO.getUserbyId(userId).getPassword() == password;
+        return UserDAO.getUserbyId(userId).getPassword().equals(password);
     }
 
     /**

@@ -40,6 +40,16 @@ public class CampDAO {
     }
 
     /**
+     * Check if a User has withdrawn from the Camp in the database using the ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the User
+     * @return boolean Whether the User has withdrawn from the Camp
+     */
+    public static boolean checkWithdrawnParticipant(String campId, String userId) {
+        return Database.CAMPS.get(campId).getWithdrawnParticipantIds().contains(userId);
+    }
+
+    /**
      * Updates the information of a Camp in the database using the ID
      * @param campId The Camp ID of the Camp
      * @param campInfo Camp object with new Camp information
@@ -70,9 +80,14 @@ public class CampDAO {
      * Updates the participants of a Camp in the database using the ID
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the new participant
+     * @param add If function should add or remove a User
      */
-    public static void updateCampParticipants(String campId, String userId) {
-        Database.CAMPS.get(campId).addParticipant(userId);
+    public static void updateCampParticipants(String campId, String userId, boolean add) {
+        if (add) Database.CAMPS.get(campId).addParticipant(userId);
+        else {
+            Database.CAMPS.get(campId).removeParticipant(userId);
+            Database.CAMPS.get(campId).addWithdrawnParticipant(userId);
+        }
     }
 
     /**

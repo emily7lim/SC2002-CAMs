@@ -97,7 +97,20 @@ public class CampController {
     public boolean addParticipant(String campId, String userId) {
         if (!checkCampExists(campId)) return false;
 
-        CampDAO.updateCampParticipants(campId, userId);
+        CampDAO.updateCampParticipants(campId, userId, true);
+        return true;
+    }
+
+    /**
+     * Removes a User from the list of participants for a Camp
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the participant
+     * @return boolean Whether the Camp participants is successfully updated
+     */
+    public boolean removeParticipant(String campId, String userId) {
+        if (!checkCampExists(campId)) return false;
+
+        CampDAO.updateCampParticipants(campId, userId, false);
         return true;
     }
 
@@ -134,5 +147,15 @@ public class CampController {
      */
     public boolean checkCampExists(String campId) {
         return CampDAO.checkCamp(campId);
+    }
+
+    /**
+     * Check if a User with User ID has previously withdrawn from the Camp with Camp ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the User
+     * @return boolean Whether the User has previously withdrawn from the Camp
+     */
+    public boolean checkCampParticipantWithdrawn(String campId, String userId) {
+        return CampDAO.checkWithdrawnParticipant(campId, userId);
     }
 }

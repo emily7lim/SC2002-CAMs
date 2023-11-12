@@ -20,6 +20,7 @@ public class Camp implements Serializable {
     private int commSlots;
     private String description;
     private String staffInCharge;
+    private ArrayList<String> withdrawnParticipantIds;
     private ArrayList<String> participantIds;
     private ArrayList<String> committeeIds;
     private boolean visible;
@@ -145,6 +146,14 @@ public class Camp implements Serializable {
         this.staffInCharge = staffInCharge;
     }
 
+    public ArrayList<String> getWithdrawnParticipantIds() {
+        return withdrawnParticipantIds;
+    }
+
+    public void setWithdrawnParticipantIds(ArrayList<String> withdrawnParticipantIds) {
+        this.withdrawnParticipantIds = withdrawnParticipantIds;
+    }
+
     public ArrayList<String> getParticipantIds() {
         return participantIds;
     }
@@ -169,8 +178,16 @@ public class Camp implements Serializable {
         this.visible = visible;
     }
 
+    public void addWithdrawnParticipant(String userId) {
+        this.withdrawnParticipantIds.add(userId);
+    }
+
     public void addParticipant(String userId) {
         this.participantIds.add(userId);
+    }
+
+    public void removeParticipant(String userId) {
+        this.participantIds.remove(userId);
     }
 
     public void addCommittee(String userId) {
