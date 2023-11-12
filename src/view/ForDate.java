@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ForDate {
-    public Date getDates(String dateString) throws ParseException {
+    public static Date getDates(String dateString) {
         Date date = null;
         // Boolean continues = true;
         // while (continues) {

@@ -15,7 +15,6 @@ public class CommitteeView {
         StudentView student = new StudentView();
         EnquiryController enquiryc = new EnquiryController();
         StudentController studentc = new StudentController();
-        studentc.initializeStudentData();
 
         String loggedID = "YCHERN"; // note:take from login detail
         while (continues) {

@@ -73,4 +73,8 @@ public class StudentDAO {
     public static void updateStudentCamps(String userId, String campId) {
         ((Student) Database.USERS.get(userId)).addCamp(campId);
     }
+
+    public static void updateStudentCampCommittee(String userId) {
+        Database.USERS.get(userId).setRole(Role.COMMITTEE);
+    }
 }

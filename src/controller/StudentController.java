@@ -2,6 +2,7 @@ package controller;
 
 import model.Student;
 import model.enums.Faculty;
+import model.enums.Role;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public class StudentController {
      * @param password The password of the new Student
      * @param faculty The facult of the new Student
      */
-    public void createStudent(String userId, String name, String password, Faculty faculty) {
+    public static void createStudent(String userId, String name, String password, Faculty faculty) {
         Student student = new Student(userId, name, password, faculty);
         StudentDAO.createStudent(student);
     }
@@ -25,7 +26,7 @@ public class StudentController {
      * Retrieves a list of all the Students from the database
      * @return ArrayList<Student> The list of all the Students
      */
-    public ArrayList<Student> getAllStudents() {
+    public static ArrayList<Student> getAllStudents() {
         return StudentDAO.getAllStudents();
     }
 
@@ -34,8 +35,17 @@ public class StudentController {
      * @param userId The User ID of the Student
      * @return Student The corresponding Student object, NULL if not found
      */
-    public Student getStudentByUserId(String userId) {
+    public static Student getStudentByUserId(String userId) {
         return StudentDAO.getStudentbyId(userId);
+    }
+
+    /**
+     * Check if a Student in the Database is a Committee Member
+     * @param userId The User ID of the Student
+     * @return boolean Whether the Student is a Committee Member
+     */
+    public static boolean checkCampCommittee(String userId) {
+        return UserDAO.checkUserRole(userId, Role.COMMITTEE);
     }
 
     /**
@@ -43,7 +53,7 @@ public class StudentController {
      * @param userId The User ID of the Student
      * @return boolean Whether the Student points was successfully updated
      */
-    public boolean addPoint(String userId) {
+    public static boolean addPoint(String userId) {
         if (!checkStudentExists(userId)) return false;
 
         StudentDAO.updateStudentPoints(userId);
@@ -56,10 +66,23 @@ public class StudentController {
      * @param campId The Camp ID of the Camp the Student registered for
      * @return boolean Whether the Student Camp IDs was successfully updated
      */
-    public boolean addCamp(String userId, String campId) {
+    public static boolean addCamp(String userId, String campId) {
         if (!checkStudentExists(userId)) return false;
 
         StudentDAO.updateStudentCamps(userId, campId);
+        return true;
+    }
+
+    /**
+     * Updates the Role of a Student to be a Camp Committee
+     * @param userId The User ID of the Student
+     * @return boolean Whether the Student Role was successfully updated
+     */
+    public static boolean addCampCommittee(String userId) {
+        if (!checkStudentExists(userId)) return false;
+        if (checkCampCommittee(userId)) return false;
+
+        StudentDAO.updateStudentCampCommittee(userId);
         return true;
     }
 
@@ -68,7 +91,7 @@ public class StudentController {
      * @param userId The User ID of the Student
      * @return boolean Whether the Student was successfully deleted
      */
-    public boolean deleteStudent(String userId) {
+    public static boolean deleteStudent(String userId) {
         if (!checkStudentExists(userId)) return false;
 
         UserDAO.deleteUser(userId);
@@ -80,14 +103,14 @@ public class StudentController {
      * @param userId The User ID of the Student
      * @return boolean Whether the Student exists in the Database
      */
-    public boolean checkStudentExists(String userId) {
+    public static boolean checkStudentExists(String userId) {
         return StudentDAO.checkStudent(userId);
     }
 
     /**
      * Initializes the initial dummy data of Students
      */
-    public void initializeStudentData() {
+    public static void initializeStudentData() {
         String password = "password";
         createStudent("YCHERN", "CHERN", password, Faculty.SCSE);
         createStudent("KOH1", "KOH", password, Faculty.ADM);

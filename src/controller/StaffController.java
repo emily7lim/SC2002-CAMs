@@ -16,7 +16,7 @@ public class StaffController {
      * @param password The password of the new Staff
      * @param faculty The faculty of the new Staff
      */
-    public void createStaff(String userId, String name, String password, Faculty faculty) {
+    public static void createStaff(String userId, String name, String password, Faculty faculty) {
         Staff staff = new Staff(userId, name, password, faculty);
         StaffDAO.createStaff(staff);
     }
@@ -25,7 +25,7 @@ public class StaffController {
      * Retrieves a list of all the Staffs from the database
      * @return ArrayList<Staff> The list of all the Staffs
      */
-    public ArrayList<Staff> getAllStaffs() {
+    public static ArrayList<Staff> getAllStaffs() {
         return StaffDAO.getAllStaffs();
     }
 
@@ -34,7 +34,7 @@ public class StaffController {
      * @param userId The User ID of the Staff
      * @return Staff The corresponding Staff object, NULL if not found
      */
-    public Staff getStaffByUserId(String userId) {
+    public static Staff getStaffByUserId(String userId) {
         return StaffDAO.getStaffbyId(userId);
     }
 
@@ -44,7 +44,7 @@ public class StaffController {
      * @param campId The Camp ID of the Camp created by the Staff 
      * @return boolean Whether the Staff Camp IDs was successfully updated
      */
-    public boolean addCamp(String userId, String campId) {
+    public static boolean addCamp(String userId, String campId) {
         if (!checkStaffExists(userId)) return false;
 
         StaffDAO.updateStaffCamps(userId, campId);
@@ -56,7 +56,7 @@ public class StaffController {
      * @param userId The User ID of the Staff
      * @return boolean Whether the Staff was successfully deleted
      */
-    public boolean deleteStaff(String userId) {
+    public static boolean deleteStaff(String userId) {
         if (!checkStaffExists(userId)) return false;
 
         UserDAO.deleteUser(userId);
@@ -68,7 +68,19 @@ public class StaffController {
      * @param userId The User ID of the Staff
      * @return boolean Whether the Staff exists in the database
      */
-    public boolean checkStaffExists(String userId) {
+    public static boolean checkStaffExists(String userId) {
         return StaffDAO.checkStaff(userId);
+    }
+
+    /**
+     * Initializes the initial dummy data of Staff
+     */
+    public static void initializeStaffData() {
+        String password = "password";
+        createStaff("HUKUMAR", "Madhukumar", password, Faculty.SCSE);
+        createStaff("OURIN", "Alexei", password, Faculty.ADM);
+        createStaff("UPAM", "Chattopadhyay", password, Faculty.EEE);
+        createStaff("ANWIT", "Datta", password, Faculty.SCSE);
+        createStaff("ARVI", "Arvind", password, Faculty.NBS);
     }
 }

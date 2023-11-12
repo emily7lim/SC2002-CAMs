@@ -8,7 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
+import controller.StaffController;
+import controller.StudentController;
 import model.*;
+import model.enums.Faculty;
+import view.ForDate;
 
 public class Database {
     /**
@@ -134,7 +138,7 @@ public class Database {
     }
 
     /**
-     * @param fileName   The appropriate file from enum FileName
+     * @param fileName The appropriate file from enum FileName
      * @return boolean Whether the database variable is saved to the file
      */
     public static boolean saveToDatabase(FileName fileName) {
@@ -172,10 +176,58 @@ public class Database {
     }
 
     /**
+     * Clears all data from database and .dat files
+     */
+    public static void clearDatabase() {
+        for (FileName fileName : FileName.values()) {
+            clearFileData(fileName);
+        }
+    }
+
+    /**
+     * Clears data from specific file in database and .dat file
+     * @param fileName The appropriate file from enum FileName
+     */
+    public static void clearFileData(FileName fileName) {
+        switch (fileName) {
+            case USERS:
+                USERS = new HashMap<String, User>();
+                break;
+            case CAMPS:
+                CAMPS = new HashMap<String, Camp>();
+                break;
+            case ENQUIRIES:
+                ENQUIRIES = new HashMap<String, Enquiry>();
+                break;
+            case SUGGESTIONS:
+                SUGGESTIONS = new HashMap<String, Suggestion>();
+                break;
+            default:
+                break;
+        }
+
+        saveToDatabase(fileName);
+    }
+
+    /**
      * @param fileName The file from enum FileName
      * @return String Returns the filepath for the database file
      */
     public static String getFilePath(FileName fileName) {
         return "./src/database/" + folder + "/" + fileName.getFileNameStr() + fileExtension;
+    }
+
+    public static void intitializeDummyData() {
+        clearDatabase();
+
+        StudentController.initializeStudentData();
+        StaffController.initializeStaffData();
+
+        Camp camp = new Camp("Test Camp", ForDate.getDates("12/02/2024"), ForDate.getDates("15/02/2024"), ForDate.getDates("25/12/2024"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp Description", "HUKUMAR");
+        camp.addCommittee("YCHERN");
+        Database.CAMPS.put(camp.getCampId(), camp);
+        StudentController.addCampCommittee("YCHERN");
+
+        saveAllToDatabase();
     }
 }

@@ -1,6 +1,7 @@
 package database;
 
 import model.User;
+import model.enums.Role;
 
 public class UserDAO {
     /** 
@@ -27,6 +28,19 @@ public class UserDAO {
      */
     public static boolean checkUser(String userId) {
         return Database.USERS.containsKey(userId);
+    }
+
+    /**
+     * Check if a User has a specified Role in the database using the ID
+     * @param userId The User ID of the User
+     * @param role The Role to check
+     * @return boolean Whether the User has the Role
+     */
+    public static boolean checkUserRole(String userId, Role role) {
+        User user = getUserbyId(userId);
+
+        if (user != null && user.getRole() == role) return true;
+        else return false;
     }
 
     /** 
