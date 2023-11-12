@@ -43,6 +43,10 @@ public class UserDAO {
         else return false;
     }
 
+    public static void updateUserPassword(String userId, String password) {
+        Database.USERS.get(userId).setPassword(password);
+    }
+
     /** 
      * Removes a user from the database using the ID
      * @param userId The user ID of the user

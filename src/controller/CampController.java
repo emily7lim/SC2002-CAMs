@@ -49,27 +49,136 @@ public class CampController {
     }
 
     /**
-     * Updates the information of a Camp
+     * Updates the name of a Camp
      * @param campId The Camp ID of the Camp
      * @param name The new name of the Camp
-     * @param startDate The new start date of the Camp
-     * @param endDate The new end date of the Camp
-     * @param registrationCloseDate The new date that registration closes for the Camp
-     * @param userGroup The new user group of the Camp
-     * @param location The new location of the Camp
-     * @param totalSlots The new total number of slots for the Camp
-     * @param commSlots The new number of committee member slots for the Camp
-     * @param description The new description of the Camp
-     * @return boolean Whether the Camp information is successfully updated
+     * @return boolean Whether the Camp name is successfully updated
      */
-    public static boolean updateCampInformation(String campId, String name, Date startDate, Date endDate,
-            Date registrationCloseDate, Faculty userGroup, String location, int totalSlots, int commSlots,
-            String description) {
-        if (!checkCampExists(campId))
-            return false;
+    public static boolean updateCampName(String campId, String name) {
+        if (!checkCampExists(campId)) return false;
 
-        Camp camp = new Camp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
-                commSlots, description);
+        Camp camp = new Camp();
+        camp.setName(name);
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the start date of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param startDate The new start date of the Camp
+     * @return boolean Whether the Camp start date is successfully updated
+     */
+    public static boolean updateCampStartDate(String campId, Date startDate) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setStartDate(startDate);;
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the end date of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param endDate The new end date of the Camp
+     * @return boolean Whether the Camp end date is successfully updated
+     */
+    public static boolean updateCampEndDate(String campId, Date endDate) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setEndDate(endDate);
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the date that registration closes for a Camp
+     * @param campId The Camp ID of the Camp
+     * @param registrationCloseDate The new date that registration closes for the Camp
+     * @return boolean Whether the Camp registration close date is successfully updated
+     */
+    public static boolean updateCampRegistrationCloseDate(String campId, Date registrationCloseDate) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setRegistrationCloseDate(registrationCloseDate);;
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the user group of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param userGroup The new user group of the Camp
+     * @return boolean Whether the Camp user group is successfully updated
+     */
+    public static boolean updateCampUserGroup(String campId, Faculty userGroup) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setUserGroup(userGroup);;
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the location of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param location The new location of the Camp
+     * @return boolean Whether the Camp location is successfully updated
+     */
+    public static boolean updateCampLocation(String campId, String location) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setLocation(location);;
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the total number of slots for a Camp
+     * @param campId The Camp ID of the Camp
+     * @param totalSlots The new total number of slots for the Camp
+     * @return boolean Whether the total number of slots for the Camp is successfully updated
+     */
+    public static boolean updateCampTotalSlots(String campId, int totalSlots) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setTotalSlots(totalSlots);;
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the number of committee member slots of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param commSlots The new number of committee member slots for the Camp
+     * @return boolean Whether the total number of committee member slots of the Camp is successfully updated
+     */
+    public static boolean updateCampCommSlots(String campId, int commSlots) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setCommSlots(commSlots);;
+        CampDAO.updateCampInformation(campId, camp);
+        return true;
+    }
+
+    /**
+     * Updates the description of a Camp
+     * @param campId The Camp ID of the Camp
+     * @param description The new description of the Camp
+     * @return boolean Whether the Camp description is successfully updated
+     */
+    public static boolean updateCampDescription(String campId, String description) {
+        if (!checkCampExists(campId)) return false;
+
+        Camp camp = new Camp();
+        camp.setDescription(description);;
         CampDAO.updateCampInformation(campId, camp);
         return true;
     }
@@ -156,6 +265,29 @@ public class CampController {
      * @return boolean Whether the User has previously withdrawn from the Camp
      */
     public static boolean checkCampParticipantWithdrawn(String campId, String userId) {
+        if (!checkCampExists(campId)) return false;
         return CampDAO.checkWithdrawnParticipant(campId, userId);
+    }
+
+    /**
+     * Check if a User with User ID has registered for the Camp with Camp ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the User
+     * @return boolean Whether the User has registered for the Camp
+     */
+    public static boolean checkCampParticipant(String campId, String userId) {
+        if (!checkCampExists(campId)) return false;
+        return CampDAO.checkCampParticipant(campId, userId);
+    }
+
+    /**
+     * Check if a User with User ID has registered as Committee for the Camp with Camp ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the User
+     * @return boolean Whether the User has registered as Committee for the Camp
+     */
+    public static boolean checkCampCommittee(String campId, String userId) {
+        if (!checkCampExists(campId)) return false;
+        return CampDAO.checkCampCommittee(campId, userId);
     }
 }

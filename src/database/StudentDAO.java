@@ -74,7 +74,15 @@ public class StudentDAO {
         ((Student) Database.USERS.get(userId)).addCamp(campId);
     }
 
-    public static void updateStudentCampCommittee(String userId) {
-        Database.USERS.get(userId).setRole(Role.COMMITTEE);
+    /**
+     * Updates the Role of a Student in the database using the ID
+     * @param userId The User ID of the Student
+     * @param role The new Role of the Student
+     */
+    public static boolean updateStudentRole(String userId, Role role) {
+        if (studentRoles.contains(role)) {
+            Database.USERS.get(userId).setRole(role);
+            return true;
+        } else return false;
     }
 }

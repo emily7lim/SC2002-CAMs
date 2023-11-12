@@ -50,10 +50,23 @@ public class UserController {
 
     /**
      * Check if the User with User ID exists in the database
-     * @param userId
-     * @return
+     * @param userId The User ID of the User
+     * @return boolean Whether the User exists in the database
      */
     public static boolean checkUserExists(String userId) {
         return UserDAO.checkUser(userId);
+    }
+
+    /**
+     * Change the password of the User with User ID in the database
+     * @param userId The User ID of the User
+     * @param password The new password of the User
+     * @return boolean Whether the User password was successfully updated
+     */
+    public static boolean changePassword(String userId, String password) {
+        if (!checkUserExists(userId)) return false;
+
+        UserDAO.updateUserPassword(userId, password);
+        return true;
     }
 }

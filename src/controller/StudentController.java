@@ -82,8 +82,7 @@ public class StudentController {
         if (!checkStudentExists(userId)) return false;
         if (checkCampCommittee(userId)) return false;
 
-        StudentDAO.updateStudentCampCommittee(userId);
-        return true;
+        return StudentDAO.updateStudentRole(userId, Role.COMMITTEE);
     }
 
     /**

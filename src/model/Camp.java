@@ -26,18 +26,16 @@ public class Camp implements Serializable {
     private boolean visible;
 
     // Updating camp information
-    public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
-            String location, int totalSlots, int commSlots, String description) {
-        this.campId = UUID.randomUUID().toString();
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.registrationCloseDate = registrationCloseDate;
-        this.userGroup = userGroup;
-        this.location = location;
-        this.totalSlots = totalSlots;
-        this.commSlots = commSlots;
-        this.description = description;
+    public Camp() {
+        this.name = null;
+        this.startDate = null;
+        this.endDate = null;
+        this.registrationCloseDate = null;
+        this.userGroup = null;
+        this.location = null;
+        this.totalSlots = 0;
+        this.commSlots = 0;
+        this.description = null;
     }
 
     public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
