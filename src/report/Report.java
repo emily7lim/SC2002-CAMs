@@ -259,13 +259,10 @@ public class Report {
      */
     private List<Student> getCommitteeMembers(Camp camp) {
         ArrayList<String> commIds = camp.getCommitteeIds();
-
-        StudentController ctrl = new StudentController(); // might be static?
-
         List<Student> committeeMembers = new ArrayList<>();
 
         for (String id : commIds) {
-            committeeMembers.add(ctrl.getStudentByUserId(id));
+            committeeMembers.add(StudentController.getStudentByUserId(id));
         }
         return committeeMembers;
     }
