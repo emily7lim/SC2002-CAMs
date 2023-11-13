@@ -13,7 +13,7 @@ public class SuggestionController {
      * @param creatorId The User ID of the creator of the new Suggestion
      * @param message The message of the new Suggestion
      */
-    public void createSuggestion(String campId, String creatorId, String message) {
+    public static void createSuggestion(String campId, String creatorId, String message) {
         Suggestion suggestion = new Suggestion(campId, creatorId, message);
         SuggestionDAO.createSuggestion(suggestion);
     }
@@ -22,7 +22,7 @@ public class SuggestionController {
      * Retrieves a list of all Suggestions from the database
      * @return ArrayList<Suggestion> The list of all the Suggestions
      */
-    public ArrayList<Suggestion> getAllSuggestions() {
+    public static ArrayList<Suggestion> getAllSuggestions() {
         return SuggestionDAO.getAllSuggestions();
     }
 
@@ -31,7 +31,7 @@ public class SuggestionController {
      * @param suggestionId The Suggestion ID of the Suggestion
      * @return Suggestion The corresponsing Suggestion object, NULL if not found
      */
-    public Suggestion getSuggestionById(String suggestionId) {
+    public static Suggestion getSuggestionById(String suggestionId) {
         return SuggestionDAO.getSuggestionbyId(suggestionId);
     }
 
@@ -41,7 +41,7 @@ public class SuggestionController {
      * @param message The new message of the Suggestion
      * @return boolean Whether the Suggestion message was successfully updated
      */
-    public boolean updateSuggestionMessage(String suggestionId, String message) {
+    public static boolean updateSuggestionMessage(String suggestionId, String message) {
         if (!checkSuggestionExists(suggestionId)) return false;
 
         SuggestionDAO.updateSuggestionMessage(suggestionId, message);
@@ -54,7 +54,7 @@ public class SuggestionController {
      * @param responderId The User ID of the User accepting the Suggestion
      * @return boolean Whether the Suggestion status was successfully updated
      */
-    public boolean acceptSuggestion(String suggestionId, String responderId) {
+    public static boolean acceptSuggestion(String suggestionId, String responderId) {
         if (!checkSuggestionExists(suggestionId)) return false;
 
         SuggestionDAO.updateSuggestionResponse(suggestionId, SuggestionStatus.ACCEPTED, responderId);
@@ -67,7 +67,7 @@ public class SuggestionController {
      * @param responderId The User ID of the User rejecting the Suggestion
      * @return boolean Whether the Suggestion status was successfully updated
      */
-    public boolean rejectSuggestion(String suggestionId, String responderId) {
+    public static boolean rejectSuggestion(String suggestionId, String responderId) {
         if (!checkSuggestionExists(suggestionId)) return false;
 
         SuggestionDAO.updateSuggestionResponse(suggestionId, SuggestionStatus.REJECTED, responderId);
@@ -79,7 +79,7 @@ public class SuggestionController {
      * @param suggestionId The Suggestion ID of the Suggestion
      * @return boolean Whether the Suggestion was successfully deleted
      */
-    public boolean deleteSuggestion(String suggestionId) {
+    public static boolean deleteSuggestion(String suggestionId) {
         if (!checkSuggestionExists(suggestionId)) return false;
 
         SuggestionDAO.deleteSuggestion(suggestionId);
@@ -91,7 +91,7 @@ public class SuggestionController {
      * @param suggestionId The Suggestion ID of the Suggestion
      * @return boolean Whether the Suggestion exists in the database
      */
-    public boolean checkSuggestionExists(String suggestionId) {
+    public static boolean checkSuggestionExists(String suggestionId) {
         return SuggestionDAO.checkSuggestion(suggestionId);
     }
 }

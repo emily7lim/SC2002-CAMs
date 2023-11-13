@@ -13,7 +13,7 @@ public class EnquiryController {
      * @param creatorId The User ID of the creator of the new Enquiry
      * @param message The message of the new Enquiry
      */
-    public void createEnquiry(String campId, String creatorId, String message) {
+    public static void createEnquiry(String campId, String creatorId, String message) {
         Enquiry enquiry = new Enquiry(campId, creatorId, message);
         EnquiryDAO.createEnquiry(enquiry);
     }
@@ -22,7 +22,7 @@ public class EnquiryController {
      * Retrieves a list of all Enquiries from the database
      * @return ArrayList<Enquiry> The list of all the Enquiries
      */
-    public ArrayList<Enquiry> getAllEnquiries() {
+    public static ArrayList<Enquiry> getAllEnquiries() {
         return EnquiryDAO.getAllEnquiries();
     }
 
@@ -31,7 +31,7 @@ public class EnquiryController {
      * @param enquiryId The Enquiry Id of the Enquiry
      * @return Enquiry The corresponding Enquiry object, NULL if not found
      */
-    public Enquiry getEnquiryById(String enquiryId) {
+    public static Enquiry getEnquiryById(String enquiryId) {
         return EnquiryDAO.getEnquirybyId(enquiryId);
     }
 
@@ -41,7 +41,7 @@ public class EnquiryController {
      * @param message The new message of the Enquiry
      * @return boolean Whether the Enquiry message was successfully updated
      */
-    public boolean updateEnquiryMessage(String enquiryId, String message) {
+    public static boolean updateEnquiryMessage(String enquiryId, String message) {
         if (!checkEnquiryExists(enquiryId)) return false;
 
         EnquiryDAO.updateEnquiryMessage(enquiryId, message);
@@ -55,7 +55,7 @@ public class EnquiryController {
      * @param responderId The User ID of the User adding the reply
      * @return boolean Whether the Enquiry reply was successfully updated
      */
-    public boolean replyEnquiry(String enquiryId, String reply, String responderId) {
+    public static boolean replyEnquiry(String enquiryId, String reply, String responderId) {
         if (!checkEnquiryExists(enquiryId)) return false;
 
         EnquiryDAO.updateEnquiryResponse(enquiryId, reply, EnquiryStatus.CLOSED, responderId);
@@ -67,7 +67,7 @@ public class EnquiryController {
      * @param enquiryId The Enquiry ID of the Enquiry
      * @return boolean Whether the Enquiry was successfully deleted
      */
-    public boolean deleteEnquiry(String enquiryId) {
+    public static boolean deleteEnquiry(String enquiryId) {
         if (!checkEnquiryExists(enquiryId)) return false;
 
         EnquiryDAO.deleteEnquiry(enquiryId);
@@ -79,7 +79,7 @@ public class EnquiryController {
      * @param enquiryId The Enquiry ID of the Enquiry
      * @return boolean Whether the Enquiry exists in the database
      */
-    public boolean checkEnquiryExists(String enquiryId) {
+    public static boolean checkEnquiryExists(String enquiryId) {
         return EnquiryDAO.checkEnquiry(enquiryId);
     }
 }
