@@ -7,6 +7,7 @@ import model.Camp;
 public class CampDAO {
     /**
      * Adds a Camp to the database
+     * 
      * @param camp The Camp Object to save in database
      */
     public static void createCamp(Camp camp) {
@@ -15,6 +16,7 @@ public class CampDAO {
 
     /**
      * Retrieve all Camps from the database
+     * 
      * @return ArrayList<Camp> The list of all Camps
      */
     public static ArrayList<Camp> getAllCamps() {
@@ -23,6 +25,7 @@ public class CampDAO {
 
     /**
      * Finds a Camp from the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @return Camp The corresponding Camp object, NULL if not found
      */
@@ -32,6 +35,7 @@ public class CampDAO {
 
     /**
      * Check if a Camp exists in the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @return boolean Whether the Camp exists
      */
@@ -41,6 +45,7 @@ public class CampDAO {
 
     /**
      * Check if a User has withdrawn from the Camp in the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the User
      * @return boolean Whether the User has withdrawn from the Camp
@@ -50,46 +55,28 @@ public class CampDAO {
     }
 
     /**
-     * Check if a User has registered for the Camp in the database using the ID
-     * @param campId The Camp ID of the Camp
-     * @param userId The User ID of the User
-     * @return boolean Whether the User has registered for the Camp
-     */
-    public static boolean checkCampParticipant(String campId, String userId) {
-        return Database.CAMPS.get(campId).getParticipantIds().contains(userId);
-    }
-
-    /**
-     * Check if a User has registered as Committee for the Camp in the database using the ID
-     * @param campId The Camp ID of the Camp
-     * @param userId The User ID of the User
-     * @return boolean Whether the User has registered as Committee for the Camp
-     */
-    public static boolean checkCampCommittee(String campId, String userId) {
-        return Database.CAMPS.get(campId).getCommitteeIds().contains(userId);
-    }
-
-    /**
      * Updates the information of a Camp in the database using the ID
-     * @param campId The Camp ID of the Camp
+     * 
+     * @param campId   The Camp ID of the Camp
      * @param campInfo Camp object with new Camp information
      */
     public static void updateCampInformation(String campId, Camp campInfo) {
         Camp camp = Database.CAMPS.get(campId);
-        if (campInfo.getName() == null) camp.setName(campInfo.getName());
-        if (campInfo.getStartDate() == null) camp.setStartDate(campInfo.getStartDate());
-        if (campInfo.getEndDate() == null) camp.setEndDate(campInfo.getEndDate());
-        if (campInfo.getRegistrationCloseDate() == null) camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
-        if (campInfo.getUserGroup() == null) camp.setUserGroup(campInfo.getUserGroup());
-        if (campInfo.getLocation() == null) camp.setLocation(campInfo.getLocation());
-        if (campInfo.getTotalSlots() == 0) camp.setTotalSlots(campInfo.getTotalSlots());
-        if (campInfo.getCommSlots() == 0) camp.setCommSlots(campInfo.getCommSlots());
-        if (campInfo.getDescription() == null) camp.setDescription(campInfo.getDescription());
+        camp.setName(campInfo.getName());
+        camp.setStartDate(campInfo.getStartDate());
+        camp.setEndDate(campInfo.getEndDate());
+        camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
+        camp.setUserGroup(campInfo.getUserGroup());
+        camp.setLocation(campInfo.getLocation());
+        camp.setTotalSlots(campInfo.getTotalSlots());
+        camp.setCommSlots(campInfo.getCommSlots());
+        camp.setDescription(campInfo.getDescription());
     }
 
     /**
      * Updates the visibility of a Camp in the database using the ID
-     * @param campId The Camp ID of the Camp
+     * 
+     * @param campId  The Camp ID of the Camp
      * @param visible The new visibility of the Camp
      */
     public static void updateCampVisiblity(String campId, boolean visible) {
@@ -98,12 +85,14 @@ public class CampDAO {
 
     /**
      * Updates the participants of a Camp in the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the new participant
-     * @param add If function should add or remove a User
+     * @param add    If function should add or remove a User
      */
     public static void updateCampParticipants(String campId, String userId, boolean add) {
-        if (add) Database.CAMPS.get(campId).addParticipant(userId);
+        if (add)
+            Database.CAMPS.get(campId).addParticipant(userId);
         else {
             Database.CAMPS.get(campId).removeParticipant(userId);
             Database.CAMPS.get(campId).addWithdrawnParticipant(userId);
@@ -112,6 +101,7 @@ public class CampDAO {
 
     /**
      * Updates the committee members of a Camp in the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the new committee member
      */
@@ -120,7 +110,41 @@ public class CampDAO {
     }
 
     /**
+     * Updates an enquiry to a Camp in the database using the ID
+     * 
+     * @param campId    The Camp ID of the Camp
+     * @param enquiryId The ID of the new enquiry
+     * @param add       If function should add or remove a User
+     */
+    public static void updateEnquiry(String campId, String enquiryId, boolean add) {
+        if(add){
+            Database.CAMPS.get(campId).addEnquiry(enquiryId);
+        }
+        else{
+            Database.CAMPS.get(campId).removeEnquiry(enquiryId);
+        }
+    }
+
+    /**
+     * Updates a suggestion to a Camp in the database using the ID
+     * 
+     * @param campId       The Camp ID of the Camp
+     * @param suggestionId The ID of the new suggestion
+     * @param add          If function should add or remove a User
+     * 
+     */
+    public static void updateSuggestion(String campId, String suggestionId, boolean add) {
+        if(add){
+            Database.CAMPS.get(campId).addSuggestion(suggestionId);
+        }
+        else{    
+            Database.CAMPS.get(campId).removeSuggestion(suggestionId);
+        }
+    }
+
+    /**
      * Removes a Camp from the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      */
     public static void deleteCamp(String campId) {
