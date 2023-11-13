@@ -1,6 +1,0 @@
-Camp List Report (Text):
-Camp Id: 0
-Camp Name: test camp
-Start Date: Fri Nov 03 20:02:38 SGT 2023
-Location: School of Art, Design and Media
-
