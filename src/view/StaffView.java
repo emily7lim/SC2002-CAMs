@@ -11,22 +11,10 @@ public class StaffView {
 
     public static void Staff(Integer choice, String loggedID) {
         Scanner sc = new Scanner(System.in);
-        // String loggedID = "ARVI"; // note:take from login detail
         CommonUse common = new CommonUse();
 
         boolean continues = true;
 
-        // while (continues) {
-        // System.out.println(
-        // "\n------------------Staff Menu------------------\n1) View all camps and
-        // students registered\n2) See list of camps I created\n3) Profile\n4) Enquiries
-        // from student\n5) Generate report of students\n6) Generate performance report
-        // of committee members\n7) Suggestions from camp committee\n8) Results of
-        // enquiries/suggestions\n9) Change password\n10) Quit");
-        // System.out.println("----------------------------------------------\nSelect
-        // your choice:");
-
-        // Integer choice = sc.nextInt();
         switch (choice) {
             case 1: // view all camps n list of students
                 System.out.println("1) View all camps\n2) View list of students");
@@ -55,7 +43,7 @@ public class StaffView {
                 break;
 
             case 2: // see list of camps that he/she created in separate menu list so they can edit
-                StaffCreated.main(null);
+                StaffCreated.StaffCreate(loggedID);
                 break;
 
             case 3: // profile

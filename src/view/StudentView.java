@@ -14,14 +14,6 @@ public class StudentView {
         ArrayList<String> getcampcid = new ArrayList<>();
         ArrayList<String> getcampaid = new ArrayList<>();
 
-        // String loggedID = "YCHERN"; // note:take from login detail
-        // while (continues) {
-        // System.out.println("------------------Student Menu------------------\n1) View
-        // list of camp\n2) Register for camps\n3) Submit enquiries\n4) View/edit/del
-        // enquiries\n5) View registered camps\n6) Withdraw from camp \n7) View
-        // Replies\n8) Change password\n9) Profile\n10) Quit");
-        // System.out.println("------------------------------------------------\nSelect
-        // your choice:");
 
         // Integer choice = sc.nextInt();
         switch (choice) {
@@ -100,19 +92,23 @@ public class StudentView {
             case 3: // submit enquiries
                 ArrayList<String> getcampid = new ArrayList<>();
                 for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    if(CampController.getAllCamps().get(i).isVisible() && CampController.getAllCamps().get(i)
+                    .getUserGroup() == StudentController.getStudentByUserId(loggedID).getFaculty())
                     getcampid.add(CampController.getAllCamps().get(i).getCampId());
                 }
+                System.out.println("Select the camp you want to enquire");
                 Integer input = CommonUse.dataValidation();
                 if (input >= getcampid.size()) {
                     System.out.println("No such camp");
                 } else {
                     for (int j = 0; j < getcampid.size(); j++) {
-                        Scanner scan = new Scanner(System.in);
-                        String enquire = "";
-                        System.out.println("Please input your enquiry:");
-                        enquire += scan.nextLine();
-                        EnquiryController.createEnquiry(getcampid.get(j), loggedID, enquire);
-
+                        if (input == j) {
+                            Scanner scan = new Scanner(System.in);
+                            String enquire = "";
+                            System.out.println("Please input your enquiry:");
+                            enquire += scan.nextLine();
+                            EnquiryController.createEnquiry(getcampid.get(j), loggedID, enquire);
+                        }
                     }
                 }
                 break;

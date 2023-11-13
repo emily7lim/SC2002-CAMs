@@ -7,9 +7,7 @@ import controller.*;
 import model.enums.Faculty;
 
 public class StaffCreated {
-    public static void main(String[] args){
-        String loggedID = "ARVI"; // note:take from login detail
-
+    public static void StaffCreate(String loggedID) {
         Scanner sc = new Scanner(System.in);
         Boolean continues = true;
 
@@ -68,7 +66,7 @@ public class StaffCreated {
 
                     Scanner scan = new Scanner(System.in);
                     String name = "", location = "", description = "";
-                    Faculty grp = Faculty.ADM;
+                    Faculty grp = StaffController.getStaffByUserId(loggedID).getFaculty();
 
                     Integer commslot = 0, totalslot = 0;
 
@@ -98,6 +96,14 @@ public class StaffCreated {
                     }
                     Date deadlines = ForDate.getDates(deadline);
 
+                    System.out.println("1) Open to all:\n2) Faculty only");
+                    Integer input = CommonUse.dataValidation();
+                    while (input > 2) {
+                        System.out.println("Select 1 or 2:");
+                        input = CommonUse.dataValidation();
+                    }
+                    if (input == 1) grp = Faculty.NTU;
+
                     System.out.println("Enter your location:");
                     location += scan.nextLine();
 
@@ -105,10 +111,14 @@ public class StaffCreated {
                     description += scan.nextLine();
 
                     System.out.println("Enter total number of slots:");
-                    totalslot += sc.nextInt();
+                    totalslot = CommonUse.dataValidation();
 
                     System.out.println("Enter the number of committee members allowed(max 10):");
-                    commslot += sc.nextInt();
+                    commslot = CommonUse.dataValidation();
+                    while (commslot > 10) {
+                        System.out.println("Max slot allowed is 10");
+                        commslot = CommonUse.dataValidation();
+                    }
 
                     CampController.createCamp(name, startdate, enddate, deadlines, grp, location, totalslot, commslot,
                             description, loggedID);
@@ -116,19 +126,103 @@ public class StaffCreated {
                     break;
 
                 case 2:
+                    name = ""; location = ""; description = ""; 
+                    startdate = null; enddate = null; deadlines = null;
+                    grp = StaffController.getStaffByUserId(loggedID).getFaculty();
+                    commslot = 0;
+                    totalslot = 0;
                     scan = new Scanner(System.in);
                     System.out.println("Choose the camp you want to edit");
-                    Integer input = sc.nextInt();
+                    input = CommonUse.dataValidation();
                     if (input >= getcampic.size())
-                        System.out.println("No such suggestion");
+                        System.out.println("No such camp");
                     else {
-                        // note: let user choose info to edit
+
+                        System.out.println("***********You are now editing***********");
+                        System.out.println("1) Name\n2) Start date\n3) End date\n4) Registration deadline\n5) User group\n6) Location\n7) Total slots\n8) Comm slots\n9) Description");
+                        for (int i = 0; i < getcampid.size(); i++) {
+                            if (input == i) {
+                                Integer edits = CommonUse.dataValidation();
+                                switch (edits) {
+                                    case 1:
+                                        System.out.println("Update camp name");
+                                        name += scan.nextLine();
+                                        CampController.updateCampName(getcampid.get(i), name);
+                                        
+                                        break;
+                                    case 2:
+                                        System.out.println("Update camp start date");
+                                        scand = new Scanner(System.in);
+                                        sdate = scand.nextLine();
+                                        while (ForDate.getDates(sdate) == null) {
+                                            sdate = scand.nextLine();
+                                        }
+                                        startdate = ForDate.getDates(sdate);
+                                        CampController.updateCampStartDate(getcampid.get(i), startdate);
+                                        break;
+                                    case 3:
+                                        System.out.println("Update camp end date");
+                                        scand = new Scanner(System.in);
+                                        edate = scand.nextLine();
+                                        while (ForDate.getDates(edate) == null) {
+                                            edate = scand.nextLine();
+                                        }
+                                        enddate = ForDate.getDates(edate);
+                                        CampController.updateCampStartDate(getcampid.get(i), enddate);
+
+                                        break;
+                                    case 4:
+                                        System.out.println("Update camp registration deadline");
+                                        scand = new Scanner(System.in);
+                                        deadline = scand.nextLine();
+                                        while (ForDate.getDates(deadline) == null) {
+                                            deadline = scand.nextLine();
+                                        }
+                                        deadlines = ForDate.getDates(deadline);
+                                        CampController.updateCampStartDate(getcampid.get(i), deadlines);
+                                        break;
+                                    case 5:
+                                        System.out.println("Update camp group");
+                                        // grp += scan.nextLine();
+                                        // CampController.updateCampUserGroup(getcampid.get(i), grp);
+                                        break;
+                                    case 6:
+                                        System.out.println("Update camp location");
+                                        location += scan.nextLine();
+                                        CampController.updateCampLocation(getcampid.get(i), location);
+                                        break;
+                                    case 7:
+                                        System.out.println("Update camp slots");
+                                        totalslot = CommonUse.dataValidation();
+                                        CampController.updateCampTotalSlots(getcampid.get(i), totalslot);
+                                        break;
+                                    case 8:
+                                        System.out.println("Update camp slots");
+                                        commslot = CommonUse.dataValidation();
+                                        while (commslot > 10) {
+                                            System.out.println("Max slot allowed is 10");
+                                            commslot = CommonUse.dataValidation();
+                                        }
+                                        CampController.updateCampCommSlots(getcampid.get(i), commslot);
+                                        break;
+                                    case 9:
+                                        description += scan.nextLine();
+                                        CampController.updateCampDescription(getcampid.get(i),
+                                                description);
+                                        break;
+                                    
+                                    default:
+                                        break;
+                                }
+                                // CampController.updateCampInformation(getcampid.get(i), name, startdate, enddate, deadlines, grp, location, totalslot, commslot, description);
+                            }
+                        }
                     }
                     break;
 
                 case 3:
                     System.out.println("Choose the camp you want to delete:");
-                    input = sc.nextInt();
+                    input = CommonUse.dataValidation();
                     if (input >= getcampic.size())
                         System.out.println("No such camp");
                     else {
@@ -141,9 +235,10 @@ public class StaffCreated {
 
                     }
                     break;
-                case 4: // toggle visibility of camp, reflected in camp list that will be visible to students
+                case 4: // toggle visibility of camp, reflected in camp list that will be visible to
+                        // students
                     System.out.println("Choose the camp you want to toggle visibility:");
-                    input = sc.nextInt();
+                    input = CommonUse.dataValidation();
                     if (input >= getcampic.size())
                         System.out.println("No such camp");
                     else {
@@ -154,14 +249,13 @@ public class StaffCreated {
                                 if (toggle == 0) {
                                     CampController.updateCampVisiblity(getcampid.get(j), false);
                                     System.out.println("Camp visibility turned off");
-                                }
-                                else if (toggle == 1) {
+                                } else if (toggle == 1) {
                                     CampController.updateCampVisiblity(getcampid.get(j), true);
                                     System.out.println("Camp visibility turned on");
-                                    
-                                }
-                                else System.out.println("Invalid input");
-                                
+
+                                } else
+                                    System.out.println("Invalid input");
+
                             }
                         }
 

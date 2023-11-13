@@ -12,18 +12,6 @@ public class CommitteeView {
         Scanner sc = new Scanner(System.in);
         boolean continues = true;
 
-        // String loggedID = "YCHERN"; // note:take from login detail
-        // while (continues) {
-        // System.out.println(
-        // "------------------Committee Menu------------------\n1) View list of camp\n2)
-        // Register for camps\n3) Submit enquiries\n4) View/edit/del enquiries\n5) View
-        // registered camps\n6) Withdraw from camp \n7) View Replies\n8) Change
-        // password\n9) Profile\n10) Submit suggestions\n11) Enquiries from student
-        // \n12) View,edit,delete suggestions\n13) Generate student list report\n14)
-        // Quit");
-        // System.out.println("--------------------------------------------------\nSelect
-        // your choice:");
-        // Integer choice = sc.nextInt();
         if (choice < 10 && choice > 0) {
             if (choice == 6)
                 System.out.println("You are not allowed to withdraw");
@@ -37,18 +25,22 @@ public class CommitteeView {
                     for (int i = 0; i < CampController.getAllCamps().size(); i++) {
                         getcampid.add(CampController.getAllCamps().get(i).getCampId());
                     }
-
+                    System.out.println("Select the camp you want to make suggestions");
                     Integer input = CommonUse.dataValidation();
                     if (input >= getcampid.size()) {
                         System.out.println("No such camp");
                     } else {
                         for (int j = 0; j < getcampid.size(); j++) {
-                            Scanner scan = new Scanner(System.in);
-                            String suggest = "";
+                            if (input == j) {
+                                Scanner scan = new Scanner(System.in);
+                                String suggest = "";
 
-                            System.out.println("Please input your suggestion:");
-                            suggest += scan.nextLine();
-                            SuggestionController.createSuggestion(getcampid.get(j), loggedID, suggest);
+                                System.out.println("Please input your suggestion:");
+                                suggest += scan.nextLine();
+                                System.out.println(getcampid.get(j));
+                                SuggestionController.createSuggestion(getcampid.get(j), loggedID, suggest);
+                            }
+
                         }
                     }
                     break;
