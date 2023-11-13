@@ -55,6 +55,26 @@ public class CampDAO {
     }
 
     /**
+     * Check if a User has registered for the Camp in the database using the ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the User
+     * @return boolean Whether the User has registered for the Camp
+     */
+    public static boolean checkCampParticipant(String campId, String userId) {
+        return Database.CAMPS.get(campId).getParticipantIds().contains(userId);
+    }
+
+    /**
+     * Check if a User has registered as Committee for the Camp in the database using the ID
+     * @param campId The Camp ID of the Camp
+     * @param userId The User ID of the User
+     * @return boolean Whether the User has registered as Committee for the Camp
+     */
+    public static boolean checkCampCommittee(String campId, String userId) {
+        return Database.CAMPS.get(campId).getCommitteeIds().contains(userId);
+    }
+
+    /**
      * Updates the information of a Camp in the database using the ID
      * 
      * @param campId   The Camp ID of the Camp
@@ -62,15 +82,15 @@ public class CampDAO {
      */
     public static void updateCampInformation(String campId, Camp campInfo) {
         Camp camp = Database.CAMPS.get(campId);
-        camp.setName(campInfo.getName());
-        camp.setStartDate(campInfo.getStartDate());
-        camp.setEndDate(campInfo.getEndDate());
-        camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
-        camp.setUserGroup(campInfo.getUserGroup());
-        camp.setLocation(campInfo.getLocation());
-        camp.setTotalSlots(campInfo.getTotalSlots());
-        camp.setCommSlots(campInfo.getCommSlots());
-        camp.setDescription(campInfo.getDescription());
+        if (campInfo.getName() == null) camp.setName(campInfo.getName());
+        if (campInfo.getStartDate() == null) camp.setStartDate(campInfo.getStartDate());
+        if (campInfo.getEndDate() == null) camp.setEndDate(campInfo.getEndDate());
+        if (campInfo.getRegistrationCloseDate() == null) camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
+        if (campInfo.getUserGroup() == null) camp.setUserGroup(campInfo.getUserGroup());
+        if (campInfo.getLocation() == null) camp.setLocation(campInfo.getLocation());
+        if (campInfo.getTotalSlots() == 0) camp.setTotalSlots(campInfo.getTotalSlots());
+        if (campInfo.getCommSlots() == 0) camp.setCommSlots(campInfo.getCommSlots());
+        if (campInfo.getDescription() == null) camp.setDescription(campInfo.getDescription());
     }
 
     /**
