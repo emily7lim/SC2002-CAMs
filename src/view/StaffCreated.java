@@ -1,16 +1,13 @@
 package view;
 
 import java.util.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import controller.CampController;
+import controller.*;
 import model.enums.Faculty;
 
 public class StaffCreated {
-    public static void main(String[] args) throws ParseException {
-        CampController campc = new CampController();
-        ForDate dates = new ForDate();
+    public static void main(String[] args){
         String loggedID = "ARVI"; // note:take from login detail
 
         Scanner sc = new Scanner(System.in);
@@ -36,20 +33,20 @@ public class StaffCreated {
             ArrayList<String> getcampic = new ArrayList<>();
             ArrayList<Boolean> getcampvisible = new ArrayList<>();
 
-            for (int i = 0; i < campc.getAllCamps().size(); i++) {
-                if (campc.getAllCamps().get(i).getStaffInCharge() == loggedID) {
-                    getcampid.add(campc.getAllCamps().get(i).getCampId());
-                    getcamplocation.add(campc.getAllCamps().get(i).getLocation());
-                    getcampname.add(campc.getAllCamps().get(i).getName());
-                    getcampdesc.add(campc.getAllCamps().get(i).getDescription());
-                    getcampgrp.add(campc.getAllCamps().get(i).getUserGroup());
-                    getcampic.add(campc.getAllCamps().get(i).getStaffInCharge());
-                    getcampslot.add(campc.getAllCamps().get(i).getTotalSlots());
-                    getcampcommslot.add(campc.getAllCamps().get(i).getCommSlots());
-                    getcampsdate.add(campc.getAllCamps().get(i).getStartDate());
-                    getcampedate.add(campc.getAllCamps().get(i).getEndDate());
-                    getcampdeadline.add(campc.getAllCamps().get(i).getRegistrationCloseDate());
-                    getcampvisible.add(campc.getAllCamps().get(i).isVisible());
+            for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                if (CampController.getAllCamps().get(i).getStaffInCharge() == loggedID) {
+                    getcampid.add(CampController.getAllCamps().get(i).getCampId());
+                    getcamplocation.add(CampController.getAllCamps().get(i).getLocation());
+                    getcampname.add(CampController.getAllCamps().get(i).getName());
+                    getcampdesc.add(CampController.getAllCamps().get(i).getDescription());
+                    getcampgrp.add(CampController.getAllCamps().get(i).getUserGroup());
+                    getcampic.add(CampController.getAllCamps().get(i).getStaffInCharge());
+                    getcampslot.add(CampController.getAllCamps().get(i).getTotalSlots());
+                    getcampcommslot.add(CampController.getAllCamps().get(i).getCommSlots());
+                    getcampsdate.add(CampController.getAllCamps().get(i).getStartDate());
+                    getcampedate.add(CampController.getAllCamps().get(i).getEndDate());
+                    getcampdeadline.add(CampController.getAllCamps().get(i).getRegistrationCloseDate());
+                    getcampvisible.add(CampController.getAllCamps().get(i).isVisible());
                 }
 
             }
@@ -82,24 +79,24 @@ public class StaffCreated {
                     System.out.println("Enter your start date (dd/mm/yyyy):");
                     Scanner scand = new Scanner(System.in);
                     String sdate = scand.nextLine();
-                    while (dates.getDates(sdate) == null) {
+                    while (ForDate.getDates(sdate) == null) {
                         sdate = scand.nextLine();
                     }
-                    Date startdate = dates.getDates(sdate);
+                    Date startdate = ForDate.getDates(sdate);
 
                     System.out.println("Enter your end date (dd/mm/yyyy):");
                     String edate = scand.nextLine();
-                    while (dates.getDates(edate) == null) {
+                    while (ForDate.getDates(edate) == null) {
                         edate = scand.nextLine();
                     }
-                    Date enddate = dates.getDates(edate);
+                    Date enddate = ForDate.getDates(edate);
 
                     System.out.println("Enter registration deadline (dd/mm/yyyy):");
                     String deadline = scand.nextLine();
-                    while (dates.getDates(deadline) == null) {
+                    while (ForDate.getDates(deadline) == null) {
                         deadline = scand.nextLine();
                     }
-                    Date deadlines = dates.getDates(deadline);
+                    Date deadlines = ForDate.getDates(deadline);
 
                     System.out.println("Enter your location:");
                     location += scan.nextLine();
@@ -113,7 +110,7 @@ public class StaffCreated {
                     System.out.println("Enter the number of committee members allowed(max 10):");
                     commslot += sc.nextInt();
 
-                    campc.createCamp(name, startdate, enddate, deadlines, grp, location, totalslot, commslot,
+                    CampController.createCamp(name, startdate, enddate, deadlines, grp, location, totalslot, commslot,
                             description, loggedID);
                     System.out.println("Your camp has been created");
                     break;
@@ -137,7 +134,7 @@ public class StaffCreated {
                     else {
                         for (int j = 0; j < getcampic.size(); j++) {
                             if (input == j) {
-                                campc.deleteCamp(getcampid.get(j));
+                                CampController.deleteCamp(getcampid.get(j));
                                 System.out.println("Camp deleted");
                             }
                         }
@@ -155,11 +152,11 @@ public class StaffCreated {
                             if (input == j) {
                                 Integer toggle = sc.nextInt();
                                 if (toggle == 0) {
-                                    campc.updateCampVisiblity(getcampid.get(j), false);
+                                    CampController.updateCampVisiblity(getcampid.get(j), false);
                                     System.out.println("Camp visibility turned off");
                                 }
                                 else if (toggle == 1) {
-                                    campc.updateCampVisiblity(getcampid.get(j), true);
+                                    CampController.updateCampVisiblity(getcampid.get(j), true);
                                     System.out.println("Camp visibility turned on");
                                     
                                 }

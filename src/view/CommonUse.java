@@ -5,15 +5,19 @@ import java.util.*;
 
 import controller.CampController;
 import controller.EnquiryController;
+import controller.StaffController;
+import controller.StudentController;
 import controller.SuggestionController;
+import model.Camp;
 import model.enums.EnquiryStatus;
 import model.enums.Faculty;
+import model.enums.Role;
 import model.enums.SuggestionStatus;
 
 public class CommonUse {
-    public void ViewingCamps() {
-        CampController campc = new CampController();
+    public void ViewingCamps(String loggedID) {
 
+        ArrayList<String> getcampid = new ArrayList<>();
         ArrayList<String> getcampname = new ArrayList<>();
         ArrayList<Date> getcampsdate = new ArrayList<>();
         ArrayList<Date> getcampedate = new ArrayList<>();
@@ -24,54 +28,79 @@ public class CommonUse {
         ArrayList<Integer> getcampcommslot = new ArrayList<>();
         ArrayList<String> getcampdesc = new ArrayList<>();
         ArrayList<String> getcampic = new ArrayList<>();
+        ArrayList<Boolean> getcampvisible = new ArrayList<>();
 
-        for (int i = 0; i < campc.getAllCamps().size(); i++) {
-            getcamplocation.add(campc.getAllCamps().get(i).getLocation());
-            getcampname.add(campc.getAllCamps().get(i).getName());
-            getcampdesc.add(campc.getAllCamps().get(i).getDescription());
-            getcampgrp.add(campc.getAllCamps().get(i).getUserGroup());
-            getcampic.add(campc.getAllCamps().get(i).getStaffInCharge());
-            getcampslot.add(campc.getAllCamps().get(i).getTotalSlots());
-            getcampcommslot.add(campc.getAllCamps().get(i).getCommSlots());
-            getcampsdate.add(campc.getAllCamps().get(i).getStartDate());
-            getcampedate.add(campc.getAllCamps().get(i).getEndDate());
-            getcampdeadline.add(campc.getAllCamps().get(i).getRegistrationCloseDate());
+        for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+
+            try {
+                // student, visible, faculty match
+                if (CampController.getAllCamps().get(i).isVisible() && CampController.getAllCamps().get(i)
+                        .getUserGroup() == StudentController.getStudentByUserId(loggedID).getFaculty()) {
+                    getcampid.add(CampController.getAllCamps().get(i).getCampId());
+                    getcamplocation.add(CampController.getAllCamps().get(i).getLocation());
+                    getcampname.add(CampController.getAllCamps().get(i).getName());
+                    getcampdesc.add(CampController.getAllCamps().get(i).getDescription());
+                    getcampgrp.add(CampController.getAllCamps().get(i).getUserGroup());
+                    getcampic.add(CampController.getAllCamps().get(i).getStaffInCharge());
+                    getcampslot.add(CampController.getAllCamps().get(i).getTotalSlots());
+                    getcampcommslot.add(CampController.getAllCamps().get(i).getCommSlots());
+                    getcampsdate.add(CampController.getAllCamps().get(i).getStartDate());
+                    getcampedate.add(CampController.getAllCamps().get(i).getEndDate());
+                    getcampdeadline.add(CampController.getAllCamps().get(i).getRegistrationCloseDate());
+                    getcampvisible.add(CampController.getAllCamps().get(i).isVisible());
+                }
+
+            } catch (Exception e) {
+                // staff can view all
+                if (StaffController.getStaffByUserId(loggedID).getRole() == Role.STAFF) {
+                    getcampid.add(CampController.getAllCamps().get(i).getCampId());
+                    getcamplocation.add(CampController.getAllCamps().get(i).getLocation());
+                    getcampname.add(CampController.getAllCamps().get(i).getName());
+                    getcampdesc.add(CampController.getAllCamps().get(i).getDescription());
+                    getcampgrp.add(CampController.getAllCamps().get(i).getUserGroup());
+                    getcampic.add(CampController.getAllCamps().get(i).getStaffInCharge());
+                    getcampslot.add(CampController.getAllCamps().get(i).getTotalSlots());
+                    getcampcommslot.add(CampController.getAllCamps().get(i).getCommSlots());
+                    getcampsdate.add(CampController.getAllCamps().get(i).getStartDate());
+                    getcampedate.add(CampController.getAllCamps().get(i).getEndDate());
+                    getcampdeadline.add(CampController.getAllCamps().get(i).getRegistrationCloseDate());
+                    getcampvisible.add(CampController.getAllCamps().get(i).isVisible());
+                }
+            }
+
         }
 
         SimpleDateFormat strdate = new SimpleDateFormat("dd/MM/yyyy");
-        for (int i = 0; i < getcamplocation.size(); i++) {
+        for (int i = 0; i < getcampic.size(); i++) {
             System.out.println("\n*****Details of camp " + i + "*******");
-            System.out.println("Camp Name: " + getcampname.get(i) + "\nStart date: " +
-                    strdate.format(getcampsdate.get(i)) + "\nEnd date: "
-                    + strdate.format(getcampedate.get(i)) + "\nRegistration deadline: "
-                    + strdate.format(getcampdeadline.get(i)) + "\nUser group: " + getcampgrp.get(i)
-                    + "\nLocation: " +
-                    getcamplocation.get(i) + "\nTotal slots: " + getcampslot.get(i) + "\nCommittee slots: "
-                    + getcampcommslot.get(i) + "\nCamp IC: " + getcampic.get(i) + "\nDescription: " +
-                    getcampdesc.get(i));
+            System.out
+                    .println("Camp Name: " + getcampname.get(i) + "\nStart date: " + strdate.format(getcampsdate.get(i))
+                            + "\nEnd date: " + strdate.format(getcampedate.get(i)) + "\nRegistration deadline: "
+                            + strdate.format(getcampdeadline.get(i)) + "\nUser group: " + getcampgrp.get(i)
+                            + "\nLocation: " + getcamplocation.get(i) + "\nTotal slots: " + getcampslot.get(i)
+                            + "\nCommittee slots: " + getcampcommslot.get(i) + "\nCamp IC: " + getcampic.get(i)
+                            + "\nDescription: " + getcampdesc.get(i) + "\nVisibility: " + getcampvisible.get(i));
+
         }
     }
 
     public void ViewReply() {
-        EnquiryController enquiryc = new EnquiryController();
         ArrayList<String> getenquiryreply = new ArrayList<>();
         ArrayList<String> getenquirymsg = new ArrayList<>();
-        for (int i = 0; i < enquiryc.getAllEnquiries().size(); i++) {
-            if (enquiryc.getAllEnquiries().get(i).getStatus() == EnquiryStatus.CLOSED) {
-                getenquiryreply.add(enquiryc.getAllEnquiries().get(i).getReply());
-                getenquirymsg.add(enquiryc.getAllEnquiries().get(i).getMessage());
+        for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
+            if (EnquiryController.getAllEnquiries().get(i).getStatus() == EnquiryStatus.CLOSED) {
+                getenquiryreply.add(EnquiryController.getAllEnquiries().get(i).getReply());
+                getenquirymsg.add(EnquiryController.getAllEnquiries().get(i).getMessage());
             }
         }
         for (int i = 0; i < getenquiryreply.size(); i++) {
 
-            System.out
-                    .println(i + ") " + getenquirymsg.get(i) + "-->" + getenquiryreply.get(i));
+            System.out.println(i + ") " + getenquirymsg.get(i) + "-->" + getenquiryreply.get(i));
 
         }
     }
 
     public void Result() {
-        SuggestionController suggestc = new SuggestionController();
         Boolean continues = true;
         while (continues) {
             System.out.println("1) View replies to enquiries\n2) View approved/rejected suggestions\n3) Quit");
@@ -79,18 +108,22 @@ public class CommonUse {
             Integer choice = sc.nextInt();
             switch (choice) {
                 case 1: // enquiry
+                    System.out.println("These are the results of the enquiries");
                     ViewReply();
                     break;
 
                 case 2: // suggestion
                     ArrayList<String> getsuggestmsg = new ArrayList<>();
-                    for (int i = 0; i < suggestc.getAllSuggestions().size(); i++) {
-                        if (suggestc.getAllSuggestions().get(i).getStatus() == SuggestionStatus.ACCEPTED) {
+                    for (int i = 0; i < SuggestionController.getAllSuggestions().size(); i++) {
+                        if (SuggestionController.getAllSuggestions().get(i).getStatus() == SuggestionStatus.ACCEPTED) {
 
-                            getsuggestmsg.add(suggestc.getAllSuggestions().get(i).getMessage() + " --> APPROVED");
-                        } else if (suggestc.getAllSuggestions().get(i).getStatus() == SuggestionStatus.REJECTED) {
+                            getsuggestmsg.add(
+                                    SuggestionController.getAllSuggestions().get(i).getMessage() + " --> APPROVED");
+                        } else if (SuggestionController.getAllSuggestions().get(i)
+                                .getStatus() == SuggestionStatus.REJECTED) {
 
-                            getsuggestmsg.add(suggestc.getAllSuggestions().get(i).getMessage() + " --> REJECTED");
+                            getsuggestmsg.add(
+                                    SuggestionController.getAllSuggestions().get(i).getMessage() + " --> REJECTED");
                         }
 
                     }
@@ -111,5 +144,19 @@ public class CommonUse {
                     break;
             }
         }
+    }
+
+    public static Integer dataValidation() {
+        Scanner sc = new Scanner(System.in);
+        Boolean validation = sc.hasNextInt();
+
+        while (!validation) {
+            System.out.println("Please input integer");
+            sc = new Scanner(System.in);
+            validation = sc.hasNextInt();
+        }
+        Integer validate = sc.nextInt();
+
+        return validate;
     }
 }

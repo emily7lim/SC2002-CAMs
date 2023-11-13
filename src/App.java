@@ -7,14 +7,17 @@ import model.Camp;
 import model.enums.Faculty;
 import report.ReportController;
 import report.enums.ReportType;
+import view.LoginView;
 import report.enums.ReportOutputType;
 
 public class App {
     public static void main(String[] args) {
         new Database();
         Database.USERS.forEach((userId, user) -> {
-            System.out.println("UserID: " + userId + ", Name: " + user.getName() + ", Role: " + user.getRole().getRole());
+            System.out.println("UserID: " + userId + ", Name: " + user.getName() + ", Role: " + user.getRole().getRole() + user.getFaculty());
         });
+        LoginView login = new LoginView();
+        login.login();
 
         writeReportExample();
     }

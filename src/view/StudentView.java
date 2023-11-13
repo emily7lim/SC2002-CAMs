@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.*;
-import model.Camp;
 import model.enums.EnquiryStatus;
 
 public class StudentView {
-    public void Students(Integer choice) {
+    public static void Students(Integer choice, String loggedID) {
         Scanner sc = new Scanner(System.in);
         boolean continues = true;
-        EnquiryController enquiryc = new EnquiryController();
-        CampController campc = new CampController();
         CommonUse common = new CommonUse();
+        ArrayList<String> getcampcid = new ArrayList<>();
+        ArrayList<String> getcampaid = new ArrayList<>();
 
-        String loggedID = "YCHERN"; // note:take from login detail
+        // String loggedID = "YCHERN"; // note:take from login detail
         // while (continues) {
         // System.out.println("------------------Student Menu------------------\n1) View
         // list of camp\n2) Register for camps\n3) Submit enquiries\n4) View/edit/del
@@ -28,39 +27,61 @@ public class StudentView {
         switch (choice) {
             case 1: // view list of camps
                 // view remaining camp slots
-                common.ViewingCamps();
+                common.ViewingCamps(loggedID);
                 break;
 
             case 2: // Register camps
+                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    if (CampController.getAllCamps().get(i).getCommSlots() != 0) {
+                        getcampcid.add(CampController.getAllCamps().get(i).getCampId());
+                    }
+                    if (CampController.getAllCamps().get(i).getTotalSlots() != 0) {
+                        getcampaid.add(CampController.getAllCamps().get(i).getCampId());
+                    }
+                }
+
                 while (continues) {
-                    System.out.println(
-                            "Do you want to register for camp?\n1) Yes, as committee\n2) Yes, as attendee\n3) No");
-                    Integer reg = sc.nextInt();
+                    System.out.println("\n1) As committee\n2) As attendee\n3) No");
+                    // note: if 0 will error withdraw
+                    Integer reg = CommonUse.dataValidation();
                     switch (reg) {
                         case 1: // reg as committee
                             // note: check if alr in another camp, rej if yes
-                            for (int i = 0; i < campc.getAllCamps().size(); i++) {
-                                if (campc.getAllCamps().get(i).getCommSlots() != 0) {
-                                    Integer input = sc.nextInt();
-                                    if (input == i) {
-                                        // campc.addCommittee(campid, loggedID)
-                                    }
+
+                            System.out.println("Select the camp you want to join");
+
+                            Integer input = CommonUse.dataValidation();
+                            for (int i = 0; i < getcampcid.size(); i++) {
+                                if (CampController.checkCampCommittee(CampController.getAllCamps().get(i).getCampId(),
+                                        loggedID)) {
+                                    System.out.println("You are already in another camp.");
+                                    continues = false;
+                                    break;
+                                } else if (input == i) {
+                                    CampController.addCommittee(CampController.getAllCamps().get(i).getCampId(),
+                                            loggedID);
+                                    System.out.println("You have successfully registered as a committee");
                                 }
+
                             }
+
                             continues = false;
                             break;
 
                         case 2: // reg as attendee
-                            for (int i = 0; i < campc.getAllCamps().size(); i++) {
-                                if (campc.getAllCamps().get(i).getTotalSlots() != 0) {
-                                    Integer input = sc.nextInt();
-                                    if (input == i) {
-                                        // campc.addParticipant(campid, loggedID)
-                                    }
+                            System.out.println("Select the camp you want to join");
+                            input = CommonUse.dataValidation();
+
+                            for (int i = 0; i < getcampaid.size(); i++) {
+
+                                if (input == i) {
+                                    CampController.addParticipant(CampController.getAllCamps().get(i).getCampId(),
+                                            loggedID);
+                                    System.out.println("You have successfully registered as an attendee");
                                 }
+
                             }
 
-                            System.out.println("You have successfully registered as an attendee");
                             continues = false;
                             break;
 
@@ -77,11 +98,23 @@ public class StudentView {
                 break;
 
             case 3: // submit enquiries
-                Scanner scan = new Scanner(System.in);
-                String enquire = "";
-                System.out.println("Please input your enquiry:");
-                enquire += scan.nextLine();
-                enquiryc.createEnquiry(loggedID, enquire);
+                ArrayList<String> getcampid = new ArrayList<>();
+                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    getcampid.add(CampController.getAllCamps().get(i).getCampId());
+                }
+                Integer input = CommonUse.dataValidation();
+                if (input >= getcampid.size()) {
+                    System.out.println("No such camp");
+                } else {
+                    for (int j = 0; j < getcampid.size(); j++) {
+                        Scanner scan = new Scanner(System.in);
+                        String enquire = "";
+                        System.out.println("Please input your enquiry:");
+                        enquire += scan.nextLine();
+                        EnquiryController.createEnquiry(getcampid.get(j), loggedID, enquire);
+
+                    }
+                }
                 break;
 
             case 4: // view/edit/del enquiries b4 it's processed
@@ -90,16 +123,17 @@ public class StudentView {
                     ArrayList<String> getenquirymsg = new ArrayList<>();
                     ArrayList<String> getenquiryid = new ArrayList<>();
 
-                    for (int i = 0; i < enquiryc.getAllEnquiries().size(); i++) {
-                        if (enquiryc.getAllEnquiries().get(i).getStatus() == EnquiryStatus.PENDING) {
-                            getenquiryid.add(enquiryc.getAllEnquiries().get(i).getEnquiryId());
-                            getenquirymsg.add(enquiryc.getAllEnquiries().get(i).getMessage());
+                    for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
+                        if (EnquiryController.getAllEnquiries().get(i).getStatus() == EnquiryStatus.PENDING) {
+                            getenquiryid.add(EnquiryController.getAllEnquiries().get(i).getEnquiryId());
+                            getenquirymsg.add(EnquiryController.getAllEnquiries().get(i).getMessage());
 
                         }
 
                     }
                     System.out.println("1) View\n2) Edit\n3) Delete\n4) Quit");
-                    Integer edit = sc.nextInt();
+
+                    Integer edit = CommonUse.dataValidation();
                     switch (edit) {
                         case 1: // view enquiry
                             System.out.println("*********Your enquiries*********");
@@ -111,9 +145,10 @@ public class StudentView {
                             System.out.println("********************************");
                             break;
                         case 2: // edit enquiry
-                            scan = new Scanner(System.in);
+                            Scanner scan = new Scanner(System.in);
                             System.out.println("Choose the enquiries you want to edit");
-                            Integer input = sc.nextInt();
+
+                            input = CommonUse.dataValidation();
                             if (input >= getenquiryid.size())
                                 System.out.println("No such enquiry");
                             else {
@@ -121,7 +156,7 @@ public class StudentView {
                                     if (input == j) {
                                         String updateenquirymsg = "";
                                         updateenquirymsg += scan.nextLine();
-                                        enquiryc.updateEnquiryMessage(getenquiryid.get(j), updateenquirymsg);
+                                        EnquiryController.updateEnquiryMessage(getenquiryid.get(j), updateenquirymsg);
                                         System.out.println("Enquiry updated");
                                     }
 
@@ -132,13 +167,13 @@ public class StudentView {
 
                         case 3: // del enquiry
                             System.out.println("Choose the enquiry you want to delete:");
-                            input = sc.nextInt();
+                            input = CommonUse.dataValidation();
                             if (input >= getenquiryid.size())
                                 System.out.println("No such enquiry");
                             else {
                                 for (int j = 0; j < getenquiryid.size(); j++) {
                                     if (input == j) {
-                                        enquiryc.deleteEnquiry(getenquiryid.get(j));
+                                        EnquiryController.deleteEnquiry(getenquiryid.get(j));
                                         System.out.println("Enquiry deleted");
                                     }
                                 }
@@ -161,38 +196,56 @@ public class StudentView {
                 break;
 
             case 5: // view registered camps n role(attendee/committee)
-
+                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    getcampaid.add(CampController.getAllCamps().get(i).getCampId());
+                    System.out.println(getcampaid.size());
+                }
                 System.out.println(
                         "These are the camps you have registered for");
+
                 break;
 
             case 6: // withdraw from camp
-                // note: update remaining slots n not allowed to reg for the same camp they withdrew from
-                for (int i = 0; i < campc.getAllCamps().size(); i++) {
-                    // if (campc.getAllCamps().get(i).getParticipantIds() == loggedID){
-
-                    // }
-                    if (campc.getAllCamps().get(i).getTotalSlots() != 0) {
-                        Integer input = sc.nextInt();
-                        if (input == i) {
-                            // campc.addParticipant(campid, loggedID)
-                        }
+                // note: update remaining slots n not allowed to reg for the same camp they
+                // withdrew from
+                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    if (CampController.checkCampParticipant(CampController.getAllCamps().get(i).getCampId(),
+                            loggedID)) {
+                        getcampaid.add(CampController.getAllCamps().get(i).getCampId());
                     }
                 }
+                System.out.println("Select the camp you want to withdraw from");
 
-                System.out.println("You have successfully withdrawn from the camp");
+                input = CommonUse.dataValidation();
+                if (input >= getcampaid.size()) {
+                    System.out.println("No such camp");
+                } else {
+                    for (int j = 0; j < getcampaid.size(); j++) {
+                        if (input == j && CampController.checkCampParticipant(getcampaid.get(j), loggedID)) {
+                            CampController.removeParticipant(getcampaid.get(j), loggedID);
+                        }
+                    }
+                    System.out.println("You have successfully withdrawn from the camp");
+                }
+
                 break;
 
             case 7: // view reply
                 common.ViewReply();
                 break;
-            case 8: // change password
+            case 8: // change
+                Scanner scan = new Scanner(System.in);
+                String pw = scan.nextLine();
+                UserController.changePassword(loggedID, pw);
+                System.out.println("Password updated");
                 break;
 
             case 9: // profile
 
                 break;
 
+            default:
+                break;
         }
         // }
 

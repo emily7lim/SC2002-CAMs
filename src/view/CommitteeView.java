@@ -4,180 +4,203 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.*;
+import model.Camp;
 import model.enums.SuggestionStatus;
 
 public class CommitteeView {
-    public static void main(String[] args) {
+    public static void Committee(Integer choice, String loggedID) {
         Scanner sc = new Scanner(System.in);
         boolean continues = true;
 
-        SuggestionController suggestc = new SuggestionController();
-        StudentView student = new StudentView();
-        EnquiryController enquiryc = new EnquiryController();
-        StudentController studentc = new StudentController();
+        // String loggedID = "YCHERN"; // note:take from login detail
+        // while (continues) {
+        // System.out.println(
+        // "------------------Committee Menu------------------\n1) View list of camp\n2)
+        // Register for camps\n3) Submit enquiries\n4) View/edit/del enquiries\n5) View
+        // registered camps\n6) Withdraw from camp \n7) View Replies\n8) Change
+        // password\n9) Profile\n10) Submit suggestions\n11) Enquiries from student
+        // \n12) View,edit,delete suggestions\n13) Generate student list report\n14)
+        // Quit");
+        // System.out.println("--------------------------------------------------\nSelect
+        // your choice:");
+        // Integer choice = sc.nextInt();
+        if (choice < 10 && choice > 0) {
+            if (choice == 6)
+                System.out.println("You are not allowed to withdraw");
+            else
+                StudentView.Students(choice, loggedID);
+        } else {
+            switch (choice) {
 
-        String loggedID = "YCHERN"; // note:take from login detail
-        while (continues) {
-            System.out.println(
-                    "------------------Committee Menu------------------\n1) View list of camp\n2) Register for camps\n3) Submit enquiries\n4) View/edit/del enquiries\n5) View registered camps\n6) Withdraw from camp \n7) View Replies\n8) Change password\n9) Profile\n10) Submit suggestions\n11) Enquiries from student \n12) View,edit,delete suggestions\n13) Generate student list report\n14) Quit");
-            System.out.println("--------------------------------------------------\nSelect your choice:");
-            Integer choice = sc.nextInt();
-            if (choice < 10 && choice > 0) {
-                student.Students(choice);
-            } else {
-                switch (choice) {
+                case 10: // submit suggestions
+                    ArrayList<String> getcampid = new ArrayList<>();
+                    for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                        getcampid.add(CampController.getAllCamps().get(i).getCampId());
+                    }
 
-                    case 10: // submit suggestions
+                    Integer input = CommonUse.dataValidation();
+                    if (input >= getcampid.size()) {
+                        System.out.println("No such camp");
+                    } else {
+                        for (int j = 0; j < getcampid.size(); j++) {
+                            Scanner scan = new Scanner(System.in);
+                            String suggest = "";
+
+                            System.out.println("Please input your suggestion:");
+                            suggest += scan.nextLine();
+                            SuggestionController.createSuggestion(getcampid.get(j), loggedID, suggest);
+                        }
+                    }
+                    break;
+
+                case 11: // view n reply enquiries
+
+                    ArrayList<String> getenquirymsg = new ArrayList<>();
+                    ArrayList<String> getenquiryid = new ArrayList<>();
+
+                    for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
+                        getenquiryid.add(EnquiryController.getAllEnquiries().get(i).getEnquiryId());
+                        getenquirymsg.add(EnquiryController.getAllEnquiries().get(i).getMessage());
+                    }
+                    System.out.println("*********Your enquiries*********");
+                    for (int i = 0; i < getenquirymsg.size(); i++) {
+
+                        System.out.println(i + ") " + getenquirymsg.get(i));
+
+                    }
+                    System.out.println("**********************************");
+                    while (continues) {
+
+                        System.out.println("1) Reply Enquiries\n2) Quit");
                         Scanner scan = new Scanner(System.in);
-                        String suggest = "";
-
-                        System.out.println("Please input your suggestion:");
-                        suggest += scan.nextLine();
-                        suggestc.createSuggestion(loggedID, suggest);
-                        break;
-
-                    case 11: // view n reply enquiries
-
-                        ArrayList<String> getenquirymsg = new ArrayList<>();
-                        ArrayList<String> getenquiryid = new ArrayList<>();
-
-                        for (int i = 0; i < enquiryc.getAllEnquiries().size(); i++) {
-                            getenquiryid.add(enquiryc.getAllEnquiries().get(i).getEnquiryId());
-                            getenquirymsg.add(enquiryc.getAllEnquiries().get(i).getMessage());
-                        }
-                        System.out.println("*********Your enquiries*********");
-                        for (int i = 0; i < getenquirymsg.size(); i++) {
-
-                            System.out.println(i + ") " + getenquirymsg.get(i));
-
-                        }
-                        System.out.println("**********************************");
-                        while (continues) {
-
-                            System.out.println("1) Reply Enquiries\n2) Quit");
-                            scan = new Scanner(System.in);
-                            Integer reply = sc.nextInt();
-                            switch (reply) {
-                                case 1:
-                                    sc = new Scanner(System.in);
-                                    Integer input = sc.nextInt();
-                                    if (input >= getenquirymsg.size()) {
-                                        System.out.println("No such enquiry");
-                                    } else {
-                                        for (int i = 0; i < getenquiryid.size(); i++) {
-                                            if (input == i) {
-                                                String replyenquiry = "";
-                                                replyenquiry += scan.nextLine();
-                                                enquiryc.replyEnquiry(getenquiryid.get(i), replyenquiry, loggedID);
-                                                studentc.addPoint(loggedID);
-                                                System.out.println("You have replied 1 enquiry! +1 points");
-                                            }
+                        Integer reply = CommonUse.dataValidation();
+                        switch (reply) {
+                            case 1:
+                                System.out.println("Choose the enquiry you want to reply");
+                                sc = new Scanner(System.in);
+                                input = CommonUse.dataValidation();
+                                if (input >= getenquirymsg.size()) {
+                                    System.out.println("No such enquiry");
+                                } else {
+                                    for (int i = 0; i < getenquiryid.size(); i++) {
+                                        if (input == i) {
+                                            String replyenquiry = "";
+                                            replyenquiry += scan.nextLine();
+                                            EnquiryController.replyEnquiry(getenquiryid.get(i), replyenquiry, loggedID);
+                                            StudentController.addPoint(loggedID);
+                                            System.out.println("You have replied 1 enquiry! +1 points");
                                         }
                                     }
+                                }
 
-                                    break;
+                                break;
 
-                                case 2:
-                                    continues = false;
-                                    break;
+                            case 2:
+                                continues = false;
+                                break;
 
-                                default:
-                                    System.out.println("Invalid input");
-                                    break;
-                            }
+                            default:
+                                System.out.println("Invalid input");
+                                break;
                         }
-                        continues = true;
-                        break;
+                    }
+                    continues = true;
+                    break;
 
-                    case 12: // view,edit,del details of suggestions b4 being processed
+                case 12: // view,edit,del details of suggestions b4 being processed
 
-                        while (continues) {
-                            ArrayList<String> getsuggestionmsg = new ArrayList<>();
-                            ArrayList<String> getsuggestionid = new ArrayList<>();
+                    while (continues) {
+                        ArrayList<String> getsuggestionmsg = new ArrayList<>();
+                        ArrayList<String> getsuggestionid = new ArrayList<>();
 
-                            for (int i = 0; i < suggestc.getAllSuggestions().size(); i++) {
-                                if (suggestc.getAllSuggestions().get(i).getStatus() == SuggestionStatus.PENDING) {
-                                    getsuggestionid.add(suggestc.getAllSuggestions().get(i).getSuggestionId());
-                                    getsuggestionmsg.add(suggestc.getAllSuggestions().get(i).getMessage());
+                        for (int i = 0; i < SuggestionController.getAllSuggestions().size(); i++) {
+                            if (SuggestionController.getAllSuggestions().get(i)
+                                    .getStatus() == SuggestionStatus.PENDING) {
+                                getsuggestionid.add(SuggestionController.getAllSuggestions().get(i).getSuggestionId());
+                                getsuggestionmsg.add(SuggestionController.getAllSuggestions().get(i).getMessage());
+
+                            }
+
+                        }
+                        System.out.println("1) View\n2) Edit\n3) Delete\n4) Quit");
+                        Integer edit = CommonUse.dataValidation();
+
+                        switch (edit) {
+                            case 1: // view suggestion
+                                System.out.println("*********Your suggestions*********");
+                                for (int i = 0; i < getsuggestionmsg.size(); i++) {
+
+                                    System.out.println(i + ") " + getsuggestionmsg.get(i));
+
+                                }
+                                System.out.println("**********************************");
+                                break;
+                            case 2: // edit suggestion
+                                Scanner scan = new Scanner(System.in);
+                                System.out.println("Choose the suggestions you want to edit");
+
+                                input = CommonUse.dataValidation();
+                                if (input >= getsuggestionid.size())
+                                    System.out.println("No such suggestion");
+                                else {
+                                    for (int j = 0; j < getsuggestionid.size(); j++) {
+                                        if (input == j) {
+                                            String updatesuggestmsg = "";
+                                            updatesuggestmsg += scan.nextLine();
+                                            SuggestionController.updateSuggestionMessage(getsuggestionid.get(j),
+                                                    updatesuggestmsg);
+                                            System.out.println("Suggestion updated");
+                                        }
+
+                                    }
+                                }
+
+                                break;
+
+                            case 3: // del suggestion
+                                System.out.println("Choose the suggestion you want to delete:");
+
+                                input = CommonUse.dataValidation();
+                                if (input >= getsuggestionid.size())
+                                    System.out.println("No such suggestion");
+                                else {
+                                    for (int j = 0; j < getsuggestionid.size(); j++) {
+                                        if (input == j) {
+                                            SuggestionController.deleteSuggestion(getsuggestionid.get(j));
+                                            System.out.println("Suggestion deleted");
+                                        }
+                                    }
 
                                 }
 
-                            }
-                            System.out.println("1) View\n2) Edit\n3) Delete\n4) Quit");
-                            Integer edit = sc.nextInt();
-                            switch (edit) {
-                                case 1: // view suggestion
-                                    System.out.println("*********Your suggestions*********");
-                                    for (int i = 0; i < getsuggestionmsg.size(); i++) {
+                                break;
 
-                                        System.out.println(i + ") " + getsuggestionmsg.get(i));
+                            case 4:
+                                continues = false;
+                                break;
 
-                                    }
-                                    System.out.println("**********************************");
-                                    break;
-                                case 2: // edit suggestion
-                                    scan = new Scanner(System.in);
-                                    System.out.println("Choose the suggestions you want to edit");
-                                    Integer input = sc.nextInt();
-                                    if (input >= getsuggestionid.size())
-                                        System.out.println("No such suggestion");
-                                    else {
-                                        for (int j = 0; j < getsuggestionid.size(); j++) {
-                                            if (input == j) {
-                                                String updatesuggestmsg = "";
-                                                updatesuggestmsg += scan.nextLine();
-                                                suggestc.updateSuggestionMessage(getsuggestionid.get(j),
-                                                        updatesuggestmsg);
-                                                System.out.println("Suggestion updated");
-                                            }
-
-                                        }
-                                    }
-
-                                    break;
-
-                                case 3: // del suggestion
-                                    System.out.println("Choose the suggestion you want to delete:");
-                                    input = sc.nextInt();
-                                    if (input >= getsuggestionid.size())
-                                        System.out.println("No such suggestion");
-                                    else {
-                                        for (int j = 0; j < getsuggestionid.size(); j++) {
-                                            if (input == j) {
-                                                suggestc.deleteSuggestion(getsuggestionid.get(j));
-                                                System.out.println("Suggestion deleted");
-                                            }
-                                        }
-
-                                    }
-
-                                    break;
-
-                                case 4:
-                                    continues = false;
-                                    break;
-
-                                default:
-                                    break;
-                            }
+                            default:
+                                break;
                         }
-                        continues = true;
+                    }
+                    continues = true;
 
-                        break;
+                    break;
 
-                    case 13: // generate report of list of students attending the camp they oversee
+                case 13: // generate report of list of students attending the camp they oversee
 
-                        break;
+                    break;
 
-                    case 14:
-                        continues = false;
-                        break;
+                case 14:
+                    // loggedID = null;
+                    continues = false;
+                    break;
 
-                    default:
-                        System.out.println("Invalid...");
-                        break;
-                }
+                default:
+                    System.out.println("Invalid...");
+                    break;
             }
         }
+        // }
     }
 }
