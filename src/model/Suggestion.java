@@ -48,19 +48,19 @@ public class Suggestion implements Serializable {
 		this.campId = campId;
 	}
 
-	public String getcreatorId() {
+	public String getCreatorId() {
 		return creatorId;
 	}
 
-	public void setcreatorId(String creatorId) {
+	public void setCreatorId(String creatorId) {
 		this.creatorId = creatorId;
 	}
 
-	public String getresponderId() {
+	public String getResponderId() {
 		return responderId;
 	}
 
-	public void setresponderId(String responderId) {
+	public void setResponderId(String responderId) {
 		this.responderId = responderId;
 	}
 
