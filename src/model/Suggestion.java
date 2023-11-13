@@ -8,21 +8,24 @@ import model.enums.SuggestionStatus;
 public class Suggestion implements Serializable {
     protected static final long serialVersionUID = 4L;
 	private String suggestionId;
+	private String campId;
 	private String creatorId;
 	private String responderId;
 	private String message;
 	private SuggestionStatus status;
 
-	public Suggestion(String creatorId, String message) {
+	public Suggestion(String campId, String creatorId, String message) {
 		this.suggestionId = UUID.randomUUID().toString();
+		this.campId = campId;
 		this.creatorId = creatorId;
 		this.responderId = null;
 		this.message = message;
 		this.status = SuggestionStatus.PENDING;
 	}
 
-	public Suggestion(String creatorId, String responderId, String message, SuggestionStatus status) {
+	public Suggestion(String campId, String creatorId, String responderId, String message, SuggestionStatus status) {
 		this.suggestionId = UUID.randomUUID().toString();
+		this.campId = campId;
 		this.creatorId = creatorId;
 		this.responderId = responderId;
 		this.message = message;
@@ -35,6 +38,14 @@ public class Suggestion implements Serializable {
 
 	public void setSuggestionId(String suggestionId) {
 		this.suggestionId = suggestionId;
+	}
+
+	public String getCampId() {
+		return campId;
+	}
+
+	public void setCampId(String campId) {
+		this.campId = campId;
 	}
 
 	public String getcreatorId() {

@@ -8,14 +8,16 @@ import model.enums.EnquiryStatus;
 public class Enquiry implements Serializable {
 	protected static final long serialVersionUID = 3L;
 	private String enquiryId;
+	private String campId;
 	private String creatorId;
 	private String responderId;
 	private String message;
 	private String reply;
 	private EnquiryStatus status;
 
-	public Enquiry(String creatorId, String message) {
+	public Enquiry(String campId, String creatorId, String message) {
 		this.enquiryId = UUID.randomUUID().toString();
+		this.campId = campId;
 		this.creatorId = creatorId;
 		this.responderId = null;
 		this.message = message;
@@ -23,8 +25,9 @@ public class Enquiry implements Serializable {
 		this.status = EnquiryStatus.PENDING;
 	}
 
-	public Enquiry(String creatorId, String responderId, String message, String reply, EnquiryStatus status) {
+	public Enquiry(String campId, String creatorId, String responderId, String message, String reply, EnquiryStatus status) {
 		this.enquiryId = UUID.randomUUID().toString();
+		this.campId = campId;
 		this.creatorId = creatorId;
 		this.responderId = responderId;
 		this.message = message;
@@ -35,11 +38,19 @@ public class Enquiry implements Serializable {
 	public String getEnquiryId() {
 		return enquiryId;
 	}
-
+	
 	public void setEnquiryId(String enquiryId) {
 		this.enquiryId = enquiryId;
 	}
+	
+	public String getCampId() {
+		return campId;
+	}
 
+	public void setCampId(String campId) {
+		this.campId = campId;
+	}
+	
 	public String getCreatorId() {
 		return creatorId;
 	}

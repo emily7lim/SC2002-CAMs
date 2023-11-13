@@ -23,19 +23,23 @@ public class Camp implements Serializable {
     private ArrayList<String> withdrawnParticipantIds;
     private ArrayList<String> participantIds;
     private ArrayList<String> committeeIds;
+    private ArrayList<String> enquiryIds;
+    private ArrayList<String> suggestionIds;
     private boolean visible;
 
     // Updating camp information
-    public Camp() {
-        this.name = null;
-        this.startDate = null;
-        this.endDate = null;
-        this.registrationCloseDate = null;
-        this.userGroup = null;
-        this.location = null;
-        this.totalSlots = 0;
-        this.commSlots = 0;
-        this.description = null;
+    public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
+            String location, int totalSlots, int commSlots, String description) {
+        this.campId = UUID.randomUUID().toString();
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.registrationCloseDate = registrationCloseDate;
+        this.userGroup = userGroup;
+        this.location = location;
+        this.totalSlots = totalSlots;
+        this.commSlots = commSlots;
+        this.description = description;
     }
 
     public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
@@ -53,6 +57,8 @@ public class Camp implements Serializable {
         this.staffInCharge = staffInCharge;
         this.participantIds = new ArrayList<>();
         this.committeeIds = new ArrayList<>();
+        this.enquiryIds = new ArrayList<>();
+        this.suggestionIds = new ArrayList<>();
         this.visible = true;
     }
 
@@ -168,6 +174,22 @@ public class Camp implements Serializable {
         this.committeeIds = committeeIds;
     }
 
+    public ArrayList<String> getEnquiryIds() {
+        return enquiryIds;
+    }
+
+    public void getEnquiryIds(ArrayList<String> enquiryIds) {
+        this.enquiryIds = enquiryIds;
+    }
+
+    public ArrayList<String> getSuggestionIds() {
+        return suggestionIds;
+    }
+
+    public void getSuggestionIds(ArrayList<String> suggestionIds) {
+        this.suggestionIds = suggestionIds;
+    }
+
     public boolean isVisible() {
         return visible;
     }
@@ -187,8 +209,24 @@ public class Camp implements Serializable {
     public void removeParticipant(String userId) {
         this.participantIds.remove(userId);
     }
-
+    
     public void addCommittee(String userId) {
         this.committeeIds.add(userId);
+    }
+    
+    public void addEnquiry(String enquiryIds) {
+        this.enquiryIds.add(enquiryIds);
+    }
+
+    public void removeEnquiry(String enquiryIds) {
+        this.enquiryIds.remove(enquiryIds);
+    }
+
+    public void addSuggestion(String suggestionId) {
+        this.suggestionIds.add(suggestionId);
+    }
+
+    public void removeSuggestion(String suggestionId) {
+        this.suggestionIds.remove(suggestionId);
     }
 }
