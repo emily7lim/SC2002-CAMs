@@ -67,7 +67,7 @@ public class SuggestionDAO {
     public static void updateSuggestionResponse(String suggestionId, SuggestionStatus status, String responderId) {
         Suggestion suggestion = Database.SUGGESTIONS.get(suggestionId);
         suggestion.setStatus(status);
-        suggestion.setresponderId(responderId);
+        suggestion.setResponderId(responderId);
     }
 
     /**
