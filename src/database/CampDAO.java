@@ -149,5 +149,6 @@ public class CampDAO {
      */
     public static void deleteCamp(String campId) {
         Database.CAMPS.remove(campId);
+        //should the corresponding suggestions and enquiry be removed?
     }
 }
