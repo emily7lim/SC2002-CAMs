@@ -19,7 +19,7 @@ public class App {
         LoginView login = new LoginView();
         login.login();
 
-        writeReportExample();
+        //writeReportExample();
     }
 
     private static void writeReportExample(){
