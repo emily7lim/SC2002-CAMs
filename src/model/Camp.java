@@ -227,18 +227,31 @@ public class Camp implements Serializable {
     }
     
     public void addEnquiry(String enquiryIds) {
+        if(this.enquiryIds == null) this.enquiryIds = new ArrayList<>();
         this.enquiryIds.add(enquiryIds);
     }
 
     public void removeEnquiry(String enquiryIds) {
-        this.enquiryIds.remove(enquiryIds);
+        if(this.enquiryIds == null) {
+            this.enquiryIds = new ArrayList<>();
+        } else {
+            this.enquiryIds.remove(enquiryIds);
+        }
     }
 
     public void addSuggestion(String suggestionId) {
+        if(this.suggestionIds == null) {
+            System.out.println("is null");
+            this.suggestionIds = new ArrayList<>();
+        }
         this.suggestionIds.add(suggestionId);
     }
 
     public void removeSuggestion(String suggestionId) {
-        this.suggestionIds.remove(suggestionId);
+        if(this.suggestionIds == null) {
+            this.suggestionIds = new ArrayList<>();
+        } else {
+            this.suggestionIds.remove(suggestionId);
+        }
     }
 }
