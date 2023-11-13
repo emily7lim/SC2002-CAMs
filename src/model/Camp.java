@@ -27,6 +27,18 @@ public class Camp implements Serializable {
     private ArrayList<String> suggestionIds;
     private boolean visible;
 
+    public Camp() {
+        this.name = null;
+        this.startDate = null;
+        this.endDate = null;
+        this.registrationCloseDate = null;
+        this.userGroup = null;
+        this.location = null;
+        this.totalSlots = 0;
+        this.commSlots = 0;
+        this.description = null;
+    }
+    
     // Updating camp information
     public Camp(String name, Date startDate, Date endDate, Date registrationCloseDate, Faculty userGroup,
             String location, int totalSlots, int commSlots, String description) {
