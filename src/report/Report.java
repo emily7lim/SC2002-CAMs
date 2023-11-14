@@ -67,6 +67,33 @@ public class Report {
                     this.reportContent.append("Camp Name: " + camp.getName() + "\n");
                     this.reportContent.append("Staff IC: " + camp.getStaffInCharge() + "\n");
                     this.reportContent.append("Description: " + camp.getDescription() + "\n\n");
+
+                    // is user wants attendee list in report
+                    if(filterObj.isSelectedAttendee()){
+                        this.reportContent.append("Participant List:\n");
+                        List<Student> participants = getParticipantMembers(camp);
+                        int i = 1;
+                        for(Student student : participants){
+                            this.reportContent.append("Participant " + i + "Id: " + student.getUserId() + "\n");
+                            this.reportContent.append("Participant " + i + "Name: " + student.getName() + "\n");
+                            this.reportContent.append("Participant " + i + "Faculty: " + student.getFaculty() + "\n");
+                            this.reportContent.append("Participant " + i++ + "Role: " + student.getRole() + "\n");
+                        }
+                    }
+
+                    // is user wants committee list in report
+                    if(filterObj.isSelectedCampCommittee()){
+                        this.reportContent.append("Committee List:\n");
+                        List<Student> commMembers = getCommitteeMembers(camp);
+                        int i = 1;
+                        for(Student student : commMembers){
+                            this.reportContent.append("Committee member " + i + "Id: " + student.getUserId() + "\n");
+                            this.reportContent.append("Committee member " + i + "Name: " + student.getName() + "\n");
+                            this.reportContent.append("Committee member " + i + "points: " + student.getPoints() + "\n");
+                            this.reportContent.append("Committee member " + i + "Faculty: " + student.getFaculty() + "\n");
+                            this.reportContent.append("Committee member " + i++ + "Role: " + student.getRole() + "\n");
+                        }
+                    }
                 });
                 break;
             case CSV:
@@ -269,6 +296,22 @@ public class Report {
             committeeMembers.add(StudentController.getStudentByUserId(id));
         }
         return committeeMembers;
+    }
+
+    /**
+     * Helper method to retrieve camp Participant members for a camp
+     *
+     * @param camp The camp for which to retrieve participants.
+     * @return A list of participants.
+     */
+    private List<Student> getParticipantMembers(Camp camp) {
+        ArrayList<String> parIds = camp.getParticipantIds();
+        List<Student> participants = new ArrayList<>();
+
+        for (String id : parIds) {
+            participants.add(StudentController.getStudentByUserId(id));
+        }
+        return participants;
     }
 
     /**
