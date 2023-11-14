@@ -206,7 +206,8 @@ public class CommonUse {
                     break;
 
                 case 3: // include everything?
-                    filtering.isAllCase5();
+                    filtering.setAllCase5(true); // this sets all the vars u need for case 5
+                    filtering.isAnyCase5();
 
                 case 4:
                     continues = false;
