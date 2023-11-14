@@ -122,13 +122,23 @@ public class FilterObj {
     }
 
     /**
-     * Checks multiple variables if true.
+     * Sets multiple variables relevant to staff view case 5
+     * "generate a report of a list of students attending each camp the staff created."
+     */
+    public void setAllCase5(boolean all) {
+        this.setSelectedAttendee(all);
+        this.setSelectedCampCommittee(all);
+        this.setSelectedRoles(all);
+    }
+
+    /**
+     * Checks multiple variables if any is true.
      * Variables relevant to staff view case 5
      * "generate a report of a list of students attending each camp the staff created."
      *
-     * @return true if all filtering options are selected, false otherwise
+     * @return true if any filtering option is selected, false otherwise
      */
-    public boolean isAllCase5() {
-        return this.selectedAttendee && this.selectedCampCommittee && this.selectedRoles;
+    public boolean isAnyCase5() {
+        return this.selectedAttendee || this.selectedCampCommittee || this.selectedRoles;
     }
 }
