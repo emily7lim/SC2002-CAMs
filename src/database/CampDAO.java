@@ -82,15 +82,15 @@ public class CampDAO {
      */
     public static void updateCampInformation(String campId, Camp campInfo) {
         Camp camp = Database.CAMPS.get(campId);
-        if (campInfo.getName() == null) camp.setName(campInfo.getName());
-        if (campInfo.getStartDate() == null) camp.setStartDate(campInfo.getStartDate());
-        if (campInfo.getEndDate() == null) camp.setEndDate(campInfo.getEndDate());
-        if (campInfo.getRegistrationCloseDate() == null) camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
-        if (campInfo.getUserGroup() == null) camp.setUserGroup(campInfo.getUserGroup());
-        if (campInfo.getLocation() == null) camp.setLocation(campInfo.getLocation());
-        if (campInfo.getTotalSlots() == 0) camp.setTotalSlots(campInfo.getTotalSlots());
-        if (campInfo.getCommSlots() == 0) camp.setCommSlots(campInfo.getCommSlots());
-        if (campInfo.getDescription() == null) camp.setDescription(campInfo.getDescription());
+        if (campInfo.getName() != null) camp.setName(campInfo.getName());
+        if (campInfo.getStartDate() != null) camp.setStartDate(campInfo.getStartDate());
+        if (campInfo.getEndDate() != null) camp.setEndDate(campInfo.getEndDate());
+        if (campInfo.getRegistrationCloseDate() != null) camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
+        if (campInfo.getUserGroup() != null) camp.setUserGroup(campInfo.getUserGroup());
+        if (campInfo.getLocation() != null) camp.setLocation(campInfo.getLocation());
+        if (campInfo.getTotalSlots() != 0) camp.setTotalSlots(campInfo.getTotalSlots());
+        if (campInfo.getCommSlots() != 0) camp.setCommSlots(campInfo.getCommSlots());
+        if (campInfo.getDescription() != null) camp.setDescription(campInfo.getDescription());
     }
 
     /**
