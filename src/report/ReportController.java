@@ -144,7 +144,15 @@ public class ReportController {
      * @param camps The list of camps for which to generate and write reports.
      * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
      */
-    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType) { this.generateAndWriteReports(camps, filterObj, reportType, this.baseFilename); }
+    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType) { this.generateAndWriteReports(camps, filterObj, reportType, this.reportOutputType, this.baseFilename); }
+    
+    /**
+     * Generate and write reports for a list of camps and a specific report type.
+     * 
+     * @param camps The list of camps for which to generate and write reports.
+     * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
+     */
+    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType, ReportOutputType reportOutputType) { this.generateAndWriteReports(camps, filterObj, reportType, reportOutputType, this.baseFilename); }
 
     /**
      * Generate and write reports for a list of camps, a specific report type, and a custom file name.
@@ -153,7 +161,7 @@ public class ReportController {
      * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
      * @param fileName The custom file name for the report.
      */
-    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType, String fileName) {
+    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType, ReportOutputType reportOutputType, String fileName) {
         if(!filterObj.isAllCase5()){
             System.out.println("all filters are false, please check the filterObj");
             return;
@@ -162,10 +170,10 @@ public class ReportController {
 
         switch (reportType) {
             case CAMP_LIST:
-                reportContent = report.generateCampListReport(camps, this.reportOutputType);
+                reportContent = report.generateCampListReport(camps, reportOutputType);
                 break;
             case PERFORMANCE_REPORT:
-                reportContent = report.generateCampCommitteePerformanceReport(camps, this.reportOutputType);
+                reportContent = report.generateCampCommitteePerformanceReport(camps, reportOutputType);
                 break;
             default:
                 break;
