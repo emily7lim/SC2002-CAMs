@@ -8,6 +8,7 @@ import report.enums.ReportOutputType;
 import report.enums.ReportType;
 import report.writer.CsvWriter;
 import report.writer.TxtWriter;
+import view.FilterObj;
 
 /**
  * Manages the generation and writing of various reports, 
@@ -143,7 +144,7 @@ public class ReportController {
      * @param camps The list of camps for which to generate and write reports.
      * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
      */
-    public void generateAndWriteReports(List<Camp> camps, ReportType reportType) { this.generateAndWriteReports(camps, reportType, this.baseFilename); }
+    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType) { this.generateAndWriteReports(camps, filterObj, reportType, this.baseFilename); }
 
     /**
      * Generate and write reports for a list of camps, a specific report type, and a custom file name.
@@ -152,7 +153,11 @@ public class ReportController {
      * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
      * @param fileName The custom file name for the report.
      */
-    public void generateAndWriteReports(List<Camp> camps, ReportType reportType, String fileName) {
+    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType, String fileName) {
+        if(!filterObj.isAllCase5()){
+            System.out.println("all filters are false, please check the filterObj");
+            return;
+        }
         String reportContent = "";
 
         switch (reportType) {
