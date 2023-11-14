@@ -32,7 +32,7 @@ public class StaffCreated {
             ArrayList<Boolean> getcampvisible = new ArrayList<>();
 
             for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                if (CampController.getAllCamps().get(i).getStaffInCharge() == loggedID) {
+                if (CampController.getAllCamps().get(i).getStaffInCharge().equals(loggedID)) {
                     getcampid.add(CampController.getAllCamps().get(i).getCampId());
                     getcamplocation.add(CampController.getAllCamps().get(i).getLocation());
                     getcampname.add(CampController.getAllCamps().get(i).getName());
@@ -67,7 +67,7 @@ public class StaffCreated {
                     Scanner scan = new Scanner(System.in);
                     String name = "", location = "", description = "";
                     Faculty grp = StaffController.getStaffByUserId(loggedID).getFaculty();
-
+                    Date startdate = null, enddate = null, deadlines = null;
                     Integer commslot = 0, totalslot = 0;
 
                     System.out.println("***********You are now creating***********");
@@ -76,25 +76,72 @@ public class StaffCreated {
 
                     System.out.println("Enter your start date (dd/mm/yyyy):");
                     Scanner scand = new Scanner(System.in);
-                    String sdate = scand.nextLine();
-                    while (ForDate.getDates(sdate) == null) {
-                        sdate = scand.nextLine();
+                    Boolean wrong = true;
+                    Date now = new Date();
+                    String sdate = scand.nextLine();                    
+                    startdate = ForDate.getDates(sdate);
+
+                    while (wrong) {
+                        if (startdate == null) {
+                            sdate = scand.nextLine();
+                            startdate = ForDate.getDates(sdate);
+
+                        } else if (startdate.before(now)) {
+                            System.out.println("Start date cannot be earlier than today");
+                            sdate = scand.nextLine();
+                            startdate = ForDate.getDates(sdate);
+                        } else {
+                            startdate = ForDate.getDates(sdate);
+                            wrong = false;
+                        }
                     }
-                    Date startdate = ForDate.getDates(sdate);
+
 
                     System.out.println("Enter your end date (dd/mm/yyyy):");
+                    scand = new Scanner(System.in);
+                    wrong = true;
                     String edate = scand.nextLine();
-                    while (ForDate.getDates(edate) == null) {
-                        edate = scand.nextLine();
+                    enddate = ForDate.getDates(edate);
+                                    
+                    while (wrong) {
+                        if (enddate == null) {
+                            edate = scand.nextLine();
+                            enddate = ForDate.getDates(edate);
+
+                        } else if (enddate.before(startdate)) {
+                            System.out.println("End date cannot be earlier than start date");
+                            edate = scand.nextLine();
+                            enddate = ForDate.getDates(edate);
+                        } else {
+                            enddate = ForDate.getDates(edate);
+                            wrong = false;
+                        }
                     }
-                    Date enddate = ForDate.getDates(edate);
 
                     System.out.println("Enter registration deadline (dd/mm/yyyy):");
                     String deadline = scand.nextLine();
-                    while (ForDate.getDates(deadline) == null) {
-                        deadline = scand.nextLine();
+                    deadlines = ForDate.getDates(deadline);
+                    wrong = true; 
+
+                    while (wrong) {
+                        if (deadlines == null) {
+                            deadline = scand.nextLine();
+                            deadlines = ForDate.getDates(deadline);
+
+                        } else if (deadlines.after(startdate)) {
+                            System.out.println("Deadline date cannot be later than start date");
+                            deadline = scand.nextLine();
+                            deadlines = ForDate.getDates(deadline);
+                        } else if (deadlines.before(now)) {
+                            System.out.println("Deadline cannot be earlier than today");
+                            deadline = scand.nextLine();
+                            deadlines = ForDate.getDates(deadline);
+                        }
+                        else {
+                            deadlines = ForDate.getDates(deadline);
+                            wrong = false;
+                        }
                     }
-                    Date deadlines = ForDate.getDates(deadline);
 
                     System.out.println("1) Open to all:\n2) Faculty only");
                     Integer input = CommonUse.dataValidation();
@@ -102,7 +149,8 @@ public class StaffCreated {
                         System.out.println("Select 1 or 2:");
                         input = CommonUse.dataValidation();
                     }
-                    if (input == 1) grp = Faculty.NTU;
+                    if (input == 1)
+                        grp = Faculty.NTU;
 
                     System.out.println("Enter your location:");
                     location += scan.nextLine();
@@ -126,11 +174,10 @@ public class StaffCreated {
                     break;
 
                 case 2:
-                    name = ""; location = ""; description = ""; 
+                    name = ""; location = ""; description = "";
                     startdate = null; enddate = null; deadlines = null;
                     grp = StaffController.getStaffByUserId(loggedID).getFaculty();
-                    commslot = 0;
-                    totalslot = 0;
+                    commslot = 0; totalslot = 0;
                     scan = new Scanner(System.in);
                     System.out.println("Choose the camp you want to edit");
                     input = CommonUse.dataValidation();
@@ -139,7 +186,8 @@ public class StaffCreated {
                     else {
 
                         System.out.println("***********You are now editing***********");
-                        System.out.println("1) Name\n2) Start date\n3) End date\n4) Registration deadline\n5) User group\n6) Location\n7) Total slots\n8) Comm slots\n9) Description");
+                        System.out.println(
+                                "1) Name\n2) Start date\n3) End date\n4) Registration deadline\n5) User group\n6) Location\n7) Total slots\n8) Comm slots\n9) Description");
                         for (int i = 0; i < getcampid.size(); i++) {
                             if (input == i) {
                                 Integer edits = CommonUse.dataValidation();
@@ -148,7 +196,7 @@ public class StaffCreated {
                                         System.out.println("Update camp name");
                                         name += scan.nextLine();
                                         CampController.updateCampName(getcampid.get(i), name);
-                                        
+
                                         break;
                                     case 2:
                                         System.out.println("Update camp start date");
@@ -210,7 +258,7 @@ public class StaffCreated {
                                         CampController.updateCampDescription(getcampid.get(i),
                                                 description);
                                         break;
-                                    
+
                                     default:
                                         break;
                                 }
