@@ -36,6 +36,6 @@ public class App {
         camps.add(exampleCamp3);
 
         ReportController rp = new ReportController(ReportOutputType.CSV);
-        rp.generateAndWriteReports(camps, ReportType.CAMP_LIST);
+        rp.generateAndWriteReports(camps, new FilterObj(), ReportType.CAMP_LIST);
     }
 }
