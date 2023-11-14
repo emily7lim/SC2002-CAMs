@@ -7,6 +7,7 @@ import model.Camp;
 import model.enums.Faculty;
 import report.ReportController;
 import report.enums.ReportType;
+import view.FilterObj;
 import view.LoginView;
 import report.enums.ReportOutputType;
 
@@ -35,7 +36,10 @@ public class App {
         Camp exampleCamp3 = new Camp(testCsv, new Date(), new Date(1699012689503L), new Date(1699011699503L), Faculty.ADM, Faculty.ADM.getFaculty(), 15, 3, "to test formatting", "OURIN");
         camps.add(exampleCamp3);
 
-        ReportController rp = new ReportController(ReportOutputType.CSV);
-        rp.generateAndWriteReports(camps, new FilterObj(), ReportType.CAMP_LIST);
+        // changed to static only
+        ReportController.generateAndWriteReports(camps, new FilterObj(), ReportType.CAMP_DETAILS_REPORT);
+        // old way 
+        // ReportController rp = new ReportController(ReportOutputType.CSV);
+        // rp.generateAndWriteReports(camps, new FilterObj(), ReportType.CAMP_DETAILS_REPORT);
     }
 }
