@@ -60,7 +60,7 @@ public class StaffCreated {
 
             }
             System.out.println("\n1) Create\n2) Edit\n3) Delete\n4) Toggle Visibility\n5) Quit\nSelect your choice:");
-            Integer edit = sc.nextInt();
+            Integer edit = CommonUse.dataValidation();
             switch (edit) {
                 case 1:
 
@@ -78,69 +78,62 @@ public class StaffCreated {
                     Scanner scand = new Scanner(System.in);
                     Boolean wrong = true;
                     Date now = new Date();
-                    String sdate = scand.nextLine();                    
+                    String sdate = scand.nextLine();
                     startdate = ForDate.getDates(sdate);
 
                     while (wrong) {
                         if (startdate == null) {
                             sdate = scand.nextLine();
-                            startdate = ForDate.getDates(sdate);
 
                         } else if (startdate.before(now)) {
                             System.out.println("Start date cannot be earlier than today");
                             sdate = scand.nextLine();
-                            startdate = ForDate.getDates(sdate);
                         } else {
-                            startdate = ForDate.getDates(sdate);
                             wrong = false;
                         }
+                        startdate = ForDate.getDates(sdate);
                     }
-
 
                     System.out.println("Enter your end date (dd/mm/yyyy):");
                     scand = new Scanner(System.in);
                     wrong = true;
                     String edate = scand.nextLine();
                     enddate = ForDate.getDates(edate);
-                                    
+
                     while (wrong) {
                         if (enddate == null) {
                             edate = scand.nextLine();
-                            enddate = ForDate.getDates(edate);
 
                         } else if (enddate.before(startdate)) {
                             System.out.println("End date cannot be earlier than start date");
                             edate = scand.nextLine();
-                            enddate = ForDate.getDates(edate);
                         } else {
-                            enddate = ForDate.getDates(edate);
                             wrong = false;
                         }
+                        enddate = ForDate.getDates(edate);
                     }
 
                     System.out.println("Enter registration deadline (dd/mm/yyyy):");
                     String deadline = scand.nextLine();
                     deadlines = ForDate.getDates(deadline);
-                    wrong = true; 
+                    wrong = true;
 
                     while (wrong) {
                         if (deadlines == null) {
                             deadline = scand.nextLine();
-                            deadlines = ForDate.getDates(deadline);
-
+                            
                         } else if (deadlines.after(startdate)) {
                             System.out.println("Deadline date cannot be later than start date");
                             deadline = scand.nextLine();
-                            deadlines = ForDate.getDates(deadline);
+                            
                         } else if (deadlines.before(now)) {
                             System.out.println("Deadline cannot be earlier than today");
                             deadline = scand.nextLine();
-                            deadlines = ForDate.getDates(deadline);
-                        }
-                        else {
-                            deadlines = ForDate.getDates(deadline);
+                            
+                        } else {
                             wrong = false;
                         }
+                        deadlines = ForDate.getDates(deadline);
                     }
 
                     System.out.println("1) Open to all:\n2) Faculty only");
@@ -186,10 +179,10 @@ public class StaffCreated {
                     else {
 
                         System.out.println("***********You are now editing***********");
-                        System.out.println(
-                                "1) Name\n2) Start date\n3) End date\n4) Registration deadline\n5) User group\n6) Location\n7) Total slots\n8) Comm slots\n9) Description");
+                        System.out.println("1) Name\n2) Start date\n3) End date\n4) Registration deadline\n5) User group\n6) Location\n7) Total slots\n8) Comm slots\n9) Description");
                         for (int i = 0; i < getcampid.size(); i++) {
                             if (input == i) {
+                                now = new Date();
                                 Integer edits = CommonUse.dataValidation();
                                 switch (edits) {
                                     case 1:
@@ -202,37 +195,83 @@ public class StaffCreated {
                                         System.out.println("Update camp start date");
                                         scand = new Scanner(System.in);
                                         sdate = scand.nextLine();
-                                        while (ForDate.getDates(sdate) == null) {
-                                            sdate = scand.nextLine();
-                                        }
                                         startdate = ForDate.getDates(sdate);
+                                        wrong = true;
+                                        while (wrong) {
+                                            if (startdate == null) {
+                                                sdate = scand.nextLine();
+
+                                            } else if (startdate.before(now)) {
+                                                System.out.println("Start date cannot be earlier than today");
+                                                sdate = scand.nextLine();
+                                            } else {
+                                                wrong = false;
+                                            }
+                                            startdate = ForDate.getDates(sdate);
+
+                                        }
                                         CampController.updateCampStartDate(getcampid.get(i), startdate);
                                         break;
                                     case 3:
                                         System.out.println("Update camp end date");
                                         scand = new Scanner(System.in);
                                         edate = scand.nextLine();
-                                        while (ForDate.getDates(edate) == null) {
-                                            edate = scand.nextLine();
-                                        }
                                         enddate = ForDate.getDates(edate);
-                                        CampController.updateCampStartDate(getcampid.get(i), enddate);
+                                        wrong = true;
+                                        while (wrong) {
+                                            if (enddate == null) {
+                                                edate = scand.nextLine();
+
+                                            } else if (enddate.before(startdate)) {
+                                                System.out.println("End date cannot be earlier than start date");
+                                                edate = scand.nextLine();
+                                            } else {
+                                                wrong = false;
+                                            }
+                                            enddate = ForDate.getDates(edate);
+                                        }
+
+                                        CampController.updateCampEndDate(getcampid.get(i), enddate);
 
                                         break;
                                     case 4:
                                         System.out.println("Update camp registration deadline");
                                         scand = new Scanner(System.in);
+
                                         deadline = scand.nextLine();
-                                        while (ForDate.getDates(deadline) == null) {
-                                            deadline = scand.nextLine();
-                                        }
                                         deadlines = ForDate.getDates(deadline);
-                                        CampController.updateCampStartDate(getcampid.get(i), deadlines);
+                                        wrong = true;
+
+                                        while (wrong) {
+                                            if (deadlines == null) {
+                                                deadline = scand.nextLine();
+                                            } else if (deadlines.after(startdate)) {
+                                                System.out.println("Deadline date cannot be later than start date");
+                                                deadline = scand.nextLine();
+                                            
+                                            } else if (deadlines.before(now)) {
+                                                System.out.println("Deadline cannot be earlier than today");
+                                                deadline = scand.nextLine();
+                                            
+                                            } else {
+                                                wrong = false;
+                                            }
+                                            deadlines = ForDate.getDates(deadline);
+                                        }
+
+                                        CampController.updateCampRegistrationCloseDate(getcampid.get(i), deadlines);
                                         break;
                                     case 5:
                                         System.out.println("Update camp group");
-                                        // grp += scan.nextLine();
-                                        // CampController.updateCampUserGroup(getcampid.get(i), grp);
+                                        System.out.println("1) Open to all:\n2) Faculty only");
+                                        Integer choice = CommonUse.dataValidation();
+                                        while (choice > 2) {
+                                            System.out.println("Select 1 or 2:");
+                                            choice = CommonUse.dataValidation();
+                                        }
+                                        if (choice == 1)
+                                            grp = Faculty.NTU;
+                                        CampController.updateCampUserGroup(getcampid.get(i), grp);
                                         break;
                                     case 6:
                                         System.out.println("Update camp location");
@@ -260,9 +299,10 @@ public class StaffCreated {
                                         break;
 
                                     default:
+                                        System.out.println("Please try again");
                                         break;
                                 }
-                                // CampController.updateCampInformation(getcampid.get(i), name, startdate, enddate, deadlines, grp, location, totalslot, commslot, description);
+                              
                             }
                         }
                     }
@@ -293,7 +333,7 @@ public class StaffCreated {
                         System.out.println("Choose 0 to turn off, choose 1 to turn on:");
                         for (int j = 0; j < getcampic.size(); j++) {
                             if (input == j) {
-                                Integer toggle = sc.nextInt();
+                                Integer toggle = CommonUse.dataValidation();
                                 if (toggle == 0) {
                                     CampController.updateCampVisiblity(getcampid.get(j), false);
                                     System.out.println("Camp visibility turned off");
