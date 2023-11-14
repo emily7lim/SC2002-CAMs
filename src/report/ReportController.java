@@ -136,6 +136,10 @@ public class ReportController {
      * @param filterObj  The filter options for the report.
      * @param reportType The specific report type to generate (e.g., CAMP_LIST or
      *                   PERFORMANCE_REPORT).
+     * 
+     * @see #generateAndWriteReports(List<Camp> camps, FilterObj filterObj,
+     *      ReportType reportType, ReportOutputType reportOutputType, String
+     *      fileName)
      */
     public static void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType) {
         ReportController.generateAndWriteReports(camps, filterObj, reportType, ReportController.reportOutputType,
@@ -150,7 +154,12 @@ public class ReportController {
      * @param filterObj        The filter options for the report.
      * @param reportType       The specific report type to generate (e.g., CAMP_LIST
      *                         or PERFORMANCE_REPORT).
+     * 
      * @param reportOutputType The type of report to generate (TXT or CSV).
+     * 
+     * @see #generateAndWriteReports(List<Camp> camps, FilterObj filterObj,
+     *      ReportType reportType, ReportOutputType reportOutputType, String
+     *      fileName)
      */
     public static void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType,
             ReportOutputType reportOutputType) {
