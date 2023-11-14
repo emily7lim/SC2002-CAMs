@@ -170,15 +170,20 @@ public class ReportController {
 
         switch (reportType) {
             case CAMP_LIST:
-                reportContent = report.generateCampListReport(camps, reportOutputType);
+                reportContent = report.generateCampListReport(camps, filterObj, reportOutputType);
                 break;
             case PERFORMANCE_REPORT:
-                reportContent = report.generateCampCommitteePerformanceReport(camps, reportOutputType);
+                reportContent = report.generateCampCommitteePerformanceReport(camps, reportOutputType); //TODO
                 break;
             default:
                 break;
         }
 
+        if(reportContent.equals("")){
+            System.out.println("err in making report");
+            return;
+        }
+        
         String filePath = generateUniqueFilename(fileName);
         
         writeReportToFile(reportContent, filePath);

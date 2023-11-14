@@ -11,6 +11,7 @@ import model.Enquiry;
 import model.Student;
 import model.Suggestion;
 import report.enums.ReportOutputType;
+import view.FilterObj;
 
 /**
  * Generates report content for different report types, including camp lists and
@@ -52,7 +53,9 @@ public class Report {
      * @param reportOutputType The type of report to generate (TXT or CSV).
      * @return The generated camp list report.
      */
-    public String generateCampListReport(List<Camp> camps, ReportOutputType reportOutputType) {
+    public String generateCampListReport(List<Camp> camps, FilterObj filterObj, ReportOutputType reportOutputType) {
+        // no need to check filterObj since controller checked
+        
         String header;
         switch (reportOutputType) {
             case TXT:
@@ -62,19 +65,20 @@ public class Report {
                 camps.forEach(camp -> {
                     this.reportContent.append("Camp Id: " + camp.getCampId() + "\n");
                     this.reportContent.append("Camp Name: " + camp.getName() + "\n");
-                    this.reportContent.append("Start Date: " + camp.getStartDate() + "\n");
-                    this.reportContent.append("Location: " + camp.getLocation() + "\n\n");
+                    this.reportContent.append("Staff IC: " + camp.getStaffInCharge() + "\n");
+                    this.reportContent.append("Description: " + camp.getDescription() + "\n\n");
                 });
                 break;
             case CSV:
-                header = "Camp Name,Start Date,Location";
+                header = "Camp Id,Camp Name,Start Date,Location";
                 this.reportContent.append(header).append("\n");
 
                 camps.forEach(camp -> {
                     this.reportContent.append(
+                            formatCsvField(camp.getCampId()) + "," + 
                             formatCsvField(camp.getName()) + "," + 
-                            formatCsvField(camp.getStartDate().toString()) + "," + 
-                            formatCsvField(camp.getLocation()) + "\n"
+                            formatCsvField(camp.getStaffInCharge()) + "," + 
+                            formatCsvField(camp.getDescription()) + "\n"
                             );  
                 });
                 break;
