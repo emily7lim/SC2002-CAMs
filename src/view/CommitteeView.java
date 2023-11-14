@@ -6,11 +6,13 @@ import java.util.Scanner;
 import controller.*;
 import model.Camp;
 import model.enums.SuggestionStatus;
+import report.enums.ReportType;
 
 public class CommitteeView {
     public static void Committee(Integer choice, String loggedID) {
         Scanner sc = new Scanner(System.in);
         boolean continues = true;
+        ArrayList<Camp> camps = new ArrayList<>();
 
         if (choice < 10 && choice > 0) {
             if (choice == 6)
@@ -63,7 +65,7 @@ public class CommitteeView {
                     System.out.println("**********************************");
                     while (continues) {
 
-                        System.out.println("1) Reply Enquiries\n2) Quit");
+                        System.out.println("1) Reply Enquiries\n2) Generate report\n3) Quit");
                         Scanner scan = new Scanner(System.in);
                         Integer reply = CommonUse.dataValidation();
                         switch (reply) {
@@ -84,10 +86,19 @@ public class CommitteeView {
                                         }
                                     }
                                 }
-
                                 break;
 
                             case 2:
+                                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                                    if (CampController.getAllCamps().get(i).getCommitteeIds().get(i).equals(loggedID)) {
+                                        camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
+                                    }
+                                }   
+                                CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
+                                continues = false;
+                                break;
+
+                            case 3:
                                 continues = false;
                                 break;
 
@@ -180,7 +191,13 @@ public class CommitteeView {
                     break;
 
                 case 13: // generate report of list of students attending the camp they oversee
-
+                    for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                        if (CampController.getAllCamps().get(i).getCommitteeIds().get(i).equals(loggedID)) {
+                            camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
+                        }
+                    }
+                    CommonUse.FilterReport(camps);
+                    continues = true;
                     break;
 
                 case 14:

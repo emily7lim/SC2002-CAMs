@@ -13,6 +13,9 @@ import model.enums.EnquiryStatus;
 import model.enums.Faculty;
 import model.enums.Role;
 import model.enums.SuggestionStatus;
+import report.ReportController;
+import report.enums.ReportOutputType;
+import report.enums.ReportType;
 
 public class CommonUse {
     public void ViewingCamps(String loggedID) {
@@ -158,5 +161,65 @@ public class CommonUse {
         Integer validate = sc.nextInt();
 
         return validate;
+    }
+
+    public static void FileType(ArrayList<Camp> camps, FilterObj filtering, ReportType reportType) {
+        ReportController rp = new ReportController();
+        System.out.println("\nSelect your format\n1) .txt \n2) .csv");
+        Boolean continues = true;
+        while (continues) {
+            Integer format = CommonUse.dataValidation();
+            switch (format) {
+                case 1: // txt
+                    rp.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.TXT);
+                    continues = false;
+                    break;
+
+                case 2: // csv
+                    rp.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.CSV);
+                    continues = false;
+                    break;
+
+                default:
+                    System.out.print("Please select file format 1 or 2: ");
+                    break;
+            }
+        }
+
+    }
+
+    public static void FilterReport(ArrayList<Camp> camps) {
+        FilterObj filtering = new FilterObj();
+        System.out.println("\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) All\n4) Quit");
+        System.out.println("Enter your choice and select 4 to quit");
+        Boolean continues = true;
+        while (continues) {
+            Integer filter = CommonUse.dataValidation();
+            // report includes camp details n filtered results
+            switch (filter) {
+                case 1: // report includes attendee name
+                    filtering.setSelectedAttendee(true);
+                    break;
+
+                case 2: // report includes comm name
+                    filtering.setSelectedCampCommittee(true);
+                    break;
+
+                case 3: // include everything?
+                    filtering.isAllCase5();
+
+                case 4:
+                    continues = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid detail");
+                    break;
+            }
+
+        }
+
+        FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
+
     }
 }

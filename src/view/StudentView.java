@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.*;
+import model.Camp;
 import model.enums.EnquiryStatus;
 
 public class StudentView {
@@ -38,8 +39,7 @@ public class StudentView {
                     Integer reg = CommonUse.dataValidation();
                     switch (reg) {
                         case 1: // reg as committee
-                            // note: check if alr in another camp, rej if yes
-
+                            
                             System.out.println("Select the camp you want to join");
 
                             Integer input = CommonUse.dataValidation();
@@ -193,11 +193,12 @@ public class StudentView {
 
             case 5: // view registered camps n role(attendee/committee)
                 for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    // System.out.println(CampController.getAllCamps().get(i).getParticipantIds().get(i).equals(loggedID));
+
                     getcampaid.add(CampController.getAllCamps().get(i).getCampId());
-                    System.out.println(getcampaid.size());
+                    
                 }
-                System.out.println(
-                        "These are the camps you have registered for");
+                System.out.println("These are the camps you have registered for");
 
                 break;
 

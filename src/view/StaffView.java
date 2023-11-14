@@ -1,9 +1,11 @@
 package view;
 
 import controller.*;
+import model.Camp;
 import model.enums.SuggestionStatus;
 import report.ReportController;
 import report.enums.ReportOutputType;
+import report.enums.ReportType;
 
 import java.util.*;
 
@@ -12,7 +14,9 @@ public class StaffView {
     public static void Staff(Integer choice, String loggedID) {
         Scanner sc = new Scanner(System.in);
         CommonUse common = new CommonUse();
-
+        
+        ArrayList<Camp> camps = new ArrayList<>();
+        
         boolean continues = true;
 
         switch (choice) {
@@ -31,8 +35,13 @@ public class StaffView {
                             getparticipant.addAll(CampController.getAllCamps().get(i).getParticipantIds());
                             getcommittee.addAll(CampController.getAllCamps().get(i).getCommitteeIds());
                         }
+                        System.out.println("********Committee********");
                         for (int i = 0; i < getcommittee.size(); i++) {
-                            System.out.println(i + ")" + getcommittee.get(i) + "Participant: " + getparticipant.get(i));
+                            System.out.println(i + ")" + getcommittee.get(i));
+                        }
+                        System.out.println("********Participant********");
+                        for (int i = 0; i < getparticipant.size(); i++) {
+                          System.out.println(i + ")" + getparticipant.get(i));
                         }
                         break;
                     
@@ -68,7 +77,7 @@ public class StaffView {
                 System.out.println("**********************************");
                 while (continues) {
 
-                    System.out.println("1) Reply Enquiries\n2) Quit");
+                    System.out.println("1) Reply Enquiries\n2) Generate report\n3) Quit");
                     Scanner scan = new Scanner(System.in);
                     Integer reply = CommonUse.dataValidation();
 
@@ -93,6 +102,16 @@ public class StaffView {
                             break;
 
                         case 2:
+                            for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                                if (CampController.getAllCamps().get(i).getStaffInCharge().equals(loggedID)) {
+                                    camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
+                                }
+                            }
+                            CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
+                            continues = true;
+                            break;
+
+                        case 3:
                             continues = false;
                             break;
 
@@ -106,93 +125,24 @@ public class StaffView {
 
             case 5: // generate report of list of students attending each camp the staff created.
                     // list will include details of camp n roles of participants
-                System.out.println(
-                        "\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) Roles \n5) Quit");
-                System.out.println("Enter your choice and select 5 to quit");
-                continues = true;
-                while (continues) {
-                    Integer filter = CommonUse.dataValidation();
-                   
-                    switch (filter) {
-                        case 1:
-                            //filterOutput.toggleAttendee();
-                            break;
-
-                        case 2:
-                            // filterOutput.toggleCommittee();
-                            break;
-
-                        case 3:
-                            // filterOutput.toggleRoles();
-                            break;
-
-                        case 5:
-                            continues = false;
-                            break;
-
-                        default:
-                            System.out.println("Invalid detail");
-                            break;
-                    }
-
-                }
-                // note: show the details they want??
-                System.out.println("\nSelect your format\n1) .txt \n2) .csv");
-                continues = true;
-
-                while (continues) {
-                    Integer format = CommonUse.dataValidation();
-                    switch (format) {
-                        case 1: // txt
-                            ReportController rp = new ReportController(ReportOutputType.TXT);
-                            continues = false;
-                            break;
-
-                        case 2: // csv
-                            rp = new ReportController(ReportOutputType.CSV);
-                            continues = false;
-                            break;
-
-                        default:
-                            System.out.print("Please select file format 1 or 2: ");
-                            break;
+                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    if (CampController.getAllCamps().get(i).getStaffInCharge().equals(loggedID)) {
+                        camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
                     }
                 }
-                // rp.generateAndWriteReports();
+                CommonUse.FilterReport(camps);
                 continues = true;
                 break;
 
             case 6: // performance report of camp comm members
-                ArrayList<String> getcomm = new ArrayList<>();
-                ArrayList<Integer> getpts = new ArrayList<>();
-                for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
-                    getcomm.add("UserID" + StudentController.getAllStudents().get(i).getUserId() + "Name: "
-                            + StudentController.getAllStudents().get(i).getName());
-                    getpts.add(StudentController.getAllStudents().get(i).getPoints());
-                }
-                System.out.println("\nSelect your format\n1) .txt \n2) .csv");
-
-                while (continues) {
-                    Integer format = CommonUse.dataValidation();
-                    switch (format) {
-                        case 1: // txt
-                            ReportController rp = new ReportController(ReportOutputType.TXT);
-                            // rp.generateAndWriteReports(CampController.getAllCamps().get(0).getCommitteeIds(),
-                            // ReportType.PERFORMANCE_REPORT);
-                            continues = false;
-                            break;
-
-                        case 2: // csv
-                            rp = new ReportController(ReportOutputType.CSV);
-                            continues = false;
-                            break;
-
-                        default:
-                            System.out.print("Please select file format 1 or 2: ");
-                            break;
+                
+                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
+                    if (CampController.getAllCamps().get(i).getStaffInCharge().equals(loggedID)) {
+                    camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
                     }
                 }
-                // rp.generateAndWriteReports();
+
+                CommonUse.FileType(camps, null, ReportType.PERFORMANCE_REPORT);                
                 continues = true;
                 break;
 
@@ -271,7 +221,10 @@ public class StaffView {
                 break;
 
             case 9: // change password
-
+                Scanner scan = new Scanner(System.in);
+                String pw = scan.nextLine();
+                UserController.changePassword(loggedID, pw);
+                System.out.println("Password updated");
                 break;
 
             case 10:
