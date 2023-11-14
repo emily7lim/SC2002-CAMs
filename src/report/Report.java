@@ -14,105 +14,120 @@ import report.enums.ReportOutputType;
 import view.FilterObj;
 
 /**
- * Generates report content for different report types, including camp lists and
- * committee performance reports.
+ * Generates report content for different report types,
+ * Only has static methods
  * 
  * @author Choh Lit Han Owen
- * @version 1.1
+ * @version 1.2
  * @since 2023-11-03
  */
 public class Report {
-    // TODO
-    // make this class static?
-    private StringBuilder reportContent;
-
-    public Report() {
-        this.reportContent = new StringBuilder();
-    }
-
     /**
-     * Get the generated report content.
-     *
-     * @return The generated report content.
-     */
-    public String getReportContent() {
-        return reportContent.toString();
-    }
-
-    /**
-     * Clear the report content.
-     */
-    public void clearReportContent() {
-        this.reportContent.setLength(0);
-    }
-
-    /**
-     * Generate a camp list report based on the specified report output type.
+     * Generate a camp details report based on the specified report output type.
      *
      * @param camps            The list of camps to include in the report.
+     * @param filterObj        The filter options for the report.
      * @param reportOutputType The type of report to generate (TXT or CSV).
-     * @return The generated camp list report.
+     * @return The generated camp details report.
      */
-    public String generateCampListReport(List<Camp> camps, FilterObj filterObj, ReportOutputType reportOutputType) {
+    public static String generateCampDetailsReport(List<Camp> camps, FilterObj filterObj,
+            ReportOutputType reportOutputType) {
         // no need to check filterObj since controller checked
-        
+        StringBuilder reportContent = new StringBuilder();
         String header;
         switch (reportOutputType) {
             case TXT:
                 header = "Camp List Report:";
-                this.reportContent.append(header + "\n");
+                reportContent.append(header + "\n");
 
                 camps.forEach(camp -> {
-                    this.reportContent.append("Camp Id: " + camp.getCampId() + "\n");
-                    this.reportContent.append("Camp Name: " + camp.getName() + "\n");
-                    this.reportContent.append("Staff IC: " + camp.getStaffInCharge() + "\n");
-                    this.reportContent.append("Description: " + camp.getDescription() + "\n\n");
+                    reportContent.append("Camp Id: " + camp.getCampId() + "\n");
+                    reportContent.append("Camp Name: " + camp.getName() + "\n");
+                    reportContent.append("Staff IC: " + camp.getStaffInCharge() + "\n");
+                    reportContent.append("Description: " + camp.getDescription() + "\n\n");
 
-                    // is user wants attendee list in report
-                    if(filterObj.isSelectedAttendee()){
-                        this.reportContent.append("Participant List:\n");
+                    // if user wants attendee list in report
+                    if (filterObj.isSelectedAttendee()) {
+                        reportContent.append("Participant List:\n");
                         List<Student> participants = getParticipantMembers(camp);
                         int i = 1;
-                        for(Student student : participants){
-                            this.reportContent.append("Participant " + i + "Id: " + student.getUserId() + "\n");
-                            this.reportContent.append("Participant " + i + "Name: " + student.getName() + "\n");
-                            this.reportContent.append("Participant " + i + "Faculty: " + student.getFaculty() + "\n");
-                            this.reportContent.append("Participant " + i++ + "Role: " + student.getRole() + "\n");
+                        for (Student student : participants) {
+                            reportContent.append("Participant " + i + "Id: " + student.getUserId() + "\n");
+                            reportContent.append("Participant " + i + "Name: " + student.getName() + "\n");
+                            reportContent.append("Participant " + i + "Faculty: " + student.getFaculty() + "\n");
+                            reportContent.append("Participant " + i++ + "Role: " + student.getRole() + "\n");
                         }
                     }
 
-                    // is user wants committee list in report
-                    if(filterObj.isSelectedCampCommittee()){
-                        this.reportContent.append("Committee List:\n");
+                    // if user wants committee list in report
+                    if (filterObj.isSelectedCampCommittee()) {
+                        reportContent.append("Committee List:\n");
                         List<Student> commMembers = getCommitteeMembers(camp);
                         int i = 1;
-                        for(Student student : commMembers){
-                            this.reportContent.append("Committee member " + i + "Id: " + student.getUserId() + "\n");
-                            this.reportContent.append("Committee member " + i + "Name: " + student.getName() + "\n");
-                            this.reportContent.append("Committee member " + i + "points: " + student.getPoints() + "\n");
-                            this.reportContent.append("Committee member " + i + "Faculty: " + student.getFaculty() + "\n");
-                            this.reportContent.append("Committee member " + i++ + "Role: " + student.getRole() + "\n");
+                        for (Student student : commMembers) {
+                            reportContent.append("Committee member " + i + "Id: " + student.getUserId() + "\n");
+                            reportContent.append("Committee member " + i + "Name: " + student.getName() + "\n");
+                            reportContent.append("Committee member " + i + "points: " + student.getPoints() + "\n");
+                            reportContent.append("Committee member " + i + "Faculty: " + student.getFaculty() + "\n");
+                            reportContent.append("Committee member " + i++ + "Role: " + student.getRole() + "\n");
                         }
                     }
                 });
                 break;
             case CSV:
-                header = "Camp Id,Camp Name,Start Date,Location";
-                this.reportContent.append(header).append("\n");
+                header = "Camp Id,Camp Name,Staff IC,Description"; // camp values to print
+                if (filterObj.isSelectedAttendee() || filterObj.isSelectedCampCommittee())
+                    header.concat(",Student Id,Student Name,Student Faculty,Student Role,Points"); // student values to
+                                                                                                   // print
+                reportContent.append(header + "\n");
 
                 camps.forEach(camp -> {
-                    this.reportContent.append(
-                            formatCsvField(camp.getCampId()) + "," + 
-                            formatCsvField(camp.getName()) + "," + 
-                            formatCsvField(camp.getStaffInCharge()) + "," + 
-                            formatCsvField(camp.getDescription()) + "\n"
-                            );  
+                    // same starting values for different students
+                    String campStr = formatCsvField(camp.getCampId()) + "," +
+                            formatCsvField(camp.getName()) + "," +
+                            formatCsvField(camp.getStaffInCharge()) + "," +
+                            formatCsvField(camp.getDescription());
+
+                    // parts for filtering
+                    // if user wants attendee list in report
+                    if (filterObj.isSelectedAttendee()) {
+                        List<Student> participants = getParticipantMembers(camp);
+                        csvStudentFormatter(reportContent, campStr, participants);
+                    }
+
+                    // if user wants committee list in report
+                    if (filterObj.isSelectedCampCommittee()) {
+                        List<Student> commMembers = getCommitteeMembers(camp);
+                        csvStudentFormatter(reportContent, campStr, commMembers);
+                    }
+                    // next camp
+                    reportContent.append("\n");
                 });
                 break;
             default:
                 break;
         }
         return reportContent.toString();
+    }
+
+    /**
+     * Helper function for generateCampListReport csv part.
+     * Formats student details and appends them to the report content.
+     *
+     * @param reportContent The StringBuilder to append the formatted details.
+     * @param campStr       The formatted camp details.
+     * @param students      The list of students to include in the report.
+     */
+    private static void csvStudentFormatter(StringBuilder reportContent, String campStr, List<Student> stds) {
+        for (Student student : stds) {
+            reportContent.append(campStr);
+
+            reportContent.append(formatCsvField(student.getUserId()) + "," +
+                    formatCsvField(student.getName()) + "," +
+                    formatCsvField(student.getFaculty().getFaculty()) + "," +
+                    formatCsvField(student.getRole().getRole()) + "," +
+                    student.getPoints() + "\n");
+        }
     }
 
     /**
@@ -123,37 +138,37 @@ public class Report {
      * @param reportOutputType The type of report to generate (TXT or CSV).
      * @return The generated committee performance report.
      */
-    public String generateCampCommitteePerformanceReport(List<Camp> camps, ReportOutputType reportOutputType) {
+    public static String generateCampCommitteePerformanceReport(List<Camp> camps, ReportOutputType reportOutputType) {
+        StringBuilder reportContent = new StringBuilder();
         String header;
         switch (reportOutputType) {
             case TXT:
                 header = "Camp Committee Performance Report:";
-                this.reportContent.append(header + "\n");
+                reportContent.append(header + "\n");
 
                 camps.forEach(camp -> {
                     List<Student> committeeMembers = getCommitteeMembers(camp);
-                    this.reportContent.append("Camp Id: " + camp.getCampId() + "\n");
+                    reportContent.append("Camp Id: " + camp.getCampId() + "\n");
                     committeeMembers.forEach(member -> {
-                        this.reportContent.append("Committee Member Name: " + member.getName() + "\n");
-                        this.reportContent.append("Committee Points: " + member.getPoints() + "\n");
+                        reportContent.append("Committee Member Name: " + member.getName() + "\n");
+                        reportContent.append("Committee Points: " + member.getPoints() + "\n");
                     });
-                    this.reportContent.append("\n");
+                    reportContent.append("\n");
                 });
                 break;
             case CSV:
                 header = "Camp Name,Committee Member Name,Committee Points";
-                this.reportContent.append(header + "\n");
+                reportContent.append(header + "\n");
 
                 camps.forEach(camp -> {
                     String campName = formatCsvField(camp.getName());
                     List<Student> committeeMembers = getCommitteeMembers(camp);
 
                     committeeMembers.forEach(member -> {
-                        this.reportContent.append(
-                            campName + "," +
-                            formatCsvField(member.getName()) + "," +
-                            member.getPoints() + "\n"
-                        );
+                        reportContent.append(
+                                campName + "," +
+                                        formatCsvField(member.getName()) + "," +
+                                        member.getPoints() + "\n");
                     });
                 });
                 break;
@@ -165,39 +180,40 @@ public class Report {
     }
 
     /**
-     * Generate a Enquiry report based on the specified report output type.
+     * Generate an Enquiry report based on the specified report output type.
      *
      * @param camps            The list of camps to include in the report.
      * @param reportOutputType The type of report to generate (TXT or CSV).
      * @return The generated Enquiry report.
      */
-    public String generateEnquiryReport(List<Camp> camps, ReportOutputType reportOutputType) {
+    public static String generateEnquiryReport(List<Camp> camps, ReportOutputType reportOutputType) {
+        StringBuilder reportContent = new StringBuilder();
         String header;
         switch (reportOutputType) {
             case TXT:
                 header = "Enquiry Report:";
-                this.reportContent.append(header).append("\n");
+                reportContent.append(header).append("\n");
 
                 camps.forEach(camp -> {
                     String campName = camp.getName();
 
                     List<Enquiry> enquiries = getEnquiries(camp);
-                    this.reportContent.append("Camp Name: " + campName).append("\n");
+                    reportContent.append("Camp Name: " + campName).append("\n");
 
                     enquiries.forEach(enquiry -> {
-                        this.reportContent.append("Enquiry Id: " + enquiry.getEnquiryId()).append("\n");
-                        this.reportContent.append("Creator Id: " + enquiry.getCreatorId()).append("\n");
-                        this.reportContent.append("Responder Id: " + enquiry.getResponderId()).append("\n");
-                        this.reportContent.append("Message: " + enquiry.getMessage()).append("\n");
-                        this.reportContent.append("Reply Name: " + enquiry.getReply()).append("\n");
-                        this.reportContent.append("Enquiry status: " + enquiry.getStatus()).append("\n");
+                        reportContent.append("Enquiry Id: " + enquiry.getEnquiryId()).append("\n");
+                        reportContent.append("Creator Id: " + enquiry.getCreatorId()).append("\n");
+                        reportContent.append("Responder Id: " + enquiry.getResponderId()).append("\n");
+                        reportContent.append("Message: " + enquiry.getMessage()).append("\n");
+                        reportContent.append("Reply: " + enquiry.getReply()).append("\n");
+                        reportContent.append("Enquiry status: " + enquiry.getStatus()).append("\n");
                     });
-                    this.reportContent.append("\n");
+                    reportContent.append("\n");
                 });
                 break;
             case CSV:
-                header = "Camp Name,Enquiry Id,Creator Id,Message";
-                this.reportContent.append(header).append("\n");
+                header = "Camp Name,Enquiry Id,Creator Id,Responder Id,Message,Reply,Enquiry status";
+                reportContent.append(header).append("\n");
 
                 camps.forEach(camp -> {
                     String campName = formatCsvField(camp.getName());
@@ -205,14 +221,16 @@ public class Report {
                     List<Enquiry> enquiries = getEnquiries(camp);
 
                     enquiries.forEach(enquiry -> {
-                        this.reportContent.append(
-                            campName + "," +
-                            formatCsvField(enquiry.getEnquiryId()) + "," +
-                            formatCsvField(enquiry.getCreatorId()) + "," +
-                            formatCsvField(enquiry.getMessage()) + "\n"
-                        );
+                        reportContent.append(
+                                campName + "," +
+                                        formatCsvField(enquiry.getEnquiryId()) + "," +
+                                        formatCsvField(enquiry.getCreatorId()) + "," +
+                                        formatCsvField(enquiry.getResponderId()) + "," +
+                                        formatCsvField(enquiry.getMessage()) + "," +
+                                        formatCsvField(enquiry.getReply()) + "," +
+                                        formatCsvField(enquiry.getStatus().getEnquiryStatus()) + "\n");
                     });
-                    this.reportContent.append("\n");
+                    reportContent.append("\n");
 
                 });
                 break;
@@ -230,32 +248,33 @@ public class Report {
      * @param reportOutputType The type of report to generate (TXT or CSV).
      * @return The generated Suggestion report.
      */
-    public String generateSuggestionReport(List<Camp> camps, ReportOutputType reportOutputType) {
+    public static String generateSuggestionReport(List<Camp> camps, ReportOutputType reportOutputType) {
+        StringBuilder reportContent = new StringBuilder();
         String header;
         switch (reportOutputType) {
             case TXT:
                 header = "Suggestion Report:";
-                this.reportContent.append(header).append("\n");
+                reportContent.append(header).append("\n");
 
                 camps.forEach(camp -> {
                     String campName = camp.getName();
 
                     List<Suggestion> suggestions = getSuggestions(camp);
-                    this.reportContent.append("Camp Name: " + campName).append("\n");
+                    reportContent.append("Camp Name: " + campName).append("\n");
 
                     suggestions.forEach(suggestion -> {
-                        this.reportContent.append("Suggestion Id: " + suggestion.getSuggestionId() + "\n");
-                        this.reportContent.append("Creator Id: " + suggestion.getCreatorId() + "\n");
-                        this.reportContent.append("Responder Id: " + suggestion.getResponderId() + "\n");
-                        this.reportContent.append("Message: " + suggestion.getMessage() + "\n");
-                        this.reportContent.append("Suggestion status: " + suggestion.getStatus().getSuggestionStatus() + "\n");
+                        reportContent.append("Suggestion Id: " + suggestion.getSuggestionId()).append("\n");
+                        reportContent.append("Creator Id: " + suggestion.getCreatorId()).append("\n");
+                        reportContent.append("Responder Id: " + suggestion.getResponderId()).append("\n");
+                        reportContent.append("Message: " + suggestion.getMessage()).append("\n");
+                        reportContent.append("Suggestion status: " + suggestion.getStatus()).append("\n");
                     });
-                    this.reportContent.append("\n");
+                    reportContent.append("\n");
                 });
                 break;
             case CSV:
-                header = "Camp Name,Suggestion Id,Creator Id,Message";
-                this.reportContent.append(header).append("\n");
+                header = "Camp Name,Suggestion Id,Creator Id,Responder Id,Message,Suggestion status";
+                reportContent.append(header).append("\n");
 
                 camps.forEach(camp -> {
                     String campName = formatCsvField(camp.getName());
@@ -263,15 +282,15 @@ public class Report {
                     List<Suggestion> suggestions = getSuggestions(camp);
 
                     suggestions.forEach(suggestion -> {
-                        this.reportContent.append(
-                            campName + "," +
-                            formatCsvField(suggestion.getSuggestionId()) + "," +
-                            formatCsvField(suggestion.getCreatorId()) + "," +
-                            formatCsvField(suggestion.getMessage()) + "," +
-                            suggestion.getStatus().getSuggestionStatus() + "\n"
-                        );
+                        reportContent.append(
+                                campName + "," +
+                                        formatCsvField(suggestion.getSuggestionId()) + "," +
+                                        formatCsvField(suggestion.getCreatorId()) + "," +
+                                        formatCsvField(suggestion.getResponderId()) + "," +
+                                        formatCsvField(suggestion.getMessage()) + "," +
+                                        formatCsvField(suggestion.getStatus().getSuggestionStatus()) + "\n");
                     });
-                    this.reportContent.append("\n");
+                    reportContent.append("\n");
 
                 });
                 break;
@@ -283,12 +302,12 @@ public class Report {
     }
 
     /**
-     * Helper method to retrieve camp committee members for a camp
+     * Helper method to retrieve camp committee members for a camp.
      *
      * @param camp The camp for which to retrieve committee members.
      * @return A list of committee members.
      */
-    private List<Student> getCommitteeMembers(Camp camp) {
+    private static List<Student> getCommitteeMembers(Camp camp) {
         ArrayList<String> commIds = camp.getCommitteeIds();
         List<Student> committeeMembers = new ArrayList<>();
 
@@ -299,12 +318,12 @@ public class Report {
     }
 
     /**
-     * Helper method to retrieve camp Participant members for a camp
+     * Helper method to retrieve camp participant members for a camp.
      *
      * @param camp The camp for which to retrieve participants.
      * @return A list of participants.
      */
-    private List<Student> getParticipantMembers(Camp camp) {
+    private static List<Student> getParticipantMembers(Camp camp) {
         ArrayList<String> parIds = camp.getParticipantIds();
         List<Student> participants = new ArrayList<>();
 
@@ -315,12 +334,12 @@ public class Report {
     }
 
     /**
-     * Helper method to retrieve camp enquiries
+     * Helper method to retrieve camp enquiries.
      *
      * @param camp The camp for which to retrieve enquiries.
      * @return A list of enquiries.
      */
-    private List<Enquiry> getEnquiries(Camp camp) {
+    private static List<Enquiry> getEnquiries(Camp camp) {
         ArrayList<String> enqIds = camp.getEnquiryIds();
         List<Enquiry> enquiries = new ArrayList<>();
 
@@ -331,12 +350,12 @@ public class Report {
     }
 
     /**
-     * Helper method to retrieve camp Suggestions
+     * Helper method to retrieve camp suggestions.
      *
      * @param camp The camp for which to retrieve suggestions.
-     * @return A list of Suggestions.
+     * @return A list of suggestions.
      */
-    private List<Suggestion> getSuggestions(Camp camp) {
+    private static List<Suggestion> getSuggestions(Camp camp) {
         ArrayList<String> sugIds = camp.getSuggestionIds();
         List<Suggestion> suggestions = new ArrayList<>();
 
@@ -353,7 +372,7 @@ public class Report {
      * @param field The field to format.
      * @return The properly formatted field.
      */
-    private String formatCsvField(String field) {
+    private static String formatCsvField(String field) {
         // If the field contains a special character or whitespace, enclose it within
         // double quotes
         // Plus if the field contains double quotes, escape them

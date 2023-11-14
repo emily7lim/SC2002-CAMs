@@ -8,7 +8,6 @@ package report.enums;
  * @since 2023-11-03
  */
 public enum ReportType {
-    CAMP_LIST("Camp List"), // will remove when camp_details is done
     CAMP_DETAILS_REPORT("Camp Details Report"),
     PERFORMANCE_REPORT("Performance Report"),
     ENQUIRIES_REPORT("Enquiries Report"),

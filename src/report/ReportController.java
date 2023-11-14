@@ -11,83 +11,74 @@ import report.writer.TxtWriter;
 import view.FilterObj;
 
 /**
- * Manages the generation and writing of various reports, 
+ * Manages the generation and writing of various reports,
  * such as camp lists and performance reports.
+ * Only has static methods
  * 
  * @author Choh Lit Han Owen
- * @version 1.2
+ * @version 1.3
  * @since 2023-11-03
  */
 public class ReportController {
+    // relative path
     private static final String basePath = "./src/report/";
-    // the folder to store reports into 
+    // the folder to store reports into
     private static final String folder = "reportfiles";
-    // Object to get and format the details required
-    private Report report;
     // default file output if not specified in methods
-    private ReportOutputType reportOutputType;
+    private static final ReportOutputType reportOutputType = ReportOutputType.TXT;
     // default file name used if not specified in methods
-    private String baseFilename; 
+    private static final String baseFilename = "report";
 
     /**
-     * Default constructor for the ReportController.
-     * Initializes the report, baseFilename, and reportOutputType with default values.
+     * Overload of the generateUniqueFilename method with all default values set in
+     * constructor.
+     * 
+     * @see #generateUniqueFilename(String baseFilename, ReportOutputType
+     *      reportOutputType)
+     * 
+     * @return A unique filename generated based on the default baseFilename and
+     *         reportOutputType.
      */
-    public ReportController(){
-        this.report = new Report();
-        this.baseFilename = "report";
-        this.reportOutputType = ReportOutputType.TXT;
-    }
+    public static String generateUniqueFilename() {
+        return ReportController.generateUniqueFilename(ReportController.baseFilename,
+                ReportController.reportOutputType);
+    };
 
-    /**
-     * Constructor with a specified report output type.
-     * Initializes the report, baseFilename with default values, 
-     * and reportOutputType with the specified value.
-     * 
-     * @param reportOutputType The specified report output type (e.g., TXT or CSV).
-     */
-    public ReportController(ReportOutputType reportOutputType){
-        this.report = new Report();
-        this.baseFilename = "report";
-        this.reportOutputType = reportOutputType;
-    }
-
-    /**
-     * Overload of the generateUniqueFilename method with all default values set in constructor.
-     * 
-     * @see #generateUniqueFilename(String baseFilename, ReportOutputType reportOutputType)
-     * 
-     * @return A unique filename generated based on the default baseFilename and reportOutputType.
-     */
-    public String generateUniqueFilename(){ return this.generateUniqueFilename(this.baseFilename, this.reportOutputType); };
     /**
      * Overload of the generateUniqueFilename method with default reportOutputType.
      * 
      * @param baseFilename The string parameter for the report file name.
      * 
-     * @see #generateUniqueFilename(String baseFilename, ReportOutputType reportOutputType)
+     * @see #generateUniqueFilename(String baseFilename, ReportOutputType
+     *      reportOutputType)
      * 
-     * @return A unique filename generated based on the specified baseFilename and the default reportOutputType.
+     * @return A unique filename generated based on the specified baseFilename and
+     *         the default reportOutputType.
      */
-    public String generateUniqueFilename(String baseFilename){ return this.generateUniqueFilename(baseFilename, this.reportOutputType); };
+    public static String generateUniqueFilename(String baseFilename) {
+        return ReportController.generateUniqueFilename(baseFilename, ReportController.reportOutputType);
+    };
 
     /**
-     * Generate a unique filename, accounting for conflicts where the file already exists.
+     * Generate a unique filename, accounting for conflicts where the file already
+     * exists.
      * Conflicts means the name will become "filname" + "_number"
      * 
-     * @param baseFilename The string parameter for the report file name.
-     * @param reportOutputType The ReportOutputType parameter from enum ReportOutputType.
+     * @param baseFilename     The string parameter for the report file name.
+     * @param reportOutputType The ReportOutputType parameter from enum
+     *                         ReportOutputType.
      * 
      * @return The final name of the report file after handling conflicts.
      */
-    public String generateUniqueFilename(String baseFilename, ReportOutputType reportOutputType) {
-        if(baseFilename.length() == 0) baseFilename = this.baseFilename;
+    public static String generateUniqueFilename(String baseFilename, ReportOutputType reportOutputType) {
+        if (baseFilename.length() == 0)
+            baseFilename = ReportController.baseFilename;
         String extension = "." + reportOutputType.getReportOutputTypeStr();
-        String filePath = getFilePath(this.baseFilename + extension);
+        String filePath = getFilePath(ReportController.baseFilename + extension);
         int counter = 1;
 
         while (fileExists(filePath)) {
-            filePath = getFilePath(this.baseFilename + "_" + counter + extension);
+            filePath = getFilePath(ReportController.baseFilename + "_" + counter + extension);
             counter++;
         }
         return filePath;
@@ -100,7 +91,7 @@ public class ReportController {
      * 
      * @return True if the file with the given name exists; otherwise, false.
      */
-    public boolean fileExists(String filename) {
+    public static boolean fileExists(String filename) {
         File file = new File(filename);
         return file.exists();
     }
@@ -120,12 +111,12 @@ public class ReportController {
      * Write the report details to a file using the appropriate writer.
      * Chooses output file type using instance variable
      * 
-     * @param data The string parameter for the data to write.
+     * @param data     The string parameter for the data to write.
      * @param filePath The string parameter for the file path to save the report to.
      */
-    public void writeReportToFile(String content, String filePath) {
+    public static void writeReportToFile(String content, String filePath) {
         // Determine the writer method based on the report type
-        switch (this.reportOutputType) {
+        switch (ReportController.reportOutputType) {
             case TXT:
                 TxtWriter.writeReportToFile(content, filePath);
                 break;
@@ -133,7 +124,7 @@ public class ReportController {
                 CsvWriter.writeReportToFile(content, filePath);
                 break;
             default:
-                System.out.println("Unsupported report type: " + this.reportOutputType);
+                System.out.println("Unsupported report type: " + ReportController.reportOutputType);
                 break;
         }
     }
@@ -141,51 +132,77 @@ public class ReportController {
     /**
      * Generate and write reports for a list of camps and a specific report type.
      * 
-     * @param camps The list of camps for which to generate and write reports.
-     * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
+     * @param camps      The list of camps for which to generate and write reports.
+     * @param filterObj  The filter options for the report.
+     * @param reportType The specific report type to generate (e.g., CAMP_LIST or
+     *                   PERFORMANCE_REPORT).
      */
-    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType) { this.generateAndWriteReports(camps, filterObj, reportType, this.reportOutputType, this.baseFilename); }
-    
+    public static void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType) {
+        ReportController.generateAndWriteReports(camps, filterObj, reportType, ReportController.reportOutputType,
+                ReportController.baseFilename);
+    }
+
     /**
      * Generate and write reports for a list of camps and a specific report type.
      * 
-     * @param camps The list of camps for which to generate and write reports.
-     * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
+     * @param camps            The list of camps for which to generate and write
+     *                         reports.
+     * @param filterObj        The filter options for the report.
+     * @param reportType       The specific report type to generate (e.g., CAMP_LIST
+     *                         or PERFORMANCE_REPORT).
+     * @param reportOutputType The type of report to generate (TXT or CSV).
      */
-    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType, ReportOutputType reportOutputType) { this.generateAndWriteReports(camps, filterObj, reportType, reportOutputType, this.baseFilename); }
+    public static void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType,
+            ReportOutputType reportOutputType) {
+        ReportController.generateAndWriteReports(camps, filterObj, reportType, reportOutputType,
+                ReportController.baseFilename);
+    }
 
     /**
-     * Generate and write reports for a list of camps, a specific report type, and a custom file name.
+     * Generate and write reports for a list of camps, a specific report type, and a
+     * custom file name.
      * 
-     * @param camps The list of camps for which to generate and write reports.
-     * @param reportType The specific report type to generate (e.g., CAMP_LIST or PERFORMANCE_REPORT).
-     * @param fileName The custom file name for the report.
+     * @param camps            The list of camps for which to generate and write
+     *                         reports.
+     * @param filterObj        The filter options for the report.
+     * @param reportType       The specific report type to generate.
+     * @param reportOutputType The type of report to generate (TXT or CSV).
+     * @param fileName         The custom file name for the report.
      */
-    public void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType, ReportOutputType reportOutputType, String fileName) {
-        if(!filterObj.isAllCase5()){
-            System.out.println("all filters are false, please check the filterObj");
-            return;
-        }
+    public static void generateAndWriteReports(List<Camp> camps, FilterObj filterObj, ReportType reportType,
+            ReportOutputType reportOutputType, String fileName) {
         String reportContent = "";
 
         switch (reportType) {
-            case CAMP_LIST:
-                reportContent = report.generateCampListReport(camps, filterObj, reportOutputType);
+            case CAMP_DETAILS_REPORT:
+                if (!filterObj.isAnyCase5()) {
+                    System.out.println("all filters are false, please check the filterObj");
+                    return;
+                }
+                reportContent = Report.generateCampDetailsReport(camps, filterObj, reportOutputType);
                 break;
             case PERFORMANCE_REPORT:
-                reportContent = report.generateCampCommitteePerformanceReport(camps, reportOutputType); //TODO
+                reportContent = Report.generateCampCommitteePerformanceReport(camps, reportOutputType); // TODO if need
+                                                                                                        // filter
+                break;
+            case ENQUIRIES_REPORT:
+                reportContent = Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
+                break;
+            case SUGGESTION_REPORT:
+                reportContent = Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
                 break;
             default:
                 break;
         }
 
-        if(reportContent.equals("")){
-            System.out.println("err in making report");
+        if (reportContent.equals("")) {
+            System.out.println("error in making report");
             return;
         }
-        
+
         String filePath = generateUniqueFilename(fileName);
-        
+
         writeReportToFile(reportContent, filePath);
     }
+
 }
