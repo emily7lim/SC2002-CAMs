@@ -11,6 +11,7 @@ import model.Enquiry;
 import model.Student;
 import model.Suggestion;
 import report.enums.ReportOutputType;
+import report.enums.ReportType;
 import view.FilterObj;
 
 /**
@@ -22,6 +23,36 @@ import view.FilterObj;
  * @since 2023-11-03
  */
 public class Report {
+    /**
+     * Generate and write reports for a list of camps, 
+     * a specific report type and output 
+     * 
+     * @param camps            The list of camps for which to generate and write
+     *                         reports.
+     * @param filterObj        The filter options for the report.
+     * @param reportType       The specific report type to generate.
+     * @param reportOutputType The type of report to generate (TXT or CSV).
+     */
+    public static String generateReport(List<Camp> camps, FilterObj filterObj, ReportType reportType, ReportOutputType reportOutputType){
+        switch (reportType) {
+            case CAMP_DETAILS_REPORT:
+                if (!filterObj.isAnyCase5()) {
+                    System.out.println("all filters are false, please check the filterObj");
+                    break;
+                }
+                return Report.generateCampDetailsReport(camps, filterObj, reportOutputType);
+            case PERFORMANCE_REPORT:
+                return Report.generateCampCommitteePerformanceReport(camps, reportOutputType); // TODO if need filter
+            case ENQUIRIES_REPORT:
+                return Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
+            case SUGGESTION_REPORT:
+                return Report.generateSuggestionReport(camps, reportOutputType); // TODO if need filter
+            default:
+                break;
+        }
+        return "";
+    }
+
     /**
      * Generate a camp details report based on the specified report output type.
      *

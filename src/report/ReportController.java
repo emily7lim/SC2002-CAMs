@@ -182,27 +182,7 @@ public class ReportController {
             ReportOutputType reportOutputType, String fileName) {
         String reportContent = "";
 
-        switch (reportType) {
-            case CAMP_DETAILS_REPORT:
-                if (!filterObj.isAnyCase5()) {
-                    System.out.println("all filters are false, please check the filterObj");
-                    return;
-                }
-                reportContent = Report.generateCampDetailsReport(camps, filterObj, reportOutputType);
-                break;
-            case PERFORMANCE_REPORT:
-                reportContent = Report.generateCampCommitteePerformanceReport(camps, reportOutputType); // TODO if need
-                                                                                                        // filter
-                break;
-            case ENQUIRIES_REPORT:
-                reportContent = Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
-                break;
-            case SUGGESTION_REPORT:
-                reportContent = Report.generateSuggestionReport(camps, reportOutputType); // TODO if need filter
-                break;
-            default:
-                break;
-        }
+        reportContent = Report.generateReport(camps, filterObj, reportType, reportOutputType);
 
         if (reportContent.equals("")) {
             System.out.println("error in making report");
