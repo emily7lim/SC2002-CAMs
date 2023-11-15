@@ -157,6 +157,7 @@ public class StudentView {
                             else {
                                 for (int j = 0; j < getenquiryid.size(); j++) {
                                     if (input == j) {
+                                        System.out.println("Input enquiry");
                                         String updateenquirymsg = "";
                                         updateenquirymsg += scan.nextLine();
                                         EnquiryController.updateEnquiryMessage(getenquiryid.get(j), updateenquirymsg);

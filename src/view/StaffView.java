@@ -2,9 +2,8 @@ package view;
 
 import controller.*;
 import model.Camp;
+import model.enums.EnquiryStatus;
 import model.enums.SuggestionStatus;
-import report.ReportController;
-import report.enums.ReportOutputType;
 import report.enums.ReportType;
 
 import java.util.*;
@@ -65,8 +64,10 @@ public class StaffView {
                 ArrayList<String> getenquiryid = new ArrayList<>();
 
                 for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
+                    if(EnquiryController.getAllEnquiries().get(i).getStatus() == EnquiryStatus.PENDING){
                     getenquiryid.add(EnquiryController.getAllEnquiries().get(i).getEnquiryId());
                     getenquirymsg.add(EnquiryController.getAllEnquiries().get(i).getMessage());
+                    }
                 }
                 System.out.println("*********Your enquiries***********");
                 for (int i = 0; i < getenquirymsg.size(); i++) {
@@ -92,6 +93,7 @@ public class StaffView {
                             } else {
                                 for (int i = 0; i < getenquiryid.size(); i++) {
                                     if (input == i) {
+                                        System.out.println("Input your enquiry");
                                         String replyenquiry = "";
                                         replyenquiry += scan.nextLine();
                                         EnquiryController.replyEnquiry(getenquiryid.get(i), replyenquiry, loggedID);
