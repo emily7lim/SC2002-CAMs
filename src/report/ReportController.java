@@ -198,7 +198,7 @@ public class ReportController {
                 reportContent = Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
                 break;
             case SUGGESTION_REPORT:
-                reportContent = Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
+                reportContent = Report.generateSuggestionReport(camps, reportOutputType); // TODO if need filter
                 break;
             default:
                 break;
