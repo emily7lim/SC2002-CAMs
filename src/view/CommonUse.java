@@ -171,12 +171,12 @@ public class CommonUse {
             Integer format = CommonUse.dataValidation();
             switch (format) {
                 case 1: // txt
-                    rp.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.TXT);
+                    ReportController.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.TXT);
                     continues = false;
                     break;
 
                 case 2: // csv
-                    rp.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.CSV);
+                    ReportController.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.CSV);
                     continues = false;
                     break;
 

@@ -11,7 +11,10 @@ public class LoginView {
 
         do {
             Scanner sc = new Scanner(System.in);
-            System.out.println("User ID: ");
+            System.out.println("1) Login\n2) Terminate");
+            Integer input = CommonUse.dataValidation();
+            if (input == 1){
+                System.out.println("User ID: ");
             String id = sc.nextLine().toUpperCase();
             System.out.println("Password: ");
             String pw = sc.nextLine();
@@ -74,7 +77,9 @@ public class LoginView {
 
             } else
                 System.out.println("Invalid credentials");
-
+            }
+            else if (input == 2) loggedIn = true;
+            
         } while (!loggedIn);
     }
 }

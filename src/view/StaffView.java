@@ -37,7 +37,7 @@ public class StaffView {
                         }
                         System.out.println("********Committee********");
                         for (int i = 0; i < getcommittee.size(); i++) {
-                            System.out.println(i + ")" + getcommittee.get(i));
+                            System.out.println(i + ") " + getcommittee.get(i));
                         }
                         System.out.println("********Participant********");
                         for (int i = 0; i < getparticipant.size(); i++) {
@@ -221,6 +221,7 @@ public class StaffView {
                 break;
 
             case 9: // change password
+                System.out.println("Input your new password");
                 Scanner scan = new Scanner(System.in);
                 String pw = scan.nextLine();
                 UserController.changePassword(loggedID, pw);

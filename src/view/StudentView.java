@@ -65,8 +65,15 @@ public class StudentView {
                             input = CommonUse.dataValidation();
 
                             for (int i = 0; i < getcampaid.size(); i++) {
-
-                                if (input == i) {
+                                if (CampController.checkCampParticipant(CampController.getAllCamps().get(i).getCampId(),
+                                        loggedID)) {
+                                    System.out.println("You are already in another camp.");
+                                    continues = false;
+                                    break;
+                                } else if(CampController.checkCampParticipantWithdrawn(CampController.getAllCamps().get(i).getCampId(), loggedID)){
+                                    System.out.println("Not allowed to join camp that you have previously withdrawn from");
+                                }
+                                else if (input == i) {
                                     CampController.addParticipant(CampController.getAllCamps().get(i).getCampId(),
                                             loggedID);
                                     System.out.println("You have successfully registered as an attendee");
