@@ -67,6 +67,7 @@ public class Camp implements Serializable {
         this.commSlots = commSlots;
         this.description = description;
         this.staffInCharge = staffInCharge;
+        this.withdrawnParticipantIds = new ArrayList<>();
         this.participantIds = new ArrayList<>();
         this.committeeIds = new ArrayList<>();
         this.enquiryIds = new ArrayList<>();
@@ -190,7 +191,7 @@ public class Camp implements Serializable {
         return enquiryIds;
     }
 
-    public void getEnquiryIds(ArrayList<String> enquiryIds) {
+    public void setEnquiryIds(ArrayList<String> enquiryIds) {
         this.enquiryIds = enquiryIds;
     }
 
@@ -198,7 +199,7 @@ public class Camp implements Serializable {
         return suggestionIds;
     }
 
-    public void getSuggestionIds(ArrayList<String> suggestionIds) {
+    public void setSuggestionIds(ArrayList<String> suggestionIds) {
         this.suggestionIds = suggestionIds;
     }
 
