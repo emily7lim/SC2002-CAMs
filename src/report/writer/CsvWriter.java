@@ -1,6 +1,5 @@
 package report.writer;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -21,7 +20,7 @@ public class CsvWriter implements WriterInterface {
     public static void writeReportToFile(String csvData, String filePath) {
         // Writing the CSV report to a file
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            FileWriter writer = new FileWriter(filePath);
             
             writer.write(csvData);
             

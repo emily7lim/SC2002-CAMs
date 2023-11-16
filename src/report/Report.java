@@ -19,13 +19,13 @@ import view.FilterObj;
  * Only has static methods
  * 
  * @author Choh Lit Han Owen
- * @version 1.2
+ * @version 1.2.1
  * @since 2023-11-03
  */
 public class Report {
     /**
-     * Generate and write reports for a list of camps, 
-     * a specific report type and output 
+     * Generate and write reports for a list of camps,
+     * a specific report type and output
      * 
      * @param camps            The list of camps for which to generate and write
      *                         reports.
@@ -33,13 +33,11 @@ public class Report {
      * @param reportType       The specific report type to generate.
      * @param reportOutputType The type of report to generate (TXT or CSV).
      */
-    public static String generateReport(List<Camp> camps, FilterObj filterObj, ReportType reportType, ReportOutputType reportOutputType){
+    public static String generateReport(List<Camp> camps, FilterObj filterObj, ReportType reportType,
+            ReportOutputType reportOutputType) {
         switch (reportType) {
             case CAMP_DETAILS_REPORT:
-                if (!filterObj.isAnyCase5()) {
-                    System.out.println("all filters are false, please check the filterObj");
-                    break;
-                }
+                // if no filter selected then just print camp details
                 return Report.generateCampDetailsReport(camps, filterObj, reportOutputType);
             case PERFORMANCE_REPORT:
                 return Report.generateCampCommitteePerformanceReport(camps, reportOutputType); // TODO if need filter
@@ -75,41 +73,54 @@ public class Report {
                     reportContent.append("Camp Id: " + camp.getCampId() + "\n");
                     reportContent.append("Camp Name: " + camp.getName() + "\n");
                     reportContent.append("Staff IC: " + camp.getStaffInCharge() + "\n");
-                    reportContent.append("Description: " + camp.getDescription() + "\n\n");
+                    reportContent.append("Description: " + camp.getDescription() + "\n");
 
                     // if user wants attendee list in report
                     if (filterObj.isSelectedAttendee()) {
-                        reportContent.append("Participant List:\n");
                         List<Student> participants = getParticipantMembers(camp);
-                        int i = 1;
-                        for (Student student : participants) {
-                            reportContent.append("Participant " + i + "Id: " + student.getUserId() + "\n");
-                            reportContent.append("Participant " + i + "Name: " + student.getName() + "\n");
-                            reportContent.append("Participant " + i + "Faculty: " + student.getFaculty() + "\n");
-                            reportContent.append("Participant " + i++ + "Role: " + student.getRole() + "\n");
+                        reportContent.append("Participant List:");
+                        if (participants.size() == 0) {
+                            reportContent.append("(No Participants)\n");
+                        } else {
+                            reportContent.append("\n");
+                            int i = 1;
+                            for (Student student : participants) {
+                                reportContent.append("Participant " + i + "Id: " + student.getUserId() + "\n");
+                                reportContent.append("Participant " + i + "Name: " + student.getName() + "\n");
+                                reportContent.append("Participant " + i + "Faculty: " + student.getFaculty() + "\n");
+                                reportContent.append("Participant " + i++ + "Role: " + student.getRole() + "\n");
+                            }
                         }
                     }
 
                     // if user wants committee list in report
                     if (filterObj.isSelectedCampCommittee()) {
-                        reportContent.append("Committee List:\n");
                         List<Student> commMembers = getCommitteeMembers(camp);
-                        int i = 1;
-                        for (Student student : commMembers) {
-                            reportContent.append("Committee member " + i + "Id: " + student.getUserId() + "\n");
-                            reportContent.append("Committee member " + i + "Name: " + student.getName() + "\n");
-                            reportContent.append("Committee member " + i + "points: " + student.getPoints() + "\n");
-                            reportContent.append("Committee member " + i + "Faculty: " + student.getFaculty() + "\n");
-                            reportContent.append("Committee member " + i++ + "Role: " + student.getRole() + "\n");
+                        reportContent.append("Committee List:");
+                        if (commMembers.size() == 0) {
+                            reportContent.append("(No Committee Members)\n");
+                        } else {
+                            reportContent.append("\n");
+                            int i = 1;
+                            for (Student student : commMembers) {
+                                reportContent.append("Committee member " + i + "Id: " + student.getUserId() + "\n");
+                                reportContent.append("Committee member " + i + "Name: " + student.getName() + "\n");
+                                reportContent.append("Committee member " + i + "points: " + student.getPoints() + "\n");
+                                reportContent
+                                        .append("Committee member " + i + "Faculty: " + student.getFaculty() + "\n");
+                                reportContent.append("Committee member " + i++ + "Role: " + student.getRole() + "\n");
+                            }
                         }
                     }
+
+                    reportContent.append("\n");
                 });
                 break;
             case CSV:
                 header = "Camp Id,Camp Name,Staff IC,Description"; // camp values to print
                 if (filterObj.isSelectedAttendee() || filterObj.isSelectedCampCommittee())
-                    header.concat(",Student Id,Student Name,Student Faculty,Student Role,Points"); // student values to
-                                                                                                   // print
+                    header += ",Student Id,Student Name,Student Faculty,Student Role,Points"; // student values to print
+
                 reportContent.append(header + "\n");
 
                 camps.forEach(camp -> {
@@ -119,18 +130,31 @@ public class Report {
                             formatCsvField(camp.getStaffInCharge()) + "," +
                             formatCsvField(camp.getDescription());
 
+                    // if no filters, then just print details
+                    if (!filterObj.isAnyCase5()) {
+                        reportContent.append(campStr);
+                    }
                     // parts for filtering
                     // if user wants attendee list in report
                     if (filterObj.isSelectedAttendee()) {
                         List<Student> participants = getParticipantMembers(camp);
+                        if (participants.size() == 0) {
+                            reportContent.append(campStr);
+                            reportContent.append(",No Participants,-,-,-,-\n");
+                        }
                         csvStudentFormatter(reportContent, campStr, participants);
                     }
 
                     // if user wants committee list in report
                     if (filterObj.isSelectedCampCommittee()) {
                         List<Student> commMembers = getCommitteeMembers(camp);
+                        if (commMembers.size() == 0) {
+                            reportContent.append(campStr);
+                            reportContent.append(",No Committee Members,-,-,-,-\n");
+                        }
                         csvStudentFormatter(reportContent, campStr, commMembers);
                     }
+
                     // next camp
                     reportContent.append("\n");
                 });
@@ -180,10 +204,18 @@ public class Report {
                 camps.forEach(camp -> {
                     List<Student> committeeMembers = getCommitteeMembers(camp);
                     reportContent.append("Camp Id: " + camp.getCampId() + "\n");
-                    committeeMembers.forEach(member -> {
-                        reportContent.append("Committee Member Name: " + member.getName() + "\n");
-                        reportContent.append("Committee Points: " + member.getPoints() + "\n");
-                    });
+                    reportContent.append("Committee List:");
+
+                    if (committeeMembers.size() == 0) {
+                        reportContent.append("(No Committee Members)\n");
+                    } else {
+                        reportContent.append("\n");
+
+                        committeeMembers.forEach(member -> {
+                            reportContent.append("Committee Member Name: " + member.getName() + "\n");
+                            reportContent.append("Committee Points: " + member.getPoints() + "\n");
+                        });
+                    }
                     reportContent.append("\n");
                 });
                 break;
@@ -194,13 +226,16 @@ public class Report {
                 camps.forEach(camp -> {
                     String campName = formatCsvField(camp.getName());
                     List<Student> committeeMembers = getCommitteeMembers(camp);
-
-                    committeeMembers.forEach(member -> {
-                        reportContent.append(
-                                campName + "," +
-                                        formatCsvField(member.getName()) + "," +
-                                        member.getPoints() + "\n");
-                    });
+                    if (committeeMembers.size() == 0) {
+                        reportContent.append(campName + ",(No Committee Members),-\n");
+                    } else {
+                        committeeMembers.forEach(member -> {
+                            reportContent.append(
+                                    campName + "," +
+                                            formatCsvField(member.getName()) + "," +
+                                            member.getPoints() + "\n");
+                        });
+                    }
                 });
                 break;
 
@@ -230,15 +265,22 @@ public class Report {
 
                     List<Enquiry> enquiries = getEnquiries(camp);
                     reportContent.append("Camp Name: " + campName).append("\n");
+                    reportContent.append("Enquiry List:");
 
-                    enquiries.forEach(enquiry -> {
-                        reportContent.append("Enquiry Id: " + enquiry.getEnquiryId()).append("\n");
-                        reportContent.append("Creator Id: " + enquiry.getCreatorId()).append("\n");
-                        reportContent.append("Responder Id: " + enquiry.getResponderId()).append("\n");
-                        reportContent.append("Message: " + enquiry.getMessage()).append("\n");
-                        reportContent.append("Reply: " + enquiry.getReply()).append("\n");
-                        reportContent.append("Enquiry status: " + enquiry.getStatus()).append("\n");
-                    });
+                    if (enquiries.size() == 0) {
+                        reportContent.append("(No Enquiry)");
+                    } else {
+                        reportContent.append("\n");
+
+                        enquiries.forEach(enquiry -> {
+                            reportContent.append("Enquiry Id: " + enquiry.getEnquiryId()).append("\n");
+                            reportContent.append("Creator Id: " + enquiry.getCreatorId()).append("\n");
+                            reportContent.append("Responder Id: " + enquiry.getResponderId()).append("\n");
+                            reportContent.append("Message: " + enquiry.getMessage()).append("\n");
+                            reportContent.append("Reply: " + enquiry.getReply()).append("\n");
+                            reportContent.append("Enquiry status: " + enquiry.getStatus()).append("\n");
+                        });
+                    }
                     reportContent.append("\n");
                 });
                 break;
@@ -250,17 +292,20 @@ public class Report {
                     String campName = formatCsvField(camp.getName());
 
                     List<Enquiry> enquiries = getEnquiries(camp);
-
-                    enquiries.forEach(enquiry -> {
-                        reportContent.append(
-                                campName + "," +
-                                        formatCsvField(enquiry.getEnquiryId()) + "," +
-                                        formatCsvField(enquiry.getCreatorId()) + "," +
-                                        formatCsvField(enquiry.getResponderId()) + "," +
-                                        formatCsvField(enquiry.getMessage()) + "," +
-                                        formatCsvField(enquiry.getReply()) + "," +
-                                        formatCsvField(enquiry.getStatus().getEnquiryStatus()) + "\n");
-                    });
+                    if (enquiries.size() == 0) {
+                        reportContent.append(campName + ",(No Enquiry),-,-,-,-,-\n");
+                    } else {
+                        enquiries.forEach(enquiry -> {
+                            reportContent.append(
+                                    campName + "," +
+                                            formatCsvField(enquiry.getEnquiryId()) + "," +
+                                            formatCsvField(enquiry.getCreatorId()) + "," +
+                                            formatCsvField(enquiry.getResponderId()) + "," +
+                                            formatCsvField(enquiry.getMessage()) + "," +
+                                            formatCsvField(enquiry.getReply()) + "," +
+                                            formatCsvField(enquiry.getStatus().getEnquiryStatus()) + "\n");
+                        });
+                    }
                     reportContent.append("\n");
 
                 });
@@ -291,15 +336,22 @@ public class Report {
                     String campName = camp.getName();
 
                     List<Suggestion> suggestions = getSuggestions(camp);
-                    reportContent.append("Camp Name: " + campName).append("\n");
+                    reportContent.append("Camp Name: " + campName + "\n");
+                    reportContent.append("Suggestion List:");
 
-                    suggestions.forEach(suggestion -> {
-                        reportContent.append("Suggestion Id: " + suggestion.getSuggestionId()).append("\n");
-                        reportContent.append("Creator Id: " + suggestion.getCreatorId()).append("\n");
-                        reportContent.append("Responder Id: " + suggestion.getResponderId()).append("\n");
-                        reportContent.append("Message: " + suggestion.getMessage()).append("\n");
-                        reportContent.append("Suggestion status: " + suggestion.getStatus()).append("\n");
-                    });
+                    if (suggestions.size() == 0) {
+                        reportContent.append("(No Suggestion)");
+                    } else {
+                        reportContent.append("\n");
+
+                        suggestions.forEach(suggestion -> {
+                            reportContent.append("Suggestion Id: " + suggestion.getSuggestionId()).append("\n");
+                            reportContent.append("Creator Id: " + suggestion.getCreatorId()).append("\n");
+                            reportContent.append("Responder Id: " + suggestion.getResponderId()).append("\n");
+                            reportContent.append("Message: " + suggestion.getMessage()).append("\n");
+                            reportContent.append("Suggestion status: " + suggestion.getStatus()).append("\n");
+                        });
+                    }
                     reportContent.append("\n");
                 });
                 break;
@@ -311,16 +363,19 @@ public class Report {
                     String campName = formatCsvField(camp.getName());
 
                     List<Suggestion> suggestions = getSuggestions(camp);
-
-                    suggestions.forEach(suggestion -> {
-                        reportContent.append(
-                                campName + "," +
-                                        formatCsvField(suggestion.getSuggestionId()) + "," +
-                                        formatCsvField(suggestion.getCreatorId()) + "," +
-                                        formatCsvField(suggestion.getResponderId()) + "," +
-                                        formatCsvField(suggestion.getMessage()) + "," +
-                                        formatCsvField(suggestion.getStatus().getSuggestionStatus()) + "\n");
-                    });
+                    if (suggestions.size() == 0) {
+                        reportContent.append(campName + ",(No Suggestion),-,-,-,-\n");
+                    } else {
+                        suggestions.forEach(suggestion -> {
+                            reportContent.append(
+                                    campName + "," +
+                                            formatCsvField(suggestion.getSuggestionId()) + "," +
+                                            formatCsvField(suggestion.getCreatorId()) + "," +
+                                            formatCsvField(suggestion.getResponderId()) + "," +
+                                            formatCsvField(suggestion.getMessage()) + "," +
+                                            formatCsvField(suggestion.getStatus().getSuggestionStatus()) + "\n");
+                        });
+                    }
                     reportContent.append("\n");
 
                 });

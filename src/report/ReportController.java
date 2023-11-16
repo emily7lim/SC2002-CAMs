@@ -16,7 +16,7 @@ import view.FilterObj;
  * Only has static methods
  * 
  * @author Choh Lit Han Owen
- * @version 1.3
+ * @version 1.3.1
  * @since 2023-11-03
  */
 public class ReportController {
@@ -74,11 +74,11 @@ public class ReportController {
         if (baseFilename.length() == 0)
             baseFilename = ReportController.baseFilename;
         String extension = "." + reportOutputType.getReportOutputTypeStr();
-        String filePath = getFilePath(ReportController.baseFilename + extension);
+        String filePath = getFilePath(baseFilename + extension);
         int counter = 1;
 
         while (fileExists(filePath)) {
-            filePath = getFilePath(ReportController.baseFilename + "_" + counter + extension);
+            filePath = getFilePath(baseFilename + "_" + counter + extension);
             counter++;
         }
         return filePath;
@@ -114,9 +114,9 @@ public class ReportController {
      * @param data     The string parameter for the data to write.
      * @param filePath The string parameter for the file path to save the report to.
      */
-    public static void writeReportToFile(String content, String filePath) {
+    public static void writeReportToFile(String content, String filePath, ReportOutputType reportOutputType) {
         // Determine the writer method based on the report type
-        switch (ReportController.reportOutputType) {
+        switch (reportOutputType) {
             case TXT:
                 TxtWriter.writeReportToFile(content, filePath);
                 break;
@@ -124,7 +124,7 @@ public class ReportController {
                 CsvWriter.writeReportToFile(content, filePath);
                 break;
             default:
-                System.out.println("Unsupported report type: " + ReportController.reportOutputType);
+                System.out.println("Unsupported report type: " + reportOutputType);
                 break;
         }
     }
@@ -189,9 +189,9 @@ public class ReportController {
             return;
         }
 
-        String filePath = generateUniqueFilename(fileName);
+        String filePath = generateUniqueFilename(fileName, reportOutputType);
 
-        writeReportToFile(reportContent, filePath);
+        writeReportToFile(reportContent, filePath, reportOutputType);
     }
 
 }
