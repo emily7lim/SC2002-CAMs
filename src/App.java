@@ -1,45 +1,34 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import controller.EnquiryController;
+import controller.SuggestionController;
 import database.Database;
-import model.Camp;
-import model.enums.Faculty;
-import report.ReportController;
-import report.enums.ReportType;
-import view.FilterObj;
-import view.LoginView;
-import report.enums.ReportOutputType;
+import utils.HelperUtil;
+import view.AppView;
 
 public class App {
     public static void main(String[] args) {
-        new Database();
-        Database.USERS.forEach((userId, user) -> {
-            System.out.println("UserID: " + userId + ", Name: " + user.getName() + ", Role: " + user.getRole().getRole() + user.getFaculty());
-        });
-        LoginView login = new LoginView();
-        login.login();
+        AppView appView = new AppView();
+        Database database = new Database();
 
-        //writeReportExample();
+        SuggestionController.createSuggestion("1b1e6872-5e51-4259-bd07-8e10d2925632", "YCHERN", "Test Suggestion");
+        EnquiryController.createEnquiry("1b1e6872-5e51-4259-bd07-8e10d2925632", "YCHERN", "Test Enquiry");
+
+        HelperUtil.clearScreen();
+        printApplicationTitle();
+        appView.viewMenu();
+
+        // database.saveAllToDatabase();
+        System.out.println("\nClosing CAMs...");
     }
 
-    private static void writeReportExample(){
-        List<Camp> camps = new ArrayList<Camp>();
-        Camp exampleCamp1 = new Camp("test' \"camp", new Date(), new Date(1699012689503L), new Date(1699011699503L), Faculty.ADM, Faculty.ADM.getFaculty(), 10, 3, "test camp", "OURIN");
-        camps.add(exampleCamp1);
-        Camp exampleCamp2 = new Camp("test camp2", new Date(), new Date(1699012689503L), new Date(1699011699503L), Faculty.ADM, Faculty.ADM.getFaculty(), 15, 3, "test camp2", "OURIN");
-        camps.add(exampleCamp2);
-        
-        // test string cos formatting might mess up 
-        String testCsv = "\"Field with a comma, inside quotes\",\"Field with \"double\" quotes\"," +
-                "\"Field with line break or newline\",\"Field with tab\tspace\",\"1234560001\"";
-        Camp exampleCamp3 = new Camp(testCsv, new Date(), new Date(1699012689503L), new Date(1699011699503L), Faculty.ADM, Faculty.ADM.getFaculty(), 15, 3, "to test formatting", "OURIN");
-        camps.add(exampleCamp3);
-
-        // changed to static only
-        ReportController.generateAndWriteReports(camps, new FilterObj(), ReportType.CAMP_DETAILS_REPORT);
-        // old way 
-        // ReportController rp = new ReportController(ReportOutputType.CSV);
-        // rp.generateAndWriteReports(camps, new FilterObj(), ReportType.CAMP_DETAILS_REPORT);
+    public static void printApplicationTitle() {
+        System.out.println("======================================================================\n\n" +
+                "              ______     ___      .___  ___.      _______.\n" + //
+                "             /      |   /   \\     |   \\/   |     /       |\n" + //
+                "            |  ,----'  /  ^  \\    |  \\  /  |    |   (----`\n" + //
+                "            |  |      /  /_\\  \\   |  |\\/|  |     \\   \\    \n" + //
+                "            |  `----./  _____  \\  |  |  |  | .----)   |   \n" + //
+                "             \\______/__/     \\__\\ |__|  |__| |_______/    \n\n" + //
+                "               Camp Application and Management System\n\n" + //
+                "======================================================================\n");
     }
 }

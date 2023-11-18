@@ -40,6 +40,24 @@ public class CampController {
     }
 
     /**
+     * Retrieves a list of all Camps from the database by Staff in Charge
+     * @param staffInCharge The User ID of the Staff in Charge
+     * @return ArrayList<Camp> The list of all the Camps with corresponsing Staff in Charge
+     */
+    public static ArrayList<Camp> getCampsByStaffInCharge(String staffInCharge) {
+        return CampDAO.getCampsByCreatorId(staffInCharge);
+    }
+
+    /**
+     * Retrieves a list of all future Camps from the database by Staff in Charge
+     * @param staffInCharge The User ID of the Staff in Charge
+     * @return ArrayList<Camp> The list of all the Camps with corresponsing Staff in Charge
+     */
+    public static ArrayList<Camp> getFutureCampsByStaffInCharge(String staffInCharge) {
+        return CampDAO.getCampsByCreatorIdAfterDate(staffInCharge, new Date());
+    }
+
+    /**
      * Finds a Camp from the database by the Camp ID 
      * @param campId The Camp ID of the Camp
      * @return The corresponding Camp object, NULL if not found

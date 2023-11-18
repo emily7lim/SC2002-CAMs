@@ -215,12 +215,24 @@ public class Camp implements Serializable {
         this.withdrawnParticipantIds.add(userId);
     }
 
+    public int getParticipantSlots() {
+        return totalSlots - commSlots;
+    }
+
+    public int getRemainingParticipantSlots() {
+        return totalSlots - commSlots - participantIds.size(); 
+    }
+
     public void addParticipant(String userId) {
         this.participantIds.add(userId);
     }
 
     public void removeParticipant(String userId) {
         this.participantIds.remove(userId);
+    }
+
+    public int getRemainingCommitteeSlots() {
+        return commSlots - committeeIds.size();
     }
     
     public void addCommittee(String userId) {
@@ -232,27 +244,18 @@ public class Camp implements Serializable {
         this.enquiryIds.add(enquiryIds);
     }
 
-    public void removeEnquiry(String enquiryIds) {
-        if(this.enquiryIds == null) {
-            this.enquiryIds = new ArrayList<>();
-        } else {
-            this.enquiryIds.remove(enquiryIds);
-        }
+    public void removeEnquiry(String enquiryId) {
+        if(this.enquiryIds == null) this.enquiryIds = new ArrayList<>();
+        else this.enquiryIds.remove(enquiryId);
     }
 
     public void addSuggestion(String suggestionId) {
-        if(this.suggestionIds == null) {
-            System.out.println("is null");
-            this.suggestionIds = new ArrayList<>();
-        }
+        if(this.suggestionIds == null) this.suggestionIds = new ArrayList<>();
         this.suggestionIds.add(suggestionId);
     }
 
     public void removeSuggestion(String suggestionId) {
-        if(this.suggestionIds == null) {
-            this.suggestionIds = new ArrayList<>();
-        } else {
-            this.suggestionIds.remove(suggestionId);
-        }
+        if(this.suggestionIds == null) this.suggestionIds = new ArrayList<>();
+        else this.suggestionIds.remove(suggestionId);
     }
 }

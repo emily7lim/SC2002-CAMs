@@ -2,7 +2,6 @@ package database;
 
 import java.util.ArrayList;
 
-import model.Enquiry;
 import model.Suggestion;
 import model.enums.SuggestionStatus;
 
@@ -15,7 +14,6 @@ public class SuggestionDAO {
      */
     public static void createSuggestion(Suggestion suggestion) {
         Database.SUGGESTIONS.put(suggestion.getSuggestionId(), suggestion);
-        CampDAO.updateSuggestion(suggestion.getCampId(), suggestion.getCampId(), true);
     }
 
     /**
@@ -25,6 +23,39 @@ public class SuggestionDAO {
      */
     public static ArrayList<Suggestion> getAllSuggestions() {
         return new ArrayList<Suggestion>(Database.SUGGESTIONS.values());
+    }
+
+    /**
+     * Retrieve all Suggestions from the database using the Camp ID
+     * 
+     * @param campId The Camp ID of the Suggestion
+     * @return ArrayList<Suggestion> The list of all Suggestions with Camp ID
+     */
+    public static ArrayList<Suggestion> getSuggestionsbyCampId(String campId) {
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+
+        for (Suggestion suggestion : Database.SUGGESTIONS.values())
+            if (suggestion.getCampId().equals(campId))
+                suggestions.add(suggestion);
+        
+        return suggestions;
+    }
+
+    /**
+     * Retrieve all Suggestions from the database using the Camp ID and Status
+     * 
+     * @param campId The Camp ID of the Suggestion
+     * @param status The Status of the Suggestion
+     * @return ArrayList<Suggestion> The list of all Suggestions with Camp ID and Status
+     */
+    public static ArrayList<Suggestion> getSuggestionsbyCampIdAndStatus(String campId, SuggestionStatus status) {
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+
+        for (Suggestion suggestion : Database.SUGGESTIONS.values())
+            if (suggestion.getCampId().equals(campId) && suggestion.getStatus() == status)
+                suggestions.add(suggestion);
+        
+        return suggestions;
     }
 
     /**

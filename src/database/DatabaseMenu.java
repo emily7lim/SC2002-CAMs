@@ -10,7 +10,7 @@ import model.enums.Faculty;
 public class DatabaseMenu {
     private static HashMap<String, Camp> dbTable;
     public static void main(String[] args) {
-        new Database();
+        Database database = new Database();
         dbTable = Database.CAMPS;
         
         dbTable.forEach((key, camp) -> {
@@ -24,7 +24,7 @@ public class DatabaseMenu {
             dbTable.put(key, camp);
         });
         
-        Database.saveAllToDatabase();
+        database.saveAllToDatabase();
     }
     public static void printdb(){
         DatabaseMenu.dbTable.forEach((userId, user) -> {

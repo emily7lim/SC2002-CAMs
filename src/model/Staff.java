@@ -25,16 +25,4 @@ public class Staff extends User {
     public void addCamp(String campId) {
         this.createdCampIds.add(campId);
     }
-
-    public Boolean checkCamp(Camp camp) {
-        int i;
-        for (i = 0; i < createdCampIds.size(); i++) {
-            // TODO
-            // need to implement the comparing part of the camp
-            if (createdCampIds.get(i) == camp.getCampId()) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

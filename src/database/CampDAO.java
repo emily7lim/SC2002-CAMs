@@ -1,6 +1,7 @@
 package database;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import model.Camp;
 
@@ -21,6 +22,39 @@ public class CampDAO {
      */
     public static ArrayList<Camp> getAllCamps() {
         return new ArrayList<Camp>(Database.CAMPS.values());
+    }
+
+    /**
+     * Retrieve all Camps from the database using Creator ID
+     * 
+     * @param creatorId The User ID of the Staff in Charge
+     * @return ArrayList<Camp> The list of all Camps with Creator ID
+     */
+    public static ArrayList<Camp> getCampsByCreatorId(String creatorId) {
+        ArrayList<Camp> camps = new ArrayList<>();
+
+        for (Camp camp : Database.CAMPS.values())
+            if (camp.getStaffInCharge().equals(creatorId))
+                camps.add(camp);
+        
+        return camps;
+    }
+
+    /**
+     * Retrieve all Camps from the database using Creator ID
+     * 
+     * @param creatorId The User ID of the Staff in Charge
+     * @param date The minimum Date required
+     * @return ArrayList<Camp> The list of all Camps with Creator ID
+     */
+    public static ArrayList<Camp> getCampsByCreatorIdAfterDate(String creatorId, Date date) {
+        ArrayList<Camp> camps = new ArrayList<>();
+
+        for (Camp camp : Database.CAMPS.values())
+            if (camp.getStaffInCharge().equals(creatorId) && camp.getStartDate().after(date))
+                camps.add(camp);
+        
+        return camps;
     }
 
     /**
@@ -56,6 +90,7 @@ public class CampDAO {
 
     /**
      * Check if a User has registered for the Camp in the database using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the User
      * @return boolean Whether the User has registered for the Camp
@@ -65,7 +100,9 @@ public class CampDAO {
     }
 
     /**
-     * Check if a User has registered as Committee for the Camp in the database using the ID
+     * Check if a User has registered as Committee for the Camp in the database
+     * using the ID
+     * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the User
      * @return boolean Whether the User has registered as Committee for the Camp
@@ -82,15 +119,24 @@ public class CampDAO {
      */
     public static void updateCampInformation(String campId, Camp campInfo) {
         Camp camp = Database.CAMPS.get(campId);
-        if (campInfo.getName() != null) camp.setName(campInfo.getName());
-        if (campInfo.getStartDate() != null) camp.setStartDate(campInfo.getStartDate());
-        if (campInfo.getEndDate() != null) camp.setEndDate(campInfo.getEndDate());
-        if (campInfo.getRegistrationCloseDate() != null) camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
-        if (campInfo.getUserGroup() != null) camp.setUserGroup(campInfo.getUserGroup());
-        if (campInfo.getLocation() != null) camp.setLocation(campInfo.getLocation());
-        if (campInfo.getTotalSlots() != 0) camp.setTotalSlots(campInfo.getTotalSlots());
-        if (campInfo.getCommSlots() != 0) camp.setCommSlots(campInfo.getCommSlots());
-        if (campInfo.getDescription() != null) camp.setDescription(campInfo.getDescription());
+        if (campInfo.getName() != null)
+            camp.setName(campInfo.getName());
+        if (campInfo.getStartDate() != null)
+            camp.setStartDate(campInfo.getStartDate());
+        if (campInfo.getEndDate() != null)
+            camp.setEndDate(campInfo.getEndDate());
+        if (campInfo.getRegistrationCloseDate() != null)
+            camp.setRegistrationCloseDate(campInfo.getRegistrationCloseDate());
+        if (campInfo.getUserGroup() != null)
+            camp.setUserGroup(campInfo.getUserGroup());
+        if (campInfo.getLocation() != null)
+            camp.setLocation(campInfo.getLocation());
+        if (campInfo.getTotalSlots() != 0)
+            camp.setTotalSlots(campInfo.getTotalSlots());
+        if (campInfo.getCommSlots() != 0)
+            camp.setCommSlots(campInfo.getCommSlots());
+        if (campInfo.getDescription() != null)
+            camp.setDescription(campInfo.getDescription());
     }
 
     /**
@@ -137,10 +183,9 @@ public class CampDAO {
      * @param add       If function should add or remove a User
      */
     public static void updateEnquiry(String campId, String enquiryId, boolean add) {
-        if(add){
+        if (add) {
             Database.CAMPS.get(campId).addEnquiry(enquiryId);
-        }
-        else{
+        } else {
             Database.CAMPS.get(campId).removeEnquiry(enquiryId);
         }
     }
@@ -154,10 +199,9 @@ public class CampDAO {
      * 
      */
     public static void updateSuggestion(String campId, String suggestionId, boolean add) {
-        if(add){
+        if (add) {
             Database.CAMPS.get(campId).addSuggestion(suggestionId);
-        }
-        else{    
+        } else {
             Database.CAMPS.get(campId).removeSuggestion(suggestionId);
         }
     }
@@ -169,6 +213,6 @@ public class CampDAO {
      */
     public static void deleteCamp(String campId) {
         Database.CAMPS.remove(campId);
-        //should the corresponding suggestions and enquiry be removed?
+        // should the corresponding suggestions and enquiry be removed?
     }
 }

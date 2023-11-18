@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import model.Suggestion;
 import model.enums.SuggestionStatus;
+import database.CampDAO;
+import database.StudentDAO;
 import database.SuggestionDAO;
 
 public class SuggestionController {
@@ -16,6 +18,7 @@ public class SuggestionController {
     public static void createSuggestion(String campId, String creatorId, String message) {
         Suggestion suggestion = new Suggestion(campId, creatorId, message);
         SuggestionDAO.createSuggestion(suggestion);
+        CampDAO.updateSuggestion(campId, suggestion.getSuggestionId(), true);
     }
 
     /**
@@ -24,6 +27,36 @@ public class SuggestionController {
      */
     public static ArrayList<Suggestion> getAllSuggestions() {
         return SuggestionDAO.getAllSuggestions();
+    }
+
+    /**
+     * Retrieves a list of all Suggestion from the database by the Camp ID
+     * @param campId The Camp ID of the Suggestion
+     * @return ArrayList<Suggestion> The list of all the Suggestions with Camp ID
+     */
+    public static ArrayList<Suggestion> getSuggestionsByCampId(String campId) {
+        return SuggestionDAO.getSuggestionsbyCampId(campId);
+    }
+
+    /**
+     * Retrieves a list of all approved/rejected Suggestion from the database by the Camp ID
+     * @param campId The Camp ID of the Suggestion
+     * @return ArrayList<Suggestion> The list of all the Suggestions with Camp ID
+     */
+    public static ArrayList<Suggestion> getApprovedRejectedSuggestionsByCampId(String campId) {
+        ArrayList<Suggestion> suggestions = SuggestionDAO.getSuggestionsbyCampIdAndStatus(campId, SuggestionStatus.ACCEPTED);
+        suggestions.addAll(SuggestionDAO.getSuggestionsbyCampIdAndStatus(campId, SuggestionStatus.REJECTED));
+
+        return suggestions;
+    }
+
+    /**
+     * Retrieves a list of all pending Suggestion from the database by the Camp ID
+     * @param campId The Camp ID of the Suggestion
+     * @return ArrayList<Suggestion> The list of all the Suggestions with Camp ID
+     */
+    public static ArrayList<Suggestion> getPendingSuggestionsByCampId(String campId) {
+        return SuggestionDAO.getSuggestionsbyCampIdAndStatus(campId, SuggestionStatus.PENDING);
     }
 
     /**
@@ -54,10 +87,11 @@ public class SuggestionController {
      * @param responderId The User ID of the User accepting the Suggestion
      * @return boolean Whether the Suggestion status was successfully updated
      */
-    public static boolean acceptSuggestion(String suggestionId, String responderId) {
+    public static boolean acceptSuggestion(String suggestionId, String responderId, String creatorId) {
         if (!checkSuggestionExists(suggestionId)) return false;
 
         SuggestionDAO.updateSuggestionResponse(suggestionId, SuggestionStatus.ACCEPTED, responderId);
+        StudentDAO.updateStudentPoints(creatorId);
         return true;
     }
 

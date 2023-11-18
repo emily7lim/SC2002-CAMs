@@ -27,6 +27,33 @@ public class EnquiryController {
     }
 
     /**
+     * Retrieves a list of all Enquiries from the database with Camp ID
+     * @param campId The Camp ID of the Enquiry
+     * @return ArrayList<Enquiry> The list of all the Enquiries
+     */
+    public static ArrayList<Enquiry> getEnquiriesByCampId(String campId) {
+        return EnquiryDAO.getEnquiriesByCampId(campId);
+    }
+
+    /**
+     * Retrieves a list of all pending Enquiries from the database with Camp ID
+     * @param campId The Camp ID of the Enquiry
+     * @return ArrayList<Enquiry> The list of all the Enquiries
+     */
+    public static ArrayList<Enquiry> getPendingEnquiriesByCampId(String campId) {
+        return EnquiryDAO.getEnquiriesByCampIdAndStatus(campId, EnquiryStatus.PENDING);
+    }
+
+    /**
+     * Retrieves a list of all replied Enquiries from the database with Camp ID
+     * @param campId The Camp ID of the Enquiry
+     * @return ArrayList<Enquiry> The list of all the Enquiries
+     */
+    public static ArrayList<Enquiry> getRepliedEnquiriesByCampId(String campId) {
+        return EnquiryDAO.getEnquiriesByCampIdAndStatus(campId, EnquiryStatus.CLOSED);
+    }
+
+    /**
      * Finds an Enquiry from the database by the Enquiry ID 
      * @param enquiryId The Enquiry Id of the Enquiry
      * @return Enquiry The corresponding Enquiry object, NULL if not found

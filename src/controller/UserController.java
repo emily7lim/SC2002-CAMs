@@ -58,6 +58,25 @@ public class UserController {
     }
 
     /**
+     * Finds a User from the Database by the User ID
+     * @param userId The User ID of the User
+     * @return User The corresponding User object, NULL if not found
+     */
+    public static User getUserByUserId(String userId) {
+        return UserDAO.getUserbyId(userId);
+    }
+
+    /**
+     * Finds the Role of a User from the Database by the User ID
+     * @param userId The User ID of the User
+     * @return Role The corresponding Role of the User, NULL if not found
+     */
+    public static Role getUserRoleByUserId(String userId) {
+        User user = UserDAO.getUserbyId(userId);
+        return user == null ? null : user.getRole();
+    }
+
+    /**
      * Change the password of the User with User ID in the database
      * @param userId The User ID of the User
      * @param password The new password of the User

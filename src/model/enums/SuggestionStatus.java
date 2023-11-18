@@ -3,7 +3,7 @@ package model.enums;
 public enum SuggestionStatus {
     PENDING ("Pending"),
     ACCEPTED ("Accepted"),
-    REJECTED ("REJECTED");
+    REJECTED ("Rejected");
 
     private final String suggestionStatusStr;
 

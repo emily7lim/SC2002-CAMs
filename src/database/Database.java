@@ -52,7 +52,7 @@ public class Database {
      * Sets the database variables from the .dat files,
      * for all FileNames in enum FileName
      */
-    public static void readAllFromDatabase() {
+    public void readAllFromDatabase() {
         for (FileName fileName : FileName.values()) {
             readFromDatabase(fileName);
         }
@@ -62,7 +62,7 @@ public class Database {
      * @param fileName The appropriate file from enum FileName
      * @return boolean Whether the database variable is retrieved
      */
-    public static boolean readFromDatabase(FileName fileName) {
+    public boolean readFromDatabase(FileName fileName) {
         String filePath = getFilePath(fileName);
 
         try {
@@ -131,7 +131,7 @@ public class Database {
     /**
      * Saves the database variables to .dat files
      */
-    public static void saveAllToDatabase() {
+    public void saveAllToDatabase() {
         for (FileName fileName : FileName.values()) {
             saveToDatabase(fileName);
         }
@@ -141,7 +141,7 @@ public class Database {
      * @param fileName The appropriate file from enum FileName
      * @return boolean Whether the database variable is saved to the file
      */
-    public static boolean saveToDatabase(FileName fileName) {
+    public boolean saveToDatabase(FileName fileName) {
         String filePath = getFilePath(fileName);
 
         try {
@@ -178,7 +178,7 @@ public class Database {
     /**
      * Clears all data from database and .dat files
      */
-    public static void clearDatabase() {
+    public void clearDatabase() {
         for (FileName fileName : FileName.values()) {
             clearFileData(fileName);
         }
@@ -188,7 +188,7 @@ public class Database {
      * Clears data from specific file in database and .dat file
      * @param fileName The appropriate file from enum FileName
      */
-    public static void clearFileData(FileName fileName) {
+    public void clearFileData(FileName fileName) {
         switch (fileName) {
             case USERS:
                 USERS = new HashMap<String, User>();
@@ -213,11 +213,11 @@ public class Database {
      * @param fileName The file from enum FileName
      * @return String Returns the filepath for the database file
      */
-    public static String getFilePath(FileName fileName) {
+    public String getFilePath(FileName fileName) {
         return "./src/database/" + folder + "/" + fileName.getFileNameStr() + fileExtension;
     }
 
-    public static void intitializeDummyData() {
+    public void initializeDummyData() {
         clearDatabase();
 
         StudentController.initializeStudentData();

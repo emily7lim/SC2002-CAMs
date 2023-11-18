@@ -27,6 +27,39 @@ public class EnquiryDAO {
     }
 
     /**
+     * Retrieve all Enquiries from the database using Camp ID
+     * 
+     * @param campId The Camp ID of the Enquiry
+     * @return ArrayList<Enquiry> The list of all Enquiries
+     */
+    public static ArrayList<Enquiry> getEnquiriesByCampId(String campId) {
+        ArrayList<Enquiry> enquiries = new ArrayList<Enquiry>();
+
+        for (Enquiry enquiry : Database.ENQUIRIES.values())
+            if (enquiry.getCampId().equals(campId))
+                enquiries.add(enquiry);
+        
+        return enquiries;
+    }
+
+    /**
+     * Retrieve all Enquiries from the database using Camp ID and Status
+     * 
+     * @param campId The Camp ID of the Enquiry
+     * @param status The Status of the Enquiry
+     * @return ArrayList<Enquiry> The list of all Enquiries
+     */
+    public static ArrayList<Enquiry> getEnquiriesByCampIdAndStatus(String campId, EnquiryStatus status) {
+        ArrayList<Enquiry> enquiries = new ArrayList<Enquiry>();
+
+        for (Enquiry enquiry : Database.ENQUIRIES.values())
+            if (enquiry.getCampId().equals(campId) && enquiry.getStatus() == status)
+                enquiries.add(enquiry);
+        
+        return enquiries;
+    }
+
+    /**
      * Finds a Enquiry from the database using the ID
      * 
      * @param enquiryId The Enquiry ID of the Enquiry
