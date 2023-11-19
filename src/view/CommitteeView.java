@@ -72,7 +72,9 @@ public class CommitteeView extends StudentView {
                     generateCampParticipantsCommitteeReport();
                     printMenu();
                     break;
-                case 9: // TODO: Link to Profile
+                case 9:
+                    viewProfile();
+                    printMenu();
                     break;
                 case 10:
                     changePassword();

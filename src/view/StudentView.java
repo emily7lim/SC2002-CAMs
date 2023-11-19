@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import controller.*;
 import model.Camp;
 import model.Enquiry;
+import model.Student;
+import model.enums.Role;
 import utils.HelperUtil;
 
 public class StudentView extends MainView {
@@ -63,7 +65,9 @@ public class StudentView extends MainView {
                     manageEnquiries();
                     printMenu();
                     break;
-                case 6: // TODO: Link to Profile
+                case 6:
+                    viewProfile();
+                    printMenu();
                     break;
                 case 7:
                     changePassword();
@@ -662,6 +666,21 @@ public class StudentView extends MainView {
         } while (true);
 
         HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void viewProfile() {
+        Student user = StudentController.getStudentByUserId(userId);
+        HelperUtil.clearScreen();
+        printMenuTitle(user.getName() + "'s Profile");
+
+        System.out.printf("User ID:  %s%n", user.getUserId());
+        System.out.printf("Name:\t  %s%n", user.getName());
+        System.out.printf("Faculty:  %s%n", user.getFaculty().getFaculty());
+        System.out.printf("Points:\t  %d%n", user.getPoints());
+        System.out.printf("Role:\t  %s%s%n\n", user.getRole().getRole(), user.getRole() == Role.COMMITTEE ? " (" + CampController.getCurrentCampByCommitteeId(userId).getName() +")" : "");
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
     }
 
     public void changePassword() {

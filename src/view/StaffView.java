@@ -3,6 +3,7 @@ package view;
 import controller.*;
 import model.Camp;
 import model.Enquiry;
+import model.Staff;
 import model.Suggestion;
 import report.enums.ReportType;
 import utils.HelperUtil;
@@ -83,7 +84,8 @@ public class StaffView extends MainView {
                     break;
 
                 case 7: // profile
-                    // TODO: Link to Profile
+                    viewProfile();
+                    printMenu();
                     break;
 
                 case 8: // change password
@@ -528,6 +530,21 @@ public class StaffView extends MainView {
 
         HelperUtil.pressAnyKeyToContinue();
         managePendingCampSuggestions();
+    }
+
+    public void viewProfile() {
+        Staff user = StaffController.getStaffByUserId(userId);
+        HelperUtil.clearScreen();
+        printMenuTitle(user.getName() + "'s Profile");
+
+        System.out.printf("User ID:  %s%n", user.getUserId());
+        System.out.printf("Name:\t  %s%n", user.getName());
+        System.out.printf("Faculty:  %s%n", user.getFaculty().getFaculty());
+        System.out.printf("Role:\t  %s%n", user.getRole().getRole());
+        System.out.printf("Created %d Camps!%n\n", user.getCreatedCampIds().size());
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
     }
 
     public void changePassword() {
