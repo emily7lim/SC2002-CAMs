@@ -71,6 +71,8 @@ public class CreatedCampsView extends MainView {
         printMenuTitle("List of Created Camps");
 
         ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        if (camps.size() == 0)
+            System.out.println(" No camps found.\n");
         for (int i = 0; i < camps.size(); i++)
             common.printCampDetails(camps.get(i), i + 1);
 
@@ -168,10 +170,13 @@ public class CreatedCampsView extends MainView {
             System.out.print("Enter Camp Committee Slots: ");
             commSlots = HelperUtil.nextInt(1);
 
-            if (commSlots > totalSlots)
+            if (commSlots > totalSlots) {
                 System.out.println("Committee Slots cannot be more than Total Slots, please try again.");
-            else if (commSlots > 10)
+                commSlots = -1;
+            } else if (commSlots > 10) {
                 System.out.println("Committee Slots cannot be more than 10, please try again.");
+                commSlots = -1;
+            }
         } while (commSlots == -1);
 
         CampController.createCamp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
@@ -188,16 +193,22 @@ public class CreatedCampsView extends MainView {
         printMenuTitle("Edit Created Camps");
 
         ArrayList<Camp> camps = CampController.getFutureCampsByStaffInCharge(userId);
+        if (camps.size() == 0) {
+            System.out.println(" No camps found.\n");
+            HelperUtil.pressAnyKeyToContinue();
+            HelperUtil.clearScreen();
+            return;
+        }
+
         for (int i = 0; i < camps.size(); i++)
             common.printCampDetails(camps.get(i), i + 1);
 
-        System.out.print("Select a Camp to edit: ");
         do {
-            System.out.print("Select an Camp to edit: ");
+            System.out.print("\nSelect a Camp to edit: ");
             index = HelperUtil.nextInt(1, camps.size());
         } while (index == -1);
 
-        editCreatedCamp(camps.get(index), index);
+        editCreatedCamp(camps.get(index - 1), index);
     }
 
     public void editCreatedCamp(Camp camp, int index) {
@@ -207,7 +218,7 @@ public class CreatedCampsView extends MainView {
 
         common.printCampDetails(camp, index);
         System.out.println(
-                "\nSelect a field to edit  1)  Name\n  2)  Description\n  3)  Location\n  4)  Start Date\n  5)  End Date\n  6)  Registration Close Date\n  7)  User Group\n  8)  Total Slots\n  9)  Committee Slots\n  10) Toggle Visibility");
+                "\nSelect a field to edit\n  1)  Name\n  2)  Description\n  3)  Location\n  4)  Start Date\n  5)  End Date\n  6)  Registration Close Date\n  7)  User Group\n  8)  Total Slots\n  9)  Committee Slots\n  10) Toggle Visibility");
 
         do {
             System.out.print("\nEnter your choice: ");
@@ -348,10 +359,14 @@ public class CreatedCampsView extends MainView {
                         System.out.print("Enter New Camp Committee Slots: ");
                         commSlots = HelperUtil.nextInt(1);
 
-                        if (commSlots > camp.getTotalSlots())
+                        if (commSlots > camp.getTotalSlots()) {
                             System.out.println("Committee Slots cannot be more than Total Slots, please try again.");
-                        else if (commSlots > 10)
+                            commSlots = -1;
+                        }
+                        else if (commSlots > 10) {
                             System.out.println("Committee Slots cannot be more than 10, please try again.");
+                            commSlots = -1;
+                        }
                     } while (commSlots == -1);
 
                     CampController.updateCampCommSlots(camp.getCampId(), commSlots);
@@ -392,16 +407,22 @@ public class CreatedCampsView extends MainView {
         printMenuTitle("Delete Created Camps");
 
         ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        if (camps.size() == 0) {
+            System.out.println(" No camps found.\n");
+            HelperUtil.pressAnyKeyToContinue();
+            HelperUtil.clearScreen();
+            return;
+        }
+
         for (int i = 0; i < camps.size(); i++)
             common.printCampDetails(camps.get(i), i + 1);
 
-        System.out.print("Select a Camp to delete: ");
         do {
-            System.out.print("Select an Camp to delete: ");
+            System.out.print("\nSelect an Camp to delete: ");
             index = HelperUtil.nextInt(1, camps.size());
         } while (index == -1);
 
-        deleteCreatedCamp(camps.get(index), index);
+        deleteCreatedCamp(camps.get(index - 1), index);
     }
 
     public void deleteCreatedCamp(Camp camp, int index) {
