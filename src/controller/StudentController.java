@@ -85,6 +85,14 @@ public class StudentController {
         return StudentDAO.updateStudentRole(userId, Role.COMMITTEE);
     }
 
+    public static boolean removeCampCommittee(String userId) {
+        if (!checkStudentExists(userId)) return false;
+        if (!checkCampCommittee(userId)) return false;
+
+        return StudentDAO.updateStudentRole(userId, Role.STUDENT);
+    }
+
+
     /**
      * Deletes a Student from the database
      * @param userId The User ID of the Student

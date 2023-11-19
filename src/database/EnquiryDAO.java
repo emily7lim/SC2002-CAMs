@@ -60,6 +60,49 @@ public class EnquiryDAO {
     }
 
     /**
+     * Retrieve all Enquiries from the database using Creator ID
+     * 
+     * @param creatorId The User ID of the Creator of the Enquiry
+     * @return ArrayList<Enquiry> The list of all Enquiries
+     */
+    public static ArrayList<Enquiry> getEnquiriesByCreatorIdAndCampId(String creatorId, String campId) {
+        ArrayList<Enquiry> enquiries = new ArrayList<Enquiry>();
+
+        for (Enquiry enquiry : Database.ENQUIRIES.values())
+            if (enquiry.getCreatorId().equals(creatorId) && enquiry.getCampId().equals(campId))
+                enquiries.add(enquiry);
+        
+        return enquiries;
+    }
+
+    public static ArrayList<Enquiry> getEnquiriesByCreatorIdAndCampIdAndStatus(String creatorId, String campId, EnquiryStatus status) {
+        ArrayList<Enquiry> enquiries = new ArrayList<Enquiry>();
+
+        for (Enquiry enquiry : Database.ENQUIRIES.values())
+            if (enquiry.getCampId().equals(campId) && enquiry.getCreatorId().equals(creatorId) && enquiry.getStatus() == status)
+                enquiries.add(enquiry);
+        
+        return enquiries;
+    }
+
+    /**
+     * Retrieve all Enquiries from the database using Creator ID
+     * 
+     * @param creatorId The User ID of the Creator of the Enquiry
+     * @param status The Status of the Enquiry
+     * @return ArrayList<Enquiry> The list of all Enquiries
+     */
+    public static ArrayList<Enquiry> getEnquiriesByCreatorIdAndStatus(String creatorId, EnquiryStatus status) {
+        ArrayList<Enquiry> enquiries = new ArrayList<Enquiry>();
+
+        for (Enquiry enquiry : Database.ENQUIRIES.values())
+            if (enquiry.getCreatorId().equals(creatorId) && enquiry.getStatus() == status)
+                enquiries.add(enquiry);
+        
+        return enquiries;
+    }
+
+    /**
      * Finds a Enquiry from the database using the ID
      * 
      * @param enquiryId The Enquiry ID of the Enquiry

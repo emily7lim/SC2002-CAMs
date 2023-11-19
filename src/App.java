@@ -9,14 +9,11 @@ public class App {
         AppView appView = new AppView();
         Database database = new Database();
 
-        SuggestionController.createSuggestion("1b1e6872-5e51-4259-bd07-8e10d2925632", "YCHERN", "Test Suggestion");
-        EnquiryController.createEnquiry("1b1e6872-5e51-4259-bd07-8e10d2925632", "YCHERN", "Test Enquiry");
-
         HelperUtil.clearScreen();
         printApplicationTitle();
         appView.viewMenu();
 
-        // database.saveAllToDatabase();
+        database.saveAllToDatabase();
         System.out.println("\nClosing CAMs...");
     }
 

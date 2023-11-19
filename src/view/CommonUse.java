@@ -52,11 +52,21 @@ public class CommonUse {
         System.out.printf("  Date: \t\t   %s - %s%n", formatDate(camp.getStartDate()), formatDate(camp.getEndDate()));
         System.out.printf("  Registration Deadline:   %s%n", formatDate(camp.getRegistrationCloseDate()));
         System.out.printf("  Location: \t\t   %s%n", camp.getLocation());
-        System.out.printf("  Participant Slots Left:  %d/%d%n", camp.getRemainingParticipantSlots(), camp.getParticipantSlots());
+        System.out.printf("  Participant Slots Left:  %d/%d%n", camp.getRemainingParticipantSlots(),
+                camp.getParticipantSlots());
         System.out.printf("  Committee Slots Left:    %d/%d%n", camp.getRemainingCommitteeSlots(), camp.getCommSlots());
         System.out.printf("  User Group: \t\t   %s%n", camp.getUserGroup().getFaculty());
         System.out.printf("  Camp IC: \t\t   %s%n", camp.getStaffInCharge());
         System.out.printf("  Visibility: \t\t   %s%n", camp.isVisible() ? "Visible" : "Not Visible");
+    }
+
+    public void printCampDetailsWithRole(Camp camp, int index, String userId) {
+        printCampDetails(camp, index);
+        if (camp.getParticipantIds().contains(userId) || camp.getCommitteeIds().contains(userId))
+            System.out.printf("  Registered as: \t   %s%n",
+                    camp.getParticipantIds().contains(userId) ? "Participant" : "Committee");
+        else
+            System.out.printf("%n");
     }
 
     public void printCampParticipants(Camp camp, int index) {
@@ -119,7 +129,8 @@ public class CommonUse {
                     : message.length();
             String temp = message.substring(0, position);
 
-            System.out.printf(" %-44s | %-8s | %-10s %n", temp, shown ? "" : suggestion.getStatus().getSuggestionStatus(),
+            System.out.printf(" %-44s | %-8s | %-10s %n", temp,
+                    shown ? "" : suggestion.getStatus().getSuggestionStatus(),
                     shown ? "" : suggestion.getCreatorId());
             shown = true;
             message = position == message.length() ? "" : message.substring(position + 1);
@@ -138,7 +149,8 @@ public class CommonUse {
                     : message.length();
             String temp = message.substring(0, position);
 
-            System.out.printf(" %-3s | %-38s | %-8s | %-10s %n", shown ? "" : index, temp, shown ? "" : suggestion.getStatus().getSuggestionStatus(),
+            System.out.printf(" %-3s | %-38s | %-8s | %-10s %n", shown ? "" : index, temp,
+                    shown ? "" : suggestion.getStatus().getSuggestionStatus(),
                     shown ? "" : suggestion.getCreatorId());
             shown = true;
             message = position == message.length() ? "" : message.substring(position + 1);
@@ -163,7 +175,7 @@ public class CommonUse {
         }
     }
 
-    public void printEnquiryDetailsWithIndex(Enquiry enquiry , int index) {
+    public void printEnquiryDetailsWithIndex(Enquiry enquiry, int index) {
         boolean shown = false;
         String message = enquiry.getMessage();
 
@@ -174,7 +186,8 @@ public class CommonUse {
                     : message.length();
             String temp = message.substring(0, position);
 
-            System.out.printf(" %-3s | %-39s | %-7s | %-10s %n", shown ? "" : index, temp, shown ? "" : enquiry.getStatus().getEnquiryStatus(),
+            System.out.printf(" %-3s | %-39s | %-7s | %-10s %n", shown ? "" : index, temp,
+                    shown ? "" : enquiry.getStatus().getEnquiryStatus(),
                     shown ? "" : enquiry.getCreatorId());
             shown = true;
             message = position == message.length() ? "" : message.substring(position + 1);
@@ -200,6 +213,41 @@ public class CommonUse {
             System.out.printf(" %-27s | %-38s %n", tempMessage, tempReply);
             message = messagePosition == message.length() ? "" : message.substring(messagePosition + 1);
             reply = replyPosition == reply.length() ? "" : reply.substring(replyPosition + 1);
+        }
+    }
+
+    public void printUserEnquiryDetails(Enquiry enquiry) {
+        boolean shown = false;
+        String message = enquiry.getMessage();
+
+        printDivider(2);
+        while (!message.equals("")) {
+            int position = message.lastIndexOf(" ", 46) != -1 && message.length() > 45
+                    ? message.lastIndexOf(" ", 46)
+                    : message.length();
+            String temp = message.substring(0, position);
+
+            System.out.printf(" %-58s | %-7s %n", temp, shown ? "" : enquiry.getStatus().getEnquiryStatus());
+            shown = true;
+            message = position == message.length() ? "" : message.substring(position + 1);
+        }
+    }
+
+    public void printUserEnquiryDetailsWithIndex(Enquiry enquiry, int index) {
+        boolean shown = false;
+        String message = enquiry.getMessage();
+
+        printDivider(2);
+        while (!message.equals("")) {
+            int position = message.lastIndexOf(" ", 40) != -1 && message.length() > 39
+                    ? message.lastIndexOf(" ", 40)
+                    : message.length();
+            String temp = message.substring(0, position);
+
+            System.out.printf(" %-3s | %-52s | %-7s %n", shown ? "" : index, temp,
+                    shown ? "" : enquiry.getStatus().getEnquiryStatus());
+            shown = true;
+            message = position == message.length() ? "" : message.substring(position + 1);
         }
     }
 

@@ -170,6 +170,8 @@ public class CreatedCampsView extends MainView {
 
             if (commSlots > totalSlots)
                 System.out.println("Committee Slots cannot be more than Total Slots, please try again.");
+            else if (commSlots > 10)
+                System.out.println("Committee Slots cannot be more than 10, please try again.");
         } while (commSlots == -1);
 
         CampController.createCamp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
@@ -348,6 +350,8 @@ public class CreatedCampsView extends MainView {
 
                         if (commSlots > camp.getTotalSlots())
                             System.out.println("Committee Slots cannot be more than Total Slots, please try again.");
+                        else if (commSlots > 10)
+                            System.out.println("Committee Slots cannot be more than 10, please try again.");
                     } while (commSlots == -1);
 
                     CampController.updateCampCommSlots(camp.getCampId(), commSlots);

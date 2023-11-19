@@ -54,6 +54,23 @@ public class EnquiryController {
     }
 
     /**
+     * Retrieves a list of all Enquiries from the database with Creator ID
+     * @param creatorId The User ID of the Creator of the Enquiry
+     * @return ArrayList<Enquiry> The list of all the Enquiries
+     */
+    public static ArrayList<Enquiry> getEnquiriesByCreatorIdAndCampId(String creatorId, String campId) {
+        return EnquiryDAO.getEnquiriesByCreatorIdAndCampId(creatorId, campId);
+    }
+
+    public static ArrayList<Enquiry> getPendingEnquiriesByCreatorIdAndCampId(String creatorId, String campId) {
+        return EnquiryDAO.getEnquiriesByCreatorIdAndCampIdAndStatus(creatorId, campId, EnquiryStatus.PENDING);
+    }
+
+    public static ArrayList<Enquiry> getRepliedEnquiriesByCreatorIdAndCampId(String creatorId, String campId) {
+        return EnquiryDAO.getEnquiriesByCreatorIdAndCampIdAndStatus(creatorId, campId, EnquiryStatus.CLOSED);
+    }
+
+    /**
      * Finds an Enquiry from the database by the Enquiry ID 
      * @param enquiryId The Enquiry Id of the Enquiry
      * @return Enquiry The corresponding Enquiry object, NULL if not found

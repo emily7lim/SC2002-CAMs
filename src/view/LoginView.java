@@ -1,5 +1,7 @@
 package view;
 
+import controller.CampController;
+import controller.StudentController;
 import controller.UserController;
 import utils.HelperUtil;
 
@@ -42,11 +44,18 @@ public class LoginView extends MainView {
                         break;
                     case STUDENT:
                         loggedIn = true;
-                        studentView.Students(0, userId);
+                        studentView.setUserId(userId);
+                        studentView.viewMenu();
                         break;
                     case COMMITTEE:
                         loggedIn = true;
-                        committeeView.Committee(0, userId);
+                        if (checkCommittee(userId)){
+                            committeeView.setUserId(userId);
+                            committeeView.viewMenu();
+                        } else {
+                            studentView.setUserId(userId);
+                            studentView.viewMenu();
+                        }
                         break;
                     default:
                         System.out.println("Unable to login, try again.");
@@ -57,5 +66,14 @@ public class LoginView extends MainView {
         } while (!loggedIn);
 
         HelperUtil.clearScreen();
+    }
+
+    public boolean checkCommittee(String userId) {
+        if (CampController.checkCurrentCampCommittee(userId))
+            return true;
+        else {
+            StudentController.removeCampCommittee(userId);
+            return false;
+        }
     }
 }

@@ -41,6 +41,17 @@ public class SuggestionDAO {
         return suggestions;
     }
 
+    public static ArrayList<Suggestion> getSuggestionsbyCampIdAndCreatorId(String campId, String creatorId) {
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+
+        for (Suggestion suggestion : Database.SUGGESTIONS.values())
+            if (suggestion.getCampId().equals(campId) && suggestion.getCreatorId().equals(creatorId))
+                suggestions.add(suggestion);
+        
+        return suggestions;
+    }
+
+
     /**
      * Retrieve all Suggestions from the database using the Camp ID and Status
      * 
@@ -53,6 +64,16 @@ public class SuggestionDAO {
 
         for (Suggestion suggestion : Database.SUGGESTIONS.values())
             if (suggestion.getCampId().equals(campId) && suggestion.getStatus() == status)
+                suggestions.add(suggestion);
+        
+        return suggestions;
+    }
+
+    public static ArrayList<Suggestion> getSuggestionsbyCampIdAndStatusAndCreatorId(String campId, SuggestionStatus status, String creatorId) {
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+
+        for (Suggestion suggestion : Database.SUGGESTIONS.values())
+            if (suggestion.getCampId().equals(campId) && suggestion.getStatus() == status && suggestion.getCreatorId().equals(creatorId))
                 suggestions.add(suggestion);
         
         return suggestions;

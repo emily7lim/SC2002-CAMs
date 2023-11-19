@@ -45,7 +45,7 @@ public class StaffView extends MainView {
 
         do {
             System.out.print("\nEnter your choice: ");
-            choice = HelperUtil.nextInt(1, 10);
+            choice = HelperUtil.nextInt(1, 9);
 
             switch (choice) {
                 case 1:
@@ -97,14 +97,14 @@ public class StaffView extends MainView {
                 default:
                     break;
             }
-        } while (choice != 10);
+        } while (choice != 9);
     }
 
     public void viewAllCampsParticipantsMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
         printMenuTitle("View All Camps/Participants");
-        System.out.println("  1)  View All Camp Details\n  2)  View All Camp Participants/Committee\n  3) Back");
+        System.out.println("  1)  View All Camp Details\n  2)  View All Camp Participants/Committee\n  3)  Back");
 
         do {
             System.out.print("\nEnter your choice: ");
@@ -491,6 +491,7 @@ public class StaffView extends MainView {
 
             if (confirm.equals("y")) {
                 SuggestionController.acceptSuggestion(suggestion.getSuggestionId(), userId, suggestion.getCreatorId());
+                StudentController.addPoint(suggestion.getCreatorId());
                 System.out.println("Suggestion successfully approved.\n");
                 break;
             } else if (!confirm.equals("n"))

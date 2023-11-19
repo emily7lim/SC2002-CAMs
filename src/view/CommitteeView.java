@@ -1,215 +1,432 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import controller.*;
 import model.Camp;
-import model.enums.SuggestionStatus;
+import model.Enquiry;
+import model.Suggestion;
 import report.enums.ReportType;
+import utils.HelperUtil;
 
-public class CommitteeView {
-    public static void Committee(Integer choice, String loggedID) {
-        Scanner sc = new Scanner(System.in);
-        boolean continues = true;
-        ArrayList<Camp> camps = new ArrayList<>();
+public class CommitteeView extends StudentView {
+    private final String MENU_TITLE = "Committee Menu";
 
-        if (choice < 10 && choice > 0) {
-            if (choice == 6)
-                System.out.println("You are not allowed to withdraw");
-            else
-                StudentView.Students(choice, loggedID);
-        } else {
+    public CommitteeView() {
+        super();
+    }
+
+    public void printMenu() {
+        printMenuTitle(MENU_TITLE);
+        System.out.println("  1)  View All Camps");
+        System.out.println("  2)  View Registered Camps");
+        System.out.println("  3)  Register for Camp");
+        System.out.println("  4)  Withdraw from Camp");
+        System.out.println("  5)  Manage Enquiries");
+        System.out.println("  6)  Manage Suggestions");
+        System.out.println("  7)  Manage Student Camp Enquiries");
+        System.out.println("  8)  Generate Camp Participants/Committee Report");
+        System.out.println("  9)  Profile");
+        System.out.println("  10) Change Password");
+        System.out.println("  11) Logout");
+    }
+
+    public void viewMenu() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenu();
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 11);
+
             switch (choice) {
-
-                case 10: // submit suggestions
-                    ArrayList<String> getcampid = new ArrayList<>();
-                    for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                        getcampid.add(CampController.getAllCamps().get(i).getCampId());
-                    }
-                    System.out.println("Select the camp you want to make suggestions");
-                    Integer input = CommonUse.dataValidation();
-                    if (input >= getcampid.size()) {
-                        System.out.println("No such camp");
-                    } else {
-                        for (int j = 0; j < getcampid.size(); j++) {
-                            if (input == j) {
-                                Scanner scan = new Scanner(System.in);
-                                String suggest = "";
-
-                                System.out.println("Please input your suggestion:");
-                                suggest += scan.nextLine();
-                                System.out.println(getcampid.get(j));
-                                SuggestionController.createSuggestion(getcampid.get(j), loggedID, suggest);
-                            }
-
-                        }
-                    }
+                case 1:
+                    viewAllCamps();
+                    printMenu();
                     break;
-
-                case 11: // view n reply enquiries
-
-                    ArrayList<String> getenquirymsg = new ArrayList<>();
-                    ArrayList<String> getenquiryid = new ArrayList<>();
-
-                    for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
-                        getenquiryid.add(EnquiryController.getAllEnquiries().get(i).getEnquiryId());
-                        getenquirymsg.add(EnquiryController.getAllEnquiries().get(i).getMessage());
-                    }
-                    System.out.println("*********Your enquiries*********");
-                    for (int i = 0; i < getenquirymsg.size(); i++) {
-
-                        System.out.println(i + ") " + getenquirymsg.get(i));
-
-                    }
-                    System.out.println("**********************************");
-                    while (continues) {
-
-                        System.out.println("1) Reply Enquiries\n2) Generate report\n3) Quit");
-                        Scanner scan = new Scanner(System.in);
-                        Integer reply = CommonUse.dataValidation();
-                        switch (reply) {
-                            case 1:
-                                System.out.println("Choose the enquiry you want to reply");
-                                sc = new Scanner(System.in);
-                                input = CommonUse.dataValidation();
-                                if (input >= getenquirymsg.size()) {
-                                    System.out.println("No such enquiry");
-                                } else {
-                                    for (int i = 0; i < getenquiryid.size(); i++) {
-                                        if (input == i) {
-                                            String replyenquiry = "";
-                                            replyenquiry += scan.nextLine();
-                                            EnquiryController.replyEnquiry(getenquiryid.get(i), replyenquiry, loggedID);
-                                            StudentController.addPoint(loggedID);
-                                            System.out.println("You have replied 1 enquiry! +1 points");
-                                        }
-                                    }
-                                }
-                                break;
-
-                            case 2:
-                                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                                    if (CampController.getAllCamps().get(i).getCommitteeIds().get(i).equals(loggedID)) {
-                                        camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
-                                    }
-                                }   
-                                CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
-                                continues = false;
-                                break;
-
-                            case 3:
-                                continues = false;
-                                break;
-
-                            default:
-                                System.out.println("Invalid input");
-                                break;
-                        }
-                    }
-                    continues = true;
+                case 2:
+                    viewRegisteredCamps();
+                    printMenu();
                     break;
-
-                case 12: // view,edit,del details of suggestions b4 being processed
-
-                    while (continues) {
-                        ArrayList<String> getsuggestionmsg = new ArrayList<>();
-                        ArrayList<String> getsuggestionid = new ArrayList<>();
-
-                        for (int i = 0; i < SuggestionController.getAllSuggestions().size(); i++) {
-                            if (SuggestionController.getAllSuggestions().get(i)
-                                    .getStatus() == SuggestionStatus.PENDING) {
-                                getsuggestionid.add(SuggestionController.getAllSuggestions().get(i).getSuggestionId());
-                                getsuggestionmsg.add(SuggestionController.getAllSuggestions().get(i).getMessage());
-
-                            }
-
-                        }
-                        System.out.println("1) View\n2) Edit\n3) Delete\n4) Quit");
-                        Integer edit = CommonUse.dataValidation();
-
-                        switch (edit) {
-                            case 1: // view suggestion
-                                System.out.println("*********Your suggestions*********");
-                                for (int i = 0; i < getsuggestionmsg.size(); i++) {
-
-                                    System.out.println(i + ") " + getsuggestionmsg.get(i));
-
-                                }
-                                System.out.println("**********************************");
-                                break;
-                            case 2: // edit suggestion
-                                Scanner scan = new Scanner(System.in);
-                                System.out.println("Choose the suggestions you want to edit");
-
-                                input = CommonUse.dataValidation();
-                                if (input >= getsuggestionid.size())
-                                    System.out.println("No such suggestion");
-                                else {
-                                    for (int j = 0; j < getsuggestionid.size(); j++) {
-                                        if (input == j) {
-                                            String updatesuggestmsg = "";
-                                            updatesuggestmsg += scan.nextLine();
-                                            SuggestionController.updateSuggestionMessage(getsuggestionid.get(j),
-                                                    updatesuggestmsg);
-                                            System.out.println("Suggestion updated");
-                                        }
-
-                                    }
-                                }
-
-                                break;
-
-                            case 3: // del suggestion
-                                System.out.println("Choose the suggestion you want to delete:");
-
-                                input = CommonUse.dataValidation();
-                                if (input >= getsuggestionid.size())
-                                    System.out.println("No such suggestion");
-                                else {
-                                    for (int j = 0; j < getsuggestionid.size(); j++) {
-                                        if (input == j) {
-                                            SuggestionController.deleteSuggestion(getsuggestionid.get(j));
-                                            System.out.println("Suggestion deleted");
-                                        }
-                                    }
-
-                                }
-
-                                break;
-
-                            case 4:
-                                continues = false;
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                    continues = true;
-
+                case 3:
+                    registerForCamps();
+                    printMenu();
                     break;
-
-                case 13: // generate report of list of students attending the camp they oversee
-                    for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                        if (CampController.getAllCamps().get(i).getCommitteeIds().get(i).equals(loggedID)) {
-                            camps.add(CampController.getCampById(CampController.getAllCamps().get(i).getCampId()));
-                        }
-                    }
-                    CommonUse.FilterReport(camps);
-                    continues = true;
+                case 4:
+                    withdrawFromCamps();
+                    printMenu();
                     break;
-
-                case 14:
-                    // loggedID = null;
-                    continues = false;
+                case 5:
+                    manageEnquiries();
+                    printMenu();
                     break;
-
+                case 6:
+                    manageCampSuggestions();
+                    printMenu();
+                    break;
+                case 7:
+                    manageStudentCampEnquiries();
+                    break;
+                case 8:
+                    generateCampParticipantsCommitteeReport();
+                    printMenu();
+                    break;
+                case 9: // TODO: Link to Profile
+                    break;
+                case 10:
+                    changePassword();
+                    printMenu();
+                    break;
+                case 11:
+                    break;
                 default:
-                    System.out.println("Invalid...");
                     break;
             }
+        } while (choice != 11);
+    }
+
+    public void manageStudentCampEnquiries() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("Manage Camp Enquiries");
+
+        System.out.println(
+                "  1)  Manage Pending Camp Enquiries\n  2)  Generate Camp Enquiry Report\n  3)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    managePendingCampEnquiries();
+                    break;
+                case 2:
+                    generateCampEnquiriesReport();
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    public void managePendingCampEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Pending Enquiries");
+
+        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        ArrayList<Enquiry> enquiries = EnquiryController.getPendingEnquiriesByCampId(camp.getCampId());
+
+        System.out.printf(" No. | Enquiry%32s | Status  | Creator%n", "");
+        if (enquiries.size() != 0) {
+            common.printDivider(2);
+            System.out.printf(" %s%n", camp.getName());
+        } else {
+            common.printDivider(2);
+            System.out.println(" No pending suggestions found\n");
+            return;
         }
-        // }
+
+        for (int i = 0; i < enquiries.size(); i++)
+            common.printEnquiryDetailsWithIndex(enquiries.get(i), enquiries.size() + i + 1);
+
+        int choice = -1, index;
+        System.out.println("\n  1)  Reply Enquiry\n  2)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 2);
+
+            switch (choice) {
+                case 1:
+                    index = -1;
+                    do {
+                        System.out.print("Select an Enquiry to reply: ");
+                        index = HelperUtil.nextInt(1, enquiries.size());
+                    } while (index == -1);
+
+                    replyEnquiry(enquiries.get(index - 1), index);
+                    choice = 2;
+                    break;
+
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice != 2);
+    }
+
+    public void replyEnquiry(Enquiry enquiry, int index) {
+        String reply = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Reply Enquiry " + index);
+
+        System.out.printf(" Enquiry%38s | Status  | Creator%n", "");
+        common.printEnquiryDetails(enquiry);
+
+        do {
+            System.out.print("\nEnter your reply: ");
+            reply = HelperUtil.nextString();
+
+            if (reply.equals(""))
+                System.out.println("Invalid reply, please try again.");
+            else {
+                EnquiryController.replyEnquiry(enquiry.getEnquiryId(), reply, userId);
+                StudentController.addPoint(userId);
+                System.out.println("\nEnquiry successfully replied.");
+            }
+        } while (reply.equals(""));
+
+        HelperUtil.pressAnyKeyToContinue();
+        managePendingCampEnquiries();
+    }
+
+    public void generateCampEnquiriesReport() {
+        ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
+        CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
+
+        System.out.println("\nCamp Enquiries Report generated successfully.");
+    }
+
+    public void manageCampSuggestions() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("Manage Camp Suggestions");
+        System.out.println(
+                "  1)  View All Camp Suggestions\n  2)  View All Approved/Rejected Camp Suggestions\n  3)  Submit New Suggestion\n  4)  Manage Pending Camp Suggestions\n  5)  Back");
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 5);
+
+            switch (choice) {
+                case 1:
+                    viewAllCampSuggestions();
+                    choice = 5;
+                    break;
+                case 2:
+                    viewAllApprovedRejectedCampSuggestions();
+                    choice = 5;
+                    break;
+                case 3:
+                    submitNewSuggestion();
+                    choice = 5;
+                    break;
+                case 4:
+                    managePendingCampSuggestions();
+                    choice = 5;
+                    break;
+                case 5:
+                    HelperUtil.clearScreen();
+                    break;
+                default:
+                    break;
+            }
+        } while (choice != 5);
+    }
+
+    // TODO: Past/Current Camp?
+    public void viewAllCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Suggestions");
+
+        ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+
+        System.out.printf(" Suggestion%34s | Status   %n", "");
+        for (Camp camp : camps) {
+            ArrayList<Suggestion> campSuggestions = SuggestionController
+                    .getSuggestionsbyCampIdAndCreatorId(camp.getCampId(), userId);
+            if (campSuggestions.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campSuggestions.size(); i++)
+                common.printSuggestionDetails(campSuggestions.get(i));
+            suggestions.addAll(campSuggestions);
+        }
+
+        if (suggestions.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No suggestions found\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        manageCampSuggestions();
+    }
+
+    public void viewAllApprovedRejectedCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Approved/Rejected Suggestions");
+
+        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Suggestion> suggestions = new ArrayList<>();
+
+        System.out.printf(" Suggestion%34s | Status   %n", "");
+        for (Camp camp : camps) {
+            ArrayList<Suggestion> campSuggestions = SuggestionController
+                    .getApprovedRejectedSuggestionsByCampIdAndCreatorId(camp.getCampId(), userId);
+            if (campSuggestions.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campSuggestions.size(); i++)
+                common.printSuggestionDetails(campSuggestions.get(i));
+            suggestions.addAll(campSuggestions);
+        }
+
+        if (suggestions.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No suggestions found\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        manageCampSuggestions();
+    }
+
+    public void submitNewSuggestion() {
+        String message = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Submit New Suggestion");
+
+        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        common.printCampDetailsWithRole(camp, 1, userId);
+
+        do {
+            System.out.print("\nEnter your suggestion message: ");
+            message = HelperUtil.nextString();
+
+            if (message.equals(""))
+                System.out.println("Invalid message, please try again.");
+            else {
+                SuggestionController.createSuggestion(camp.getCampId(), userId, message);
+                System.out.println("\nSuggestion successfully submitted.");
+            }
+        } while (message.equals(""));
+
+        HelperUtil.pressAnyKeyToContinue();
+        manageCampSuggestions();
+    }
+
+    public void managePendingCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("Manage Pending Suggestions");
+
+        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        ArrayList<Suggestion> suggestions = SuggestionController
+                .getPendingSuggestionsByCampId(camp.getCampId());
+
+        System.out.printf(" No. | Suggestion%28s | Status   %n", "");
+        if (suggestions.size() != 0) {
+            common.printDivider(2);
+            System.out.printf(" %s%n", camp.getName());
+        } else {
+            common.printDivider(2);
+            System.out.println(" No pending suggestions found\n");
+            return;
+        }
+
+        for (int i = 0; i < suggestions.size(); i++)
+            common.printSuggestionDetailsWithIndex(suggestions.get(i), i + 1);
+
+        int choice = -1, index;
+        System.out.println("\n  1)  Edit Suggestion\n  2)  Delete Suggestion\n  3)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    index = -1;
+                    do {
+                        System.out.print("Select a Suggestion to edit: ");
+                        index = HelperUtil.nextInt(1, suggestions.size());
+                    } while (index == -1);
+
+                    editSuggestion(suggestions.get(index - 1), index);
+                    break;
+
+                case 2:
+                    index = -1;
+                    do {
+                        System.out.print("Select a Suggestion to delete: ");
+                        index = HelperUtil.nextInt(1, suggestions.size());
+                    } while (index == -1);
+
+                    deleteSuggestion(suggestions.get(index - 1), index);
+                    break;
+
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        HelperUtil.clearScreen();
+        manageCampSuggestions();
+    }
+
+    public void editSuggestion(Suggestion suggestion, int index) {
+        String message = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Edit Suggestion " + index);
+
+        System.out.printf(" Suggestion%34s | Status   %n", "");
+        common.printSuggestionDetails(suggestion);
+
+        do {
+            System.out.print("\nEnter your new suggestion message: ");
+            message = HelperUtil.nextString();
+
+            if (message.equals(""))
+                System.out.println("Invalid message, please try again.");
+            else {
+                SuggestionController.updateSuggestionMessage(suggestion.getSuggestionId(), message);
+                System.out.println("\nSuggestion successfully updated.");
+            }
+        } while (message.equals(""));
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void deleteSuggestion(Suggestion suggestion, int index) {
+        String confirm = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Delete Suggestion " + index);
+
+        System.out.printf(" Suggestion%34s | Status   %n", "");
+        common.printSuggestionDetails(suggestion);
+
+        do {
+            System.out.print("\nAre you sure you want to delete this suggestion? (y/n) ");
+            confirm = HelperUtil.nextString().toLowerCase();
+
+            if (confirm.equals("y")) {
+                SuggestionController.deleteSuggestion(suggestion.getSuggestionId());
+                System.out.println("Suggestion successfully deleted.\n");
+                break;
+            } else if (!confirm.equals("n"))
+                System.out.println("Invalid input, please try again.");
+            else
+                break;
+        } while (true);
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    // TODO: Check if report should include past camps?
+    public void generateCampParticipantsCommitteeReport() {
+        ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
+        CommonUse.FilterReport(camps);
+
+        System.out.println("\nCamp Participants/Committee Report generated successfully.");
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
     }
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import model.Suggestion;
 import model.enums.SuggestionStatus;
 import database.CampDAO;
-import database.StudentDAO;
 import database.SuggestionDAO;
 
 public class SuggestionController {
@@ -59,6 +58,17 @@ public class SuggestionController {
         return SuggestionDAO.getSuggestionsbyCampIdAndStatus(campId, SuggestionStatus.PENDING);
     }
 
+    public static ArrayList<Suggestion> getSuggestionsbyCampIdAndCreatorId(String campId, String creatorId) {
+        return SuggestionDAO.getSuggestionsbyCampIdAndCreatorId(campId, creatorId);
+    }
+
+    public static ArrayList<Suggestion> getApprovedRejectedSuggestionsByCampIdAndCreatorId(String campId, String creatorId) {
+        ArrayList<Suggestion> suggestions = SuggestionDAO.getSuggestionsbyCampIdAndStatusAndCreatorId(campId, SuggestionStatus.ACCEPTED, creatorId);
+        suggestions.addAll(SuggestionDAO.getSuggestionsbyCampIdAndStatusAndCreatorId(campId, SuggestionStatus.REJECTED, creatorId));
+
+        return suggestions;
+    }
+
     /**
      * Finds a Suggestion from the database by the Suggestion ID
      * @param suggestionId The Suggestion ID of the Suggestion
@@ -91,7 +101,6 @@ public class SuggestionController {
         if (!checkSuggestionExists(suggestionId)) return false;
 
         SuggestionDAO.updateSuggestionResponse(suggestionId, SuggestionStatus.ACCEPTED, responderId);
-        StudentDAO.updateStudentPoints(creatorId);
         return true;
     }
 

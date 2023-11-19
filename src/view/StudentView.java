@@ -1,258 +1,698 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import controller.*;
 import model.Camp;
-import model.enums.EnquiryStatus;
+import model.Enquiry;
+import utils.HelperUtil;
 
-public class StudentView {
-    public static void Students(Integer choice, String loggedID) {
-        Scanner sc = new Scanner(System.in);
-        boolean continues = true;
-        CommonUse common = new CommonUse();
-        ArrayList<String> getcampcid = new ArrayList<>();
-        ArrayList<String> getcampaid = new ArrayList<>();
+public class StudentView extends MainView {
+    private final String MENU_TITLE = "Student Menu";
 
+    protected String userId;
+    protected CommonUse common;
 
-        // Integer choice = sc.nextInt();
-        switch (choice) {
-            case 1: // view list of camps
-                // view remaining camp slots
-                common.ViewingCamps(loggedID);
-                break;
+    public StudentView() {
+        common = new CommonUse();
+    }
 
-            case 2: // Register camps
-                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                    if (CampController.getAllCamps().get(i).getCommSlots() != 0) {
-                        getcampcid.add(CampController.getAllCamps().get(i).getCampId());
-                    }
-                    if (CampController.getAllCamps().get(i).getTotalSlots() != 0) {
-                        getcampaid.add(CampController.getAllCamps().get(i).getCampId());
-                    }
-                }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-                while (continues) {
-                    System.out.println("\n1) As committee\n2) As attendee\n3) No");
-                    // note: if 0 will error withdraw
-                    Integer reg = CommonUse.dataValidation();
-                    switch (reg) {
-                        case 1: // reg as committee
-                            
-                            System.out.println("Select the camp you want to join");
+    public void printMenu() {
+        printMenuTitle(MENU_TITLE);
+        System.out.println("  1)  View All Camps");
+        System.out.println("  2)  View Registered Camps");
+        System.out.println("  3)  Register for Camp");
+        System.out.println("  4)  Withdraw from Camp");
+        System.out.println("  5)  Manage Enquiries");
+        System.out.println("  6)  Profile");
+        System.out.println("  7)  Change Password");
+        System.out.println("  8)  Logout");
+    }
 
-                            Integer input = CommonUse.dataValidation();
-                            for (int i = 0; i < getcampcid.size(); i++) {
-                                if (CampController.checkCampCommittee(CampController.getAllCamps().get(i).getCampId(),
-                                        loggedID)) {
-                                    System.out.println("You are already in another camp.");
-                                    continues = false;
-                                    break;
-                                } else if (input == i) {
-                                    CampController.addCommittee(CampController.getAllCamps().get(i).getCampId(),
-                                            loggedID);
-                                    System.out.println("You have successfully registered as a committee");
-                                }
+    public void viewMenu() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenu();
 
-                            }
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 8);
 
-                            continues = false;
-                            break;
+            switch (choice) {
+                case 1:
+                    viewAllCamps();
+                    printMenu();
+                    break;
+                case 2:
+                    viewRegisteredCamps();
+                    printMenu();
+                    break;
+                case 3:
+                    registerForCamps();
+                    printMenu();
+                    break;
+                case 4:
+                    withdrawFromCamps();
+                    printMenu();
+                    break;
+                case 5:
+                    manageEnquiries();
+                    printMenu();
+                    break;
+                case 6: // TODO: Link to Profile
+                    break;
+                case 7:
+                    changePassword();
+                    printMenu();
+                    break;
+                case 8:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice != 8);
+    }
 
-                        case 2: // reg as attendee
-                            System.out.println("Select the camp you want to join");
-                            input = CommonUse.dataValidation();
+    public void viewAllCamps() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Camps");
 
-                            for (int i = 0; i < getcampaid.size(); i++) {
-                                if (CampController.checkCampParticipant(CampController.getAllCamps().get(i).getCampId(),
-                                        loggedID)) {
-                                    System.out.println("You are already in another camp.");
-                                    continues = false;
-                                    break;
-                                } else if(CampController.checkCampParticipantWithdrawn(CampController.getAllCamps().get(i).getCampId(), loggedID)){
-                                    System.out.println("Not allowed to join camp that you have previously withdrawn from");
-                                }
-                                else if (input == i) {
-                                    CampController.addParticipant(CampController.getAllCamps().get(i).getCampId(),
-                                            loggedID);
-                                    System.out.println("You have successfully registered as an attendee");
-                                }
+        ArrayList<Camp> camps = CampController.getAvailableCamps(UserController.getUserByUserId(userId).getFaculty());
 
-                            }
+        if (camps.size() == 0)
+            System.out.printf(" No camps found.\n\n", "", "");
+        for (int i = 0; i < camps.size(); i++)
+            common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
 
-                            continues = false;
-                            break;
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
 
-                        case 3:
-                            continues = false;
-                            break;
+    public void viewRegisteredCamps() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("View Registered Camps");
+        System.out.println("  1)  View Past Registered Camps\n  2)  View Future Registered Camps\n  3)  Back");
 
-                        default:
-                            System.out.println("Invalid");
-                            break;
-                    }
-                }
-                continues = true;
-                break;
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
 
-            case 3: // submit enquiries
-                ArrayList<String> getcampid = new ArrayList<>();
-                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                    if(CampController.getAllCamps().get(i).isVisible() && CampController.getAllCamps().get(i)
-                    .getUserGroup() == StudentController.getStudentByUserId(loggedID).getFaculty())
-                    getcampid.add(CampController.getAllCamps().get(i).getCampId());
-                }
-                System.out.println("Select the camp you want to enquire");
-                Integer input = CommonUse.dataValidation();
-                if (input >= getcampid.size()) {
-                    System.out.println("No such camp");
-                } else {
-                    for (int j = 0; j < getcampid.size(); j++) {
-                        if (input == j) {
-                            Scanner scan = new Scanner(System.in);
-                            String enquire = "";
-                            System.out.println("Please input your enquiry:");
-                            enquire += scan.nextLine();
-                            EnquiryController.createEnquiry(getcampid.get(j), loggedID, enquire);
-                        }
-                    }
-                }
-                break;
+            switch (choice) {
+                case 1:
+                    viewPastRegisteredCamps();
+                    break;
+                case 2:
+                    viewFutureRegisteredCamps();
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
 
-            case 4: // view/edit/del enquiries b4 it's processed
+        if (choice != 3)
+            HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
 
-                while (continues) {
-                    ArrayList<String> getenquirymsg = new ArrayList<>();
-                    ArrayList<String> getenquiryid = new ArrayList<>();
+    public void viewPastRegisteredCamps() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Past Registered Camps");
+        ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
 
-                    for (int i = 0; i < EnquiryController.getAllEnquiries().size(); i++) {
-                        if (EnquiryController.getAllEnquiries().get(i).getStatus() == EnquiryStatus.PENDING) {
-                            getenquiryid.add(EnquiryController.getAllEnquiries().get(i).getEnquiryId());
-                            getenquirymsg.add(EnquiryController.getAllEnquiries().get(i).getMessage());
+        if (camps.size() == 0)
+            System.out.printf(" No past registered camps found.\n\n", "", "");
+        for (int i = 0; i < camps.size(); i++)
+            common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
+    }
 
-                        }
+    public void viewFutureRegisteredCamps() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Future Registered Camps");
+        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
 
-                    }
-                    System.out.println("1) View\n2) Edit\n3) Delete\n4) Quit");
+        if (camps.size() == 0)
+            System.out.printf(" No future registered camps found.\n\n", "", "");
+        for (int i = 0; i < camps.size(); i++)
+            common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
+    }
 
-                    Integer edit = CommonUse.dataValidation();
-                    switch (edit) {
-                        case 1: // view enquiry
-                            System.out.println("*********Your enquiries*********");
-                            for (int i = 0; i < getenquirymsg.size(); i++) {
+    public void registerForCamps() {
+        int index = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("Register for Camps");
 
-                                System.out.println(i + ") " + getenquirymsg.get(i));
+        ArrayList<Camp> camps = CampController
+                .getAvailableUnregisteredCamps(UserController.getUserByUserId(userId).getFaculty(), userId);
 
-                            }
-                            System.out.println("********************************");
-                            break;
-                        case 2: // edit enquiry
-                            Scanner scan = new Scanner(System.in);
-                            System.out.println("Choose the enquiries you want to edit");
+        if (camps.size() == 0)
+            System.out.printf(" No camps found.\n\n", "", "");
+        else {
+            for (int i = 0; i < camps.size(); i++)
+                common.printCampDetails(camps.get(i), i + 1);
 
-                            input = CommonUse.dataValidation();
-                            if (input >= getenquiryid.size())
-                                System.out.println("No such enquiry");
-                            else {
-                                for (int j = 0; j < getenquiryid.size(); j++) {
-                                    if (input == j) {
-                                        System.out.println("Input enquiry");
-                                        String updateenquirymsg = "";
-                                        updateenquirymsg += scan.nextLine();
-                                        EnquiryController.updateEnquiryMessage(getenquiryid.get(j), updateenquirymsg);
-                                        System.out.println("Enquiry updated");
-                                    }
+            do {
+                System.out.print("\nSelect a Camp to register: ");
+                index = HelperUtil.nextInt(1, camps.size());
+            } while (index == -1);
 
-                                }
-                            }
-
-                            break;
-
-                        case 3: // del enquiry
-                            System.out.println("Choose the enquiry you want to delete:");
-                            input = CommonUse.dataValidation();
-                            if (input >= getenquiryid.size())
-                                System.out.println("No such enquiry");
-                            else {
-                                for (int j = 0; j < getenquiryid.size(); j++) {
-                                    if (input == j) {
-                                        EnquiryController.deleteEnquiry(getenquiryid.get(j));
-                                        System.out.println("Enquiry deleted");
-                                    }
-                                }
-
-                            }
-
-                            break;
-
-                        case 4: // quit
-                            continues = false;
-                            break;
-
-                        default:
-                            System.out.println("Invalid");
-                            break;
-                    }
-                }
-                continues = true;
-
-                break;
-
-            case 5: // view registered camps n role(attendee/committee)
-                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                    // System.out.println(CampController.getAllCamps().get(i).getParticipantIds().get(i).equals(loggedID));
-
-                    getcampaid.add(CampController.getAllCamps().get(i).getCampId());
-                    
-                }
-                System.out.println("These are the camps you have registered for");
-
-                break;
-
-            case 6: // withdraw from camp
-                // note: update remaining slots n not allowed to reg for the same camp they
-                // withdrew from
-                for (int i = 0; i < CampController.getAllCamps().size(); i++) {
-                    if (CampController.checkCampParticipant(CampController.getAllCamps().get(i).getCampId(),
-                            loggedID)) {
-                        getcampaid.add(CampController.getAllCamps().get(i).getCampId());
-                    }
-                }
-                System.out.println("Select the camp you want to withdraw from");
-
-                input = CommonUse.dataValidation();
-                if (input >= getcampaid.size()) {
-                    System.out.println("No such camp");
-                } else {
-                    for (int j = 0; j < getcampaid.size(); j++) {
-                        if (input == j && CampController.checkCampParticipant(getcampaid.get(j), loggedID)) {
-                            CampController.removeParticipant(getcampaid.get(j), loggedID);
-                        }
-                    }
-                    System.out.println("You have successfully withdrawn from the camp");
-                }
-
-                break;
-
-            case 7: // view reply
-                common.ViewReply();
-                break;
-            case 8: // change
-                Scanner scan = new Scanner(System.in);
-                String pw = scan.nextLine();
-                UserController.changePassword(loggedID, pw);
-                System.out.println("Password updated");
-                break;
-
-            case 9: // profile
-
-                break;
-
-            default:
-                break;
+            registerForCamp(camps.get(index - 1), index);
         }
-        // }
 
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    // TODO: Change to Committee View upon registering as Committee
+    public void registerForCamp(Camp camp, int index) {
+        int choice = -1;
+        String confirm;
+        HelperUtil.clearScreen();
+        printMenuTitle("Register for Camp " + index);
+
+        common.printCampDetails(camp, index);
+
+        System.out.println("\nSelect a Role:\n  1)  Camp Committee\n  2)  Camp Participant");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 2);
+
+            switch (choice) {
+                case 1:
+                    if (camp.getRemainingCommitteeSlots() == 0)
+                        System.out.println("Unable to register as a committee, no remaining slots left.\n\n");
+                    else if (CampController.checkCurrentCampCommittee(userId))
+                        System.out.println(
+                                "Unable to register as a committee, you are already a committee for another camp.\n\n");
+                    else if (CampController.checkCampParticipant(userId, camp.getStartDate(), camp.getEndDate()))
+                        System.out.println(
+                                "Unable to register as a committee, you are already registered for another overlapping camp.\n\n");
+                    else {
+                        do {
+                            System.out.print("\nAre you sure you want to register for this camp? (y/n) ");
+                            confirm = HelperUtil.nextString().toLowerCase();
+
+                            if (confirm.equals("y")) {
+                                CampController.addCommittee(camp.getCampId(), userId);
+                                System.out.println("Successfully registered as Camp Committee.\n");
+                                break;
+                            } else if (!confirm.equals("n"))
+                                System.out.println("Invalid input, please try again.");
+                            else
+                                break;
+                        } while (true);
+                    }
+                    break;
+
+                case 2:
+                    if (camp.getRemainingParticipantSlots() == 0)
+                        System.out.println("Unable to register as a participant, no remaining slots left.\n\n");
+                    else if (CampController.checkCampParticipant(userId, camp.getStartDate(), camp.getEndDate()))
+                        System.out.println(
+                                "Unable to register as a participant, you are already registered for another overlapping camp.\n\n");
+                    else if (CampController.checkCampParticipantWithdrawn(camp.getCampId(), userId))
+                        System.out.println(
+                                "Unable to register as participant, you have previously withdrawn from this Camp.\n\n");
+                    else {
+                        do {
+                            System.out.print("\nAre you sure you want to register for this camp? (y/n) ");
+                            confirm = HelperUtil.nextString().toLowerCase();
+
+                            if (confirm.equals("y")) {
+                                CampController.addParticipant(camp.getCampId(), userId);
+                                System.out.println("Successfully registered as Camp Participant.\n");
+                                break;
+                            } else if (!confirm.equals("n"))
+                                System.out.println("Invalid input, please try again.");
+                            else
+                                break;
+                        } while (true);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+    }
+
+    public void withdrawFromCamps() {
+        int index = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("Withdraw from Camps");
+
+        ArrayList<Camp> camps = CampController.getFutureRegisteredCampsAsParticipant(userId);
+
+        if (camps.size() == 0)
+            System.out.printf(" No registered camps found.\n\n", "", "");
+        else {
+            for (int i = 0; i < camps.size(); i++)
+                common.printCampDetails(camps.get(i), i + 1);
+
+            do {
+                System.out.print("\nSelect a Camp to withdraw from: ");
+                index = HelperUtil.nextInt(1, camps.size());
+            } while (index == -1);
+
+            withdrawFromCamp(camps.get(index - 1), index);
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    public void withdrawFromCamp(Camp camp, int index) {
+        String confirm;
+        HelperUtil.clearScreen();
+        printMenuTitle("Withdraw from Camp " + index);
+
+        common.printCampDetails(camp, index);
+
+        do {
+            System.out.print("\nAre you sure you want to withdraw from this camp? (y/n) ");
+            confirm = HelperUtil.nextString().toLowerCase();
+
+            if (confirm.equals("y")) {
+                CampController.removeParticipant(camp.getCampId(), userId);
+                System.out.println("Successfully withdrawn from Camp.\n");
+                break;
+            } else if (!confirm.equals("n"))
+                System.out.println("Invalid input, please try again.");
+            else
+                break;
+        } while (true);
+    }
+
+    public void manageEnquiries() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("Manage Enquiries");
+        System.out.println(
+                "  1)  View All Enquiries\n  2)  View Enquiry Replies\n  3)  Submit New Enquiry\n  4)  Manage Pending Enquiries\n  5)  Back");
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 5);
+
+            switch (choice) {
+                case 1:
+                    viewAllEnquiries();
+                    choice = 5;
+                    break;
+
+                case 2:
+                    viewEnquiryReplies();
+                    choice = 5;
+                    break;
+
+                case 3:
+                    submitNewEnquiry();
+                    choice = 5;
+                    break;
+
+                case 4:
+                    managePendingEnquiries();
+                    choice = 5;
+                    break;
+
+                case 5:
+                    HelperUtil.clearScreen();
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice != 5);
+    }
+
+    public void viewAllEnquiries() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("View All Enquiries");
+        System.out.println("  1)  View Past Camps Enquiries\n  2)  View Future Camps Enquiries\n  3)  Back");
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    viewPastCampsEnquiries();
+                    break;
+
+                case 2:
+                    viewFutureCampsEnquiries();
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        manageEnquiries();
+    }
+
+    public void viewPastCampsEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Past Camps Enquiries");
+
+        ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" Enquiry%51s | Status  %n", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getEnquiriesByCreatorIdAndCampId(userId,
+                    camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printUserEnquiryDetails(campEnquiries.get(i));
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No enquiries found.\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    public void viewFutureCampsEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Future Camps Enquiries");
+
+        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" Enquiry%51s | Status  %n", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getEnquiriesByCreatorIdAndCampId(userId,
+                    camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printUserEnquiryDetails(campEnquiries.get(i));
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No enquiries found.\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    public void viewEnquiryReplies() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("View Enquiry Replies");
+        System.out
+                .println("  1)  View Past Camps Enquiry Replies\n  2)  View Future Camps Enquiry Replies\n  3)  Back");
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    viewPastCampsEnquiryReplies();
+                    break;
+
+                case 2:
+                    viewFutureCampsEnquiryReplies();
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        manageEnquiries();
+    }
+
+    public void viewPastCampsEnquiryReplies() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Past Camps Enquiry Replies");
+
+        ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" Enquiry%20s | Response%n", "", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getRepliedEnquiriesByCreatorIdAndCampId(userId,
+                    camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printEnquiryDetailsWithReply(campEnquiries.get(i));
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No enquiries found\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    public void viewFutureCampsEnquiryReplies() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Future Camps Enquiry Replies");
+
+        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" Enquiry%20s | Response%n", "", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getRepliedEnquiriesByCreatorIdAndCampId(userId,
+                    camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printEnquiryDetailsWithReply(campEnquiries.get(i));
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No enquiries found\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    public void submitNewEnquiry() {
+        int index = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("Submit New Enquiry");
+        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+
+        if (camps.size() == 0)
+            System.out.printf(" No registered camps found.\n\n", "", "");
+        else {
+            for (int i = 0; i < camps.size(); i++)
+                common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
+
+            do {
+                System.out.print("\nSelect a Camp to enquire: ");
+                index = HelperUtil.nextInt(1, camps.size());
+            } while (index == -1);
+
+            submitEnquiry(camps.get(index - 1), index);
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+        manageEnquiries();
+    }
+
+    public void submitEnquiry(Camp camp, int index) {
+        String message = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Submit New Enquiry for Camp " + index);
+
+        common.printCampDetailsWithRole(camp, index, userId);
+
+        do {
+            System.out.print("\nEnter your enquiry message: ");
+            message = HelperUtil.nextString();
+
+            if (message.equals(""))
+                System.out.println("Invalid message, please try again.");
+            else {
+                EnquiryController.createEnquiry(camp.getCampId(), userId, message);
+                System.out.println("\nEnquiry successfully submitted.");
+            }
+        } while (message.equals(""));
+    }
+
+    public void managePendingEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("Manage Pending Enquiries");
+
+        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" No. | Enquiry%45s | Status  %n", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getPendingEnquiriesByCreatorIdAndCampId(userId,
+                    camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printUserEnquiryDetailsWithIndex(campEnquiries.get(i), i + 1);
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No pending enquiries found\n");
+            HelperUtil.pressAnyKeyToContinue();
+        } else {
+            int choice = -1, index;
+            System.out.println("\n  1)  Edit Enquiry\n  2)  Delete Enquiry\n  3)  Back");
+            do {
+                System.out.print("\nEnter your choice: ");
+                choice = HelperUtil.nextInt(1, 3);
+
+                switch (choice) {
+                    case 1:
+                        index = -1;
+                        do {
+                            System.out.print("Select an Enquiry to edit: ");
+                            index = HelperUtil.nextInt(1, enquiries.size());
+                        } while (index == -1);
+
+                        editEnquiry(enquiries.get(index - 1), index);
+                        break;
+
+                    case 2:
+                        index = -1;
+                        do {
+                            System.out.print("Select an Enquiry to delete: ");
+                            index = HelperUtil.nextInt(1, enquiries.size());
+                        } while (index == -1);
+
+                        deleteEnquiry(enquiries.get(index - 1), index);
+                        break;
+
+                    case 3:
+                        break;
+
+                    default:
+                        break;
+                }
+            } while (choice == -1);
+        }
+
+        HelperUtil.clearScreen();
+        manageEnquiries();
+    }
+
+    public void editEnquiry(Enquiry enquiry, int index) {
+        String message = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Edit Enquiry " + index);
+
+        System.out.printf(" Enquiry%51s | Status  %n", "");
+        common.printUserEnquiryDetails(enquiry);
+
+        do {
+            System.out.print("\nEnter your new enquiry message: ");
+            message = HelperUtil.nextString();
+
+            if (message.equals(""))
+                System.out.println("Invalid message, please try again.");
+            else {
+                EnquiryController.updateEnquiryMessage(enquiry.getEnquiryId(), message);
+                System.out.println("\nEnquiry successfully updated.");
+            }
+        } while (message.equals(""));
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void deleteEnquiry(Enquiry enquiry, int index) {
+        String confirm = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Delete Enquiry " + index);
+
+        System.out.printf(" Enquiry%51s | Status  %n", "");
+        common.printUserEnquiryDetails(enquiry);
+
+        do {
+            System.out.print("\nAre you sure you want to delete this enquiry? (y/n) ");
+            confirm = HelperUtil.nextString().toLowerCase();
+
+            if (confirm.equals("y")) {
+                EnquiryController.deleteEnquiry(enquiry.getEnquiryId());
+                System.out.println("Enquiry successfully deleted.\n");
+                break;
+            } else if (!confirm.equals("n"))
+                System.out.println("Invalid input, please try again.");
+            else
+                break;
+        } while (true);
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void changePassword() {
+        String currentPassword, newPassword, confirmPassword;
+        HelperUtil.clearScreen();
+        printMenuTitle("Change Password");
+
+        do {
+            System.out.print("Enter your current password (Enter b to go back): ");
+            currentPassword = HelperUtil.nextString();
+            if (currentPassword.equals("b"))
+                break;
+
+            System.out.print("Enter your new password: ");
+            newPassword = HelperUtil.nextString();
+
+            System.out.print("Re-enter your new password: ");
+            confirmPassword = HelperUtil.nextString();
+
+            if (!UserController.validateUserCredentials(userId, currentPassword)) {
+                System.out.println("\nCurrent password is incorrect, please try again.");
+            } else if (!newPassword.equals(confirmPassword)) {
+                System.out.println("\nPasswords do not match, please try again.");
+            } else {
+                UserController.changePassword(userId, newPassword);
+                System.out.println("\nPassword successfully updated.");
+                HelperUtil.pressAnyKeyToContinue();
+                break;
+            }
+        } while (true);
+
+        HelperUtil.clearScreen();
     }
 }
