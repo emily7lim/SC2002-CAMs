@@ -563,7 +563,7 @@ public class CampController {
 
     public static boolean checkCampNameUnique(String campId, String name) {
         for (Camp camp : CampDAO.getAllCamps())
-            if (camp.getName() == name && !camp.getCampId().equals(campId))
+            if (camp.getName().equals(name) && !camp.getCampId().equals(campId))
                 return false;
         
         return true;
