@@ -476,7 +476,7 @@ public class StudentView extends MainView {
 
         if (enquiries.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No enquiries found\n");
+            System.out.println(" No enquiries found.\n");
         }
 
         HelperUtil.pressAnyKeyToContinue();
@@ -505,7 +505,7 @@ public class StudentView extends MainView {
 
         if (enquiries.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No enquiries found\n");
+            System.out.println(" No enquiries found.\n");
         }
 
         HelperUtil.pressAnyKeyToContinue();
@@ -580,7 +580,7 @@ public class StudentView extends MainView {
 
         if (enquiries.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No pending enquiries found\n");
+            System.out.println(" No pending enquiries found.\n");
             HelperUtil.pressAnyKeyToContinue();
         } else {
             int choice = -1, index;

@@ -204,7 +204,7 @@ public class StaffView extends MainView {
 
         if (enquiries.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No enquiries found\n");
+            System.out.println(" No enquiries found.\n");
         }
     }
 
@@ -229,7 +229,7 @@ public class StaffView extends MainView {
 
         if (enquiries.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No enquiries found\n");
+            System.out.println(" No enquiries found.\n");
         }
     }
 
@@ -254,7 +254,7 @@ public class StaffView extends MainView {
 
         if (enquiries.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No pending suggestions found\n");
+            System.out.println(" No pending enquiries found.\n");
             return;
         }
 
@@ -386,7 +386,7 @@ public class StaffView extends MainView {
 
         if (suggestions.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No suggestions found\n");
+            System.out.println(" No suggestions found.\n");
         }
     }
 
@@ -412,7 +412,7 @@ public class StaffView extends MainView {
 
         if (suggestions.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No suggestions found\n");
+            System.out.println(" No suggestions found.\n");
         }
     }
 
@@ -438,7 +438,7 @@ public class StaffView extends MainView {
 
         if (suggestions.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No pending suggestions found\n");
+            System.out.println(" No pending suggestions found.\n");
             return;
         }
 

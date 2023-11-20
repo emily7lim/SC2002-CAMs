@@ -131,7 +131,7 @@ public class CommitteeView extends StudentView {
             System.out.printf(" %s%n", camp.getName());
         } else {
             common.printDivider(2);
-            System.out.println(" No pending suggestions found\n");
+            System.out.println(" No pending suggestions found.\n");
             return;
         }
 
@@ -282,7 +282,7 @@ public class CommitteeView extends StudentView {
 
         if (suggestions.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No suggestions found\n");
+            System.out.println(" No suggestions found.\n");
         }
 
         HelperUtil.pressAnyKeyToContinue();
@@ -302,7 +302,7 @@ public class CommitteeView extends StudentView {
             System.out.printf(" %s%n", camp.getName());
         } else {
             common.printDivider(2);
-            System.out.println(" No suggestions found\n");
+            System.out.println(" No suggestions found.\n");
         }
 
         for (int i = 0; i < suggestions.size(); i++)
@@ -361,7 +361,7 @@ public class CommitteeView extends StudentView {
 
         if (suggestions.size() == 0) {
             common.printDivider(2);
-            System.out.println(" No suggestions found\n");
+            System.out.println(" No suggestions found.\n");
         }
 
         HelperUtil.pressAnyKeyToContinue();
@@ -381,7 +381,7 @@ public class CommitteeView extends StudentView {
             System.out.printf(" %s%n", camp.getName());
         } else {
             common.printDivider(2);
-            System.out.println(" No suggestions found\n");
+            System.out.println(" No suggestions found.\n");
         }
 
         for (int i = 0; i < suggestions.size(); i++)
@@ -465,7 +465,7 @@ public class CommitteeView extends StudentView {
             } while (choice == -1);
         } else {
             common.printDivider(2);
-            System.out.println(" No pending suggestions found\n");
+            System.out.println(" No pending suggestions found.\n");
             HelperUtil.pressAnyKeyToContinue();
         }
 
