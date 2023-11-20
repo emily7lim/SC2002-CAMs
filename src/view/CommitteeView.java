@@ -121,7 +121,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Pending Enquiries");
 
-        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
         ArrayList<Enquiry> enquiries = EnquiryController.getPendingEnquiriesByCampId(camp.getCampId());
 
         System.out.printf(" No. | Enquiry%32s | Status  | Creator%n", "");
@@ -135,7 +135,7 @@ public class CommitteeView extends StudentView {
         }
 
         for (int i = 0; i < enquiries.size(); i++)
-            common.printEnquiryDetailsWithIndex(enquiries.get(i), enquiries.size() + i + 1);
+            common.printEnquiryDetailsWithIndex(enquiries.get(i), i + 1);
 
         int choice = -1, index;
         System.out.println("\n  1)  Reply Enquiry\n  2)  Back");
@@ -189,7 +189,7 @@ public class CommitteeView extends StudentView {
     }
 
     public void generateCampEnquiriesReport() {
-        ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
+        ArrayList<Camp> camps = CampController.getCommitteeCamps(userId);
         CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
 
         System.out.println("\nCamp Enquiries Report generated successfully.");
@@ -263,7 +263,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Camp Suggestions");
 
-        ArrayList<Camp> camps = CampController.getPastCampsByCommitteeId(userId);
+        ArrayList<Camp> camps = CampController.getCommitteePastCamps(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
         System.out.printf(" Suggestion%47s | Status   %n", "");
@@ -291,7 +291,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Current Camp Suggestions");
 
-        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
         ArrayList<Suggestion> suggestions = SuggestionController
                 .getSuggestionsbyCampIdAndCreatorId(camp.getCampId(), userId);
 
@@ -342,7 +342,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Approved/Rejected Camp Suggestions");
 
-        ArrayList<Camp> camps = CampController.getPastCampsByCommitteeId(userId);
+        ArrayList<Camp> camps = CampController.getCommitteePastCamps(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
         System.out.printf(" Suggestion%47s | Status   %n", "");
@@ -370,7 +370,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Current Approved/Rejected Camp Suggestions");
 
-        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
         ArrayList<Suggestion> suggestions = SuggestionController
                 .getApprovedRejectedSuggestionsByCampIdAndCreatorId(camp.getCampId(), userId);
 
@@ -394,7 +394,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("Submit New Suggestion");
 
-        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
         common.printCampDetailsWithRole(camp, 1, userId);
 
         do {
@@ -417,7 +417,7 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("Manage Pending Suggestions");
 
-        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
         ArrayList<Suggestion> suggestions = SuggestionController
                 .getPendingSuggestionsByCampId(camp.getCampId());
 
@@ -521,7 +521,7 @@ public class CommitteeView extends StudentView {
     }
 
     public void generateCampParticipantsCommitteeReport() {
-        ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
+        ArrayList<Camp> camps = CampController.getCommitteeCamps(userId);
         CommonUse.FilterReport(camps);
 
         System.out.println("\nCamp Participants/Committee Report generated successfully.");

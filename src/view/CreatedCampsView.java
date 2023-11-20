@@ -70,7 +70,7 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Created Camps");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         if (camps.size() == 0)
             System.out.println(" No camps found.\n");
         for (int i = 0; i < camps.size(); i++)
@@ -197,7 +197,7 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Edit Created Camps");
 
-        ArrayList<Camp> camps = CampController.getFutureCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffFutureCamps(userId);
         if (camps.size() == 0) {
             System.out.println(" No camps found.\n");
             HelperUtil.pressAnyKeyToContinue();
@@ -420,7 +420,7 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Delete Created Camps");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         if (camps.size() == 0) {
             System.out.println(" No camps found.\n");
             HelperUtil.pressAnyKeyToContinue();

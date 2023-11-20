@@ -187,7 +187,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Enquiries");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" Enquiry%38s | Status  | Creator%n", "");
@@ -212,7 +212,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Replied Enquiries");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" Enquiry%20s | Response%n", "", "");
@@ -237,7 +237,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Pending Enquiries");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" No. | Enquiry%32s | Status  | Creator%n", "");
@@ -248,7 +248,7 @@ public class StaffView extends MainView {
                 System.out.printf(" %s%n", camp.getName());
             }
             for (int i = 0; i < campEnquiries.size(); i++)
-                common.printEnquiryDetailsWithIndex(campEnquiries.get(i), enquiries.size() + i + 1);
+                common.printEnquiryDetailsWithIndex(campEnquiries.get(i), i + 1);
             enquiries.addAll(campEnquiries);
         }
 
@@ -309,14 +309,14 @@ public class StaffView extends MainView {
     }
 
     public void generateCampEnquiriesReport() {
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
 
         System.out.println("\nCamp Enquiries Report generated successfully.");
     }
 
     public void generateCampParticipantsCommitteeReport() {
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         CommonUse.FilterReport(camps);
 
         System.out.println("\nCamp Participants/Committee Report generated successfully.");
@@ -325,7 +325,7 @@ public class StaffView extends MainView {
     }
 
     public void generateCampCommitteePerformanceReport() {
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         CommonUse.FileType(camps, null, ReportType.PERFORMANCE_REPORT);
 
         System.out.println("\nCamp Committee Performance Report generated successfully.");
@@ -369,7 +369,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Suggestions");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
         System.out.printf(" Suggestion%34s | Status   | Creator%n", "");
@@ -394,7 +394,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Approved/Rejected Suggestions");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
         System.out.printf(" Suggestion%34s | Status   | Creator%n", "");
@@ -420,7 +420,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Pending Suggestions");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
         System.out.printf(" No. | Suggestion%28s | Status   | Creator%n", "");
@@ -432,7 +432,7 @@ public class StaffView extends MainView {
                 System.out.printf(" %s%n", camp.getName());
             }
             for (int i = 0; i < campSuggestions.size(); i++)
-                common.printSuggestionDetailsWithIndex(campSuggestions.get(i), suggestions.size() + i + 1);
+                common.printSuggestionDetailsWithIndex(campSuggestions.get(i), i + 1);
             suggestions.addAll(campSuggestions);
         }
 

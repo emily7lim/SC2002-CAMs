@@ -12,7 +12,6 @@ public class CampController {
     /**
      * Creates a new Camp and add to the database
      * 
-     * @param campId                The Camp ID of the new Camp
      * @param name                  The name of the new Camp
      * @param startDate             The start date of the new Camp
      * @param endDate               The end date of the new Camp
@@ -25,6 +24,7 @@ public class CampController {
      *                              Camp
      * @param description           The description of the new Camp
      * @param staffInCharge         The staff in charge of the new Camp
+     * @return String The Camp ID of the newly created Camp
      */
     public static String createCamp(String name, Date startDate, Date endDate, Date registrationCloseDate,
             Faculty userGroup, String location, int totalSlots, int commSlots, String description,
@@ -46,99 +46,145 @@ public class CampController {
     }
 
     /**
-     * Retrieves a list of all Camps from the database by Staff in Charge
+     * Retrieves a list of all Camps from the database created by the Staff using
+     * the User ID
      * 
-     * @param staffInCharge The User ID of the Staff in Charge
+     * @param userId The User ID of the Staff in Charge
      * @return ArrayList<Camp> The list of all the Camps with corresponsing Staff in
      *         Charge
      */
-    public static ArrayList<Camp> getCampsByStaffInCharge(String staffInCharge) {
-        return CampDAO.getCampsByCreatorId(staffInCharge);
+    public static ArrayList<Camp> getStaffCamps(String userId) {
+        return CampDAO.getCampsByCreatorId(userId);
     }
 
     /**
-     * Retrieves a list of all future Camps from the database by Staff in Charge
+     * Retrieves a list of all future Camps from the database created by the Staff
+     * using the User ID
      * 
-     * @param staffInCharge The User ID of the Staff in Charge
+     * @param userId The User ID of the Staff in Charge
      * @return ArrayList<Camp> The list of all the Camps with corresponsing Staff in
      *         Charge
      */
-    public static ArrayList<Camp> getFutureCampsByStaffInCharge(String staffInCharge) {
-        return CampDAO.getCampsByCreatorIdAfterDate(staffInCharge, new Date());
-    }
-
-    public static ArrayList<Camp> getCampsByCommitteeId(String committeeId) {
-        return CampDAO.getCampsByCommitteeId(committeeId);
-    }
-
-    public static ArrayList<Camp> getPastCampsByCommitteeId(String committeeId) {
-        return CampDAO.getCampsByCommitteeIdBeforeDate(committeeId, new Date());
-    }
-
-    public static Camp getCurrentCampByCommitteeId(String committeeId) {
-        return CampDAO.getCampsByCommitteeIdAfterDate(committeeId, new Date());
+    public static ArrayList<Camp> getStaffFutureCamps(String userId) {
+        return CampDAO.getCampsByCreatorIdAfterDate(userId, new Date());
     }
 
     /**
-     * Retrieves a list of all Camps from the database by Staff in Charge
+     * Retrieves a list of all Camps with Committee Member using User ID
      * 
-     * @param faculty The Faculty of the Camp
-     * @return ArrayList<Camp> The list of all the Camps with corresponsing Staff in
-     *         Charge
+     * @param userId The User ID of the Committee Member
+     * @return ArrayList<Camp> The list of all the Camps with corresponding
+     *         Committee Member
      */
-    public static ArrayList<Camp> getAvailableCamps(Faculty faculty) {
+    public static ArrayList<Camp> getCommitteeCamps(String userId) {
+        return CampDAO.getCampsByCommitteeId(userId);
+    }
+
+    /**
+     * Retrieves a list of all past Camps with Committee Member using User ID
+     * 
+     * @param userId The User ID of the Committee Member
+     * @return ArrayList<Camp> The list of all the Camps with the corresponsing
+     *         Committee Member
+     */
+    public static ArrayList<Camp> getCommitteePastCamps(String userId) {
+        return CampDAO.getCampsByCommitteeIdBeforeDate(userId, new Date());
+    }
+
+    /**
+     * Retireves the current Camp of Committee Member using User ID
+     * 
+     * @param userId The User ID of the Committee Member
+     * @return Camp The current Camp of the Committee Member
+     */
+    public static Camp getCommitteeCurrentCamp(String userId) {
+        return CampDAO.getCampsByCommitteeIdAfterDate(userId, new Date());
+    }
+
+    /**
+     * Retrieves a list of all available Camps for the Student using Faculty
+     * 
+     * @param faculty The Faculty of the User
+     * @return ArrayList<Camp> The list of all the Camps with corresponsing Faculty
+     */
+    public static ArrayList<Camp> getStudentAvailableCamps(Faculty faculty) {
         return CampDAO.getCampsByUserGroupAndDateAndVisibility(faculty, new Date(), true);
     }
 
     /**
-     * Retrieves a list of all registered Camps from the database by Participant ID
+     * Retrieves a list of all available ungeristered Camps for the Student by
+     * Faculty and User ID
      * 
-     * @param participantId The User ID of the Participant
-     * @return ArrayList<Camp> The list of all the Camps with corresponsing
-     *         Participant
+     * @param faculty       The Faculty of the User
+     * @param participantId The User ID of the Student
+     * @return ArrayList<Camp> The list of all the Camps with corresponsing Faculty
+     *         that the Student has not registered for
      */
-    public static ArrayList<Camp> getPastRegisteredCamps(String participantId) {
-        return CampDAO.getCampsByParticipantIdBeforeDate(participantId, new Date());
-    }
-
-    public static ArrayList<Camp> getFutureRegisteredCamps(String participantId) {
-        return CampDAO.getCampsByParticipantIdAfterDate(participantId, new Date());
-    }
-
-
-    public static ArrayList<Camp> getFutureRegisteredCampsAsParticipant(String participantId) {
+    public static ArrayList<Camp> getStudentAvailableUnregisteredCamps(Faculty faculty, String participantId) {
         ArrayList<Camp> camps = new ArrayList<>();
 
-        for (Camp camp : CampDAO.getCampsByParticipantIdAfterDate(participantId, new Date())) 
-            if (camp.getParticipantIds().contains(participantId))
+        for (Camp camp : CampDAO.getCampsByUserGroupAndDateAndVisibility(faculty, new Date(), true))
+            if (!(camp.getRegistrationCloseDate().before(new Date()) || camp.getCommitteeIds().contains(participantId)
+                    || camp.getParticipantIds().contains(participantId)
+                    || (camp.getRemainingCommitteeSlots() == 0 && camp.getRemainingParticipantSlots() == 0)))
                 camps.add(camp);
-        
+
         return camps;
     }
 
     /**
-     * Retrieves a list of all ungeristered Camps from the database by Participant
-     * ID
+     * Retrieves a list of all past registered Camps of a Student from the database
+     * by User ID
      * 
-     * @param faculty       The Faculty of the Camp
-     * @param participantId The User ID of the Participant
-     * @return ArrayList<Camp> The list of all the Camps with corresponsing
-     *         Participant
+     * @param userId The User ID of the Student
+     * @return ArrayList<Camp> The list of all the past Camps the Student has
+     *         registered for
      */
-    public static ArrayList<Camp> getAvailableUnregisteredCamps(Faculty faculty, String participantId) {
+    public static ArrayList<Camp> getStudentPastRegisteredCamps(String userId) {
+        return CampDAO.getCampsByParticipantIdBeforeDate(userId, new Date());
+    }
+
+    /**
+     * Retrieves a list of all future registered Camps of a Student from the
+     * database by User ID
+     * 
+     * @param userId The User ID of the Student
+     * @return ArrayList<Camp> The list of all the future Camps the Student has
+     *         registered for
+     */
+    public static ArrayList<Camp> getStudentFutureRegisteredCamps(String userId) {
+        return CampDAO.getCampsByParticipantIdAfterDate(userId, new Date());
+    }
+
+    /**
+     * Retrieves a list of all future Camps of a Student registered as a participant
+     * using User ID
+     * 
+     * @param userId The User ID of the Student
+     * @return ArrayList<Camp> The list of all the future Camps the Student has
+     *         registered for as a participant
+     */
+    public static ArrayList<Camp> getParticipantFutureRegisteredCamps(String userId) {
         ArrayList<Camp> camps = new ArrayList<>();
 
-        for (Camp camp : CampDAO.getCampsByUserGroupAndDateAndVisibility(faculty, new Date(), true)) 
-            if (!(camp.getRegistrationCloseDate().before(new Date()) || camp.getCommitteeIds().contains(participantId) || camp.getParticipantIds().contains(participantId) || (camp.getRemainingCommitteeSlots() == 0 && camp.getRemainingParticipantSlots() == 0)))
+        for (Camp camp : CampDAO.getCampsByParticipantIdAfterDate(userId, new Date()))
+            if (camp.getParticipantIds().contains(userId))
                 camps.add(camp);
-        
+
         return camps;
     }
 
-    public static ArrayList<Camp> getWithdrawnCamps(String userId) {
+    /**
+     * Retrieves a list of all the Camps that a Student has withdrawn from
+     * 
+     * @param userId The User ID of the Student
+     * @return ArrayList<Camp> The list of all the Camps that the Student has
+     *         withdrawn from
+     */
+    public static ArrayList<Camp> getParticipantWithdrawnCamps(String userId) {
         ArrayList<Camp> camps = new ArrayList<>();
 
-        for (Camp camp : CampDAO.getAllCamps()) 
+        for (Camp camp : CampDAO.getAllCamps())
             if (camp.getWithdrawnParticipantIds().contains(userId))
                 camps.add(camp);
 
@@ -153,35 +199,6 @@ public class CampController {
      */
     public static Camp getCampById(String campId) {
         return CampDAO.getCampbyId(campId);
-    }
-
-    /**
-     * Updates the information of a Camp
-     * 
-     * @param campId                The Camp ID of the Camp
-     * @param name                  The new name of the Camp
-     * @param startDate             The new start date of the Camp
-     * @param endDate               The new end date of the Camp
-     * @param registrationCloseDate The new date that registration closes for the
-     *                              Camp
-     * @param userGroup             The new user group of the Camp
-     * @param location              The new location of the Camp
-     * @param totalSlots            The new total number of slots for the Camp
-     * @param commSlots             The new number of committee member slots for the
-     *                              Camp
-     * @param description           The new description of the Camp
-     * @return boolean Whether the Camp information is successfully updated
-     */
-    public static boolean updateCampInformation(String campId, String name, Date startDate, Date endDate,
-            Date registrationCloseDate, Faculty userGroup, String location, int totalSlots, int commSlots,
-            String description) {
-        if (!checkCampExists(campId))
-            return false;
-
-        Camp camp = new Camp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
-                commSlots, description);
-        CampDAO.updateCampInformation(campId, camp);
-        return true;
     }
 
     /**
@@ -364,11 +381,11 @@ public class CampController {
     }
 
     /**
-     * Adds a User to the list of participants for a Camp
+     * Adds a Student to the list of participants for a Camp
      * 
      * @param campId The Camp ID of the Camp
-     * @param userId The User ID of the participant
-     * @return boolean Whether the Camp participants is successfully updated
+     * @param userId The User ID of the Student
+     * @return boolean Whether the Student is successfully added as a Camp Participant
      */
     public static boolean addParticipant(String campId, String userId) {
         if (!checkCampExists(campId))
@@ -379,11 +396,11 @@ public class CampController {
     }
 
     /**
-     * Removes a User from the list of participants for a Camp
+     * Removes a Student from the list of participants for a Camp
      * 
      * @param campId The Camp ID of the Camp
-     * @param userId The User ID of the participant
-     * @return boolean Whether the Camp participants is successfully updated
+     * @param userId The User ID of the Student
+     * @return boolean Whether the Student is succesfully removed as a Camp Participant
      */
     public static boolean removeParticipant(String campId, String userId) {
         if (!checkCampExists(campId))
@@ -394,11 +411,11 @@ public class CampController {
     }
 
     /**
-     * Adds a User to the list of committee members for a Camp
+     * Adds a Student to the list of committee members for a Camp
      * 
      * @param campId The Camp ID of the Camp
-     * @param userId The User ID of the committee cember
-     * @return boolean Whether the Camp committee members is successfully updated
+     * @param userId The User ID of the Student
+     * @return boolean Whether the Student is successfully added as a Camp Committee
      */
     public static boolean addCommittee(String campId, String userId) {
         if (!checkCampExists(campId))
@@ -569,7 +586,7 @@ public class CampController {
         for (Camp camp : CampDAO.getAllCamps())
             if (camp.getName().equals(name) && !camp.getCampId().equals(campId))
                 return false;
-        
+
         return true;
     }
 }

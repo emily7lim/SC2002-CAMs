@@ -85,7 +85,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Camps");
 
-        ArrayList<Camp> camps = CampController.getAvailableCamps(UserController.getUserByUserId(userId).getFaculty());
+        ArrayList<Camp> camps = CampController.getStudentAvailableCamps(UserController.getUserByUserId(userId).getFaculty());
 
         if (camps.size() == 0)
             System.out.printf(" No camps found.\n\n", "", "");
@@ -128,8 +128,8 @@ public class StudentView extends MainView {
     public void viewPastRegisteredCamps() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Registered Camps");
-        ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
-        camps.addAll(CampController.getWithdrawnCamps(userId));
+        ArrayList<Camp> camps = CampController.getStudentPastRegisteredCamps(userId);
+        camps.addAll(CampController.getParticipantWithdrawnCamps(userId));
 
         if (camps.size() == 0)
             System.out.printf(" No past registered camps found.\n\n", "", "");
@@ -140,7 +140,7 @@ public class StudentView extends MainView {
     public void viewFutureRegisteredCamps() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Future Registered Camps");
-        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Camp> camps = CampController.getStudentFutureRegisteredCamps(userId);
 
         if (camps.size() == 0)
             System.out.printf(" No future registered camps found.\n\n", "", "");
@@ -154,7 +154,7 @@ public class StudentView extends MainView {
         printMenuTitle("Register for Camps");
 
         ArrayList<Camp> camps = CampController
-                .getAvailableUnregisteredCamps(UserController.getUserByUserId(userId).getFaculty(), userId);
+                .getStudentAvailableUnregisteredCamps(UserController.getUserByUserId(userId).getFaculty(), userId);
 
         if (camps.size() == 0)
             System.out.printf(" No camps found.\n\n", "", "");
@@ -251,7 +251,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Withdraw from Camps");
 
-        ArrayList<Camp> camps = CampController.getFutureRegisteredCampsAsParticipant(userId);
+        ArrayList<Camp> camps = CampController.getParticipantFutureRegisteredCamps(userId);
 
         if (camps.size() == 0)
             System.out.printf(" No registered camps found.\n\n", "", "");
@@ -369,7 +369,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Camps Enquiries");
 
-        ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
+        ArrayList<Camp> camps = CampController.getStudentPastRegisteredCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" Enquiry%51s | Status  %n", "");
@@ -398,7 +398,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Future Camps Enquiries");
 
-        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Camp> camps = CampController.getStudentFutureRegisteredCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" Enquiry%51s | Status  %n", "");
@@ -458,7 +458,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Camps Enquiry Replies");
 
-        ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
+        ArrayList<Camp> camps = CampController.getStudentPastRegisteredCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" Enquiry%20s | Response%n", "", "");
@@ -487,7 +487,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Future Camps Enquiry Replies");
 
-        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Camp> camps = CampController.getStudentFutureRegisteredCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" Enquiry%20s | Response%n", "", "");
@@ -512,12 +512,13 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    // TODO: Add Enquiry ID to Enquiry List of Camp
     public void submitNewEnquiry() {
         int index = -1;
         HelperUtil.clearScreen();
         printMenuTitle("Submit New Enquiry");
-        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
-        camps.remove(CampController.getCurrentCampByCommitteeId(userId));
+        ArrayList<Camp> camps = CampController.getStudentFutureRegisteredCamps(userId);
+        camps.remove(CampController.getCommitteeCurrentCamp(userId));
 
         if (camps.size() == 0)
             System.out.printf(" No registered camps found.\n\n", "", "");
@@ -561,7 +562,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Manage Pending Enquiries");
 
-        ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        ArrayList<Camp> camps = CampController.getStudentFutureRegisteredCamps(userId);
         ArrayList<Enquiry> enquiries = new ArrayList<>();
 
         System.out.printf(" No. | Enquiry%45s | Status  %n", "");
@@ -679,7 +680,7 @@ public class StudentView extends MainView {
         System.out.printf("Name:\t  %s%n", user.getName());
         System.out.printf("Faculty:  %s%n", user.getFaculty().getFaculty());
         System.out.printf("Points:\t  %d%n", user.getPoints());
-        System.out.printf("Role:\t  %s%s%n\n", user.getRole().getRole(), user.getRole() == Role.COMMITTEE ? " (" + CampController.getCurrentCampByCommitteeId(userId).getName() +")" : "");
+        System.out.printf("Role:\t  %s%s%n\n", user.getRole().getRole(), user.getRole() == Role.COMMITTEE ? " (" + CampController.getCommitteeCurrentCamp(userId).getName() +")" : "");
 
         HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
