@@ -62,6 +62,7 @@ public class Database {
      * @param fileName The appropriate file from enum FileName
      * @return boolean Whether the database variable is retrieved
      */
+    @SuppressWarnings("unchecked")
     public boolean readFromDatabase(FileName fileName) {
         String filePath = getFilePath(fileName);
 
@@ -186,6 +187,7 @@ public class Database {
 
     /**
      * Clears data from specific file in database and .dat file
+     * 
      * @param fileName The appropriate file from enum FileName
      */
     public void clearFileData(FileName fileName) {
@@ -223,7 +225,8 @@ public class Database {
     }
 
     public void initializeCampData() {
-        Camp camp = new Camp("Test Camp", ForDate.getDates("12/02/2024"), ForDate.getDates("15/02/2024"), ForDate.getDates("25/12/2024"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp Description", "HUKUMAR");
+        Camp camp = new Camp("Test Camp", ForDate.getDates("12/02/2024"), ForDate.getDates("15/02/2024"),
+                ForDate.getDates("25/12/2024"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp Description", "HUKUMAR");
         camp.addCommittee("YCHERN");
         Database.CAMPS.put(camp.getCampId(), camp);
         StudentController.addCampCommittee("YCHERN");
