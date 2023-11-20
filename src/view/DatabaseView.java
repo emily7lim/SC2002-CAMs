@@ -91,7 +91,7 @@ public class DatabaseView extends MainView {
 
                 if (confirm.equals("y")) {
                     database.initializeUserData();
-                    System.out.println("User data initialized successfully.");
+                    System.out.println("User data initialized successfully.\n");
                     break;
                 } else if (!confirm.equals("n"))
                     System.out.println("Invalid input, please try again.");
@@ -109,7 +109,7 @@ public class DatabaseView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Initialize Camps");
 
-        if (!database.checkDataEmpty(FileName.USERS))
+        if (!database.checkDataEmpty(FileName.CAMPS))
             System.out.println("Please reset the database before initializing data.");
         else {
             do {
@@ -118,7 +118,7 @@ public class DatabaseView extends MainView {
 
                 if (confirm.equals("y")) {
                     database.initializeCampData();
-                    System.out.println("Camp data initialized successfully.");
+                    System.out.println("Camp data initialized successfully.\n");
                     break;
                 } else if (!confirm.equals("n"))
                     System.out.println("Invalid input, please try again.");

@@ -40,8 +40,8 @@ public class AppView extends MainView {
                     printMenu();
                     break;
                 case 2:
-                    databaseView.viewMenu();
                     databaseView.setDatabase(database);
+                    databaseView.viewMenu();
                     printMenu();
                     break;
                 case 3:

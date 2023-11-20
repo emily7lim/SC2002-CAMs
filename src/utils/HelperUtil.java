@@ -8,8 +8,16 @@ public class HelperUtil {
     private static final Scanner sc = new Scanner(System.in);
 
     public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[0;0H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception err) {
+            System.err.println(err.getMessage());
+        }
     }
 
     public static void pressAnyKeyToContinue() {
