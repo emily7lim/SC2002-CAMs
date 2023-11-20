@@ -183,8 +183,9 @@ public class CreatedCampsView extends MainView {
             }
         } while (commSlots == -1);
 
-        CampController.createCamp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
+        String campId = CampController.createCamp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
                 commSlots, description, userId);
+        StaffController.addCamp(userId, campId);
         System.out.println("Camp successfully created");
 
         HelperUtil.pressAnyKeyToContinue();
