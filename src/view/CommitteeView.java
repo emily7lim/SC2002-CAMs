@@ -232,15 +232,41 @@ public class CommitteeView extends StudentView {
         } while (choice != 5);
     }
 
-    // TODO: Past/Current Camp?
     public void viewAllCampSuggestions() {
+        int choice = -1;
         HelperUtil.clearScreen();
-        printMenuTitle("List of Suggestions");
+        printMenuTitle("View All Camp Suggestions");
 
-        ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
+        System.out.println("  1)  View Past Camp Suggestions\n  2)  View Current Camp Suggestions\n  3)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    viewPastCampSuggestions();
+                    break;
+                case 2:
+                    viewCurrentCampSuggestions();
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        manageCampSuggestions();
+    }
+
+    public void viewPastCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Past Camp Suggestions");
+
+        ArrayList<Camp> camps = CampController.getPastCampsByCommitteeId(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
-        System.out.printf(" Suggestion%34s | Status   %n", "");
+        System.out.printf(" Suggestion%47s | Status   %n", "");
         for (Camp camp : camps) {
             ArrayList<Suggestion> campSuggestions = SuggestionController
                     .getSuggestionsbyCampIdAndCreatorId(camp.getCampId(), userId);
@@ -249,7 +275,7 @@ public class CommitteeView extends StudentView {
                 System.out.printf(" %s%n", camp.getName());
             }
             for (int i = 0; i < campSuggestions.size(); i++)
-                common.printSuggestionDetails(campSuggestions.get(i));
+                common.printUserSuggestionDetails(campSuggestions.get(i));
             suggestions.addAll(campSuggestions);
         }
 
@@ -259,17 +285,67 @@ public class CommitteeView extends StudentView {
         }
 
         HelperUtil.pressAnyKeyToContinue();
-        manageCampSuggestions();
+    }
+
+    public void viewCurrentCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Current Camp Suggestions");
+
+        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        ArrayList<Suggestion> suggestions = SuggestionController
+                .getSuggestionsbyCampIdAndCreatorId(camp.getCampId(), userId);
+
+        System.out.printf(" Suggestion%47s | Status   %n", "");
+        if (suggestions.size() != 0) {
+            common.printDivider(2);
+            System.out.printf(" %s%n", camp.getName());
+        } else {
+            common.printDivider(2);
+            System.out.println(" No suggestions found\n");
+        }
+
+        for (int i = 0; i < suggestions.size(); i++)
+            common.printUserSuggestionDetails(suggestions.get(i));
+
+        HelperUtil.pressAnyKeyToContinue();
     }
 
     public void viewAllApprovedRejectedCampSuggestions() {
+        int choice = -1;
         HelperUtil.clearScreen();
-        printMenuTitle("List of Approved/Rejected Suggestions");
+        printMenuTitle("List of Approved/Rejected Camp Suggestions");
 
-        ArrayList<Camp> camps = CampController.getCampsByStaffInCharge(userId);
+        System.out.println(
+                "  1)  View Past Approved/Rejected Camp Suggestions\n  2)  View Approved/Rejected Current Camp Suggestions\n  3)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    viewPastApprovedRejectedCampSuggestions();
+                    break;
+                case 2:
+                    viewCurrentApprovedRejectedCampSuggestions();
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        manageCampSuggestions();
+    }
+
+    public void viewPastApprovedRejectedCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Past Approved/Rejected Camp Suggestions");
+
+        ArrayList<Camp> camps = CampController.getPastCampsByCommitteeId(userId);
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
-        System.out.printf(" Suggestion%34s | Status   %n", "");
+        System.out.printf(" Suggestion%47s | Status   %n", "");
         for (Camp camp : camps) {
             ArrayList<Suggestion> campSuggestions = SuggestionController
                     .getApprovedRejectedSuggestionsByCampIdAndCreatorId(camp.getCampId(), userId);
@@ -278,7 +354,7 @@ public class CommitteeView extends StudentView {
                 System.out.printf(" %s%n", camp.getName());
             }
             for (int i = 0; i < campSuggestions.size(); i++)
-                common.printSuggestionDetails(campSuggestions.get(i));
+                common.printUserSuggestionDetails(campSuggestions.get(i));
             suggestions.addAll(campSuggestions);
         }
 
@@ -288,7 +364,29 @@ public class CommitteeView extends StudentView {
         }
 
         HelperUtil.pressAnyKeyToContinue();
-        manageCampSuggestions();
+    }
+
+    public void viewCurrentApprovedRejectedCampSuggestions() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Current Approved/Rejected Camp Suggestions");
+
+        Camp camp = CampController.getCurrentCampByCommitteeId(userId);
+        ArrayList<Suggestion> suggestions = SuggestionController
+                .getApprovedRejectedSuggestionsByCampIdAndCreatorId(camp.getCampId(), userId);
+
+        System.out.printf(" Suggestion%47s | Status   %n", "");
+        if (suggestions.size() != 0) {
+            common.printDivider(2);
+            System.out.printf(" %s%n", camp.getName());
+        } else {
+            common.printDivider(2);
+            System.out.println(" No suggestions found\n");
+        }
+
+        for (int i = 0; i < suggestions.size(); i++)
+            common.printUserSuggestionDetails(suggestions.get(i));
+
+        HelperUtil.pressAnyKeyToContinue();
     }
 
     public void submitNewSuggestion() {
@@ -327,48 +425,48 @@ public class CommitteeView extends StudentView {
         if (suggestions.size() != 0) {
             common.printDivider(2);
             System.out.printf(" %s%n", camp.getName());
+
+            for (int i = 0; i < suggestions.size(); i++)
+                common.printUserSuggestionDetailsWithIndex(suggestions.get(i), i + 1);
+
+            int choice = -1, index;
+            System.out.println("\n  1)  Edit Suggestion\n  2)  Delete Suggestion\n  3)  Back");
+            do {
+                System.out.print("\nEnter your choice: ");
+                choice = HelperUtil.nextInt(1, 3);
+
+                switch (choice) {
+                    case 1:
+                        index = -1;
+                        do {
+                            System.out.print("Select a Suggestion to edit: ");
+                            index = HelperUtil.nextInt(1, suggestions.size());
+                        } while (index == -1);
+
+                        editSuggestion(suggestions.get(index - 1), index);
+                        break;
+
+                    case 2:
+                        index = -1;
+                        do {
+                            System.out.print("Select a Suggestion to delete: ");
+                            index = HelperUtil.nextInt(1, suggestions.size());
+                        } while (index == -1);
+
+                        deleteSuggestion(suggestions.get(index - 1), index);
+                        break;
+
+                    case 3:
+                        break;
+                    default:
+                        break;
+                }
+            } while (choice == -1);
         } else {
             common.printDivider(2);
             System.out.println(" No pending suggestions found\n");
-            return;
+            HelperUtil.pressAnyKeyToContinue();
         }
-
-        for (int i = 0; i < suggestions.size(); i++)
-            common.printSuggestionDetailsWithIndex(suggestions.get(i), i + 1);
-
-        int choice = -1, index;
-        System.out.println("\n  1)  Edit Suggestion\n  2)  Delete Suggestion\n  3)  Back");
-        do {
-            System.out.print("\nEnter your choice: ");
-            choice = HelperUtil.nextInt(1, 3);
-
-            switch (choice) {
-                case 1:
-                    index = -1;
-                    do {
-                        System.out.print("Select a Suggestion to edit: ");
-                        index = HelperUtil.nextInt(1, suggestions.size());
-                    } while (index == -1);
-
-                    editSuggestion(suggestions.get(index - 1), index);
-                    break;
-
-                case 2:
-                    index = -1;
-                    do {
-                        System.out.print("Select a Suggestion to delete: ");
-                        index = HelperUtil.nextInt(1, suggestions.size());
-                    } while (index == -1);
-
-                    deleteSuggestion(suggestions.get(index - 1), index);
-                    break;
-
-                case 3:
-                    break;
-                default:
-                    break;
-            }
-        } while (choice == -1);
 
         HelperUtil.clearScreen();
         manageCampSuggestions();
@@ -379,8 +477,8 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("Edit Suggestion " + index);
 
-        System.out.printf(" Suggestion%34s | Status   %n", "");
-        common.printSuggestionDetails(suggestion);
+        System.out.printf(" Suggestion%47s | Status   %n", "");
+        common.printUserSuggestionDetails(suggestion);
 
         do {
             System.out.print("\nEnter your new suggestion message: ");
@@ -402,8 +500,8 @@ public class CommitteeView extends StudentView {
         HelperUtil.clearScreen();
         printMenuTitle("Delete Suggestion " + index);
 
-        System.out.printf(" Suggestion%34s | Status   %n", "");
-        common.printSuggestionDetails(suggestion);
+        System.out.printf(" Suggestion%47s | Status   %n", "");
+        common.printUserSuggestionDetails(suggestion);
 
         do {
             System.out.print("\nAre you sure you want to delete this suggestion? (y/n) ");
@@ -421,7 +519,7 @@ public class CommitteeView extends StudentView {
 
         HelperUtil.pressAnyKeyToContinue();
     }
-    
+
     public void generateCampParticipantsCommitteeReport() {
         ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
         CommonUse.FilterReport(camps);

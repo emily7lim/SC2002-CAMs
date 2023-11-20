@@ -71,6 +71,10 @@ public class CampController {
         return CampDAO.getCampsByCommitteeId(committeeId);
     }
 
+    public static ArrayList<Camp> getPastCampsByCommitteeId(String committeeId) {
+        return CampDAO.getCampsByCommitteeIdBeforeDate(committeeId, new Date());
+    }
+
     public static Camp getCurrentCampByCommitteeId(String committeeId) {
         return CampDAO.getCampsByCommitteeIdAfterDate(committeeId, new Date());
     }

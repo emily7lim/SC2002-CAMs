@@ -217,17 +217,43 @@ public class Database {
         return "./src/database/" + folder + "/" + fileName.getFileNameStr() + fileExtension;
     }
 
-    public void initializeDummyData() {
-        clearDatabase();
-
+    public void initializeUserData() {
         StudentController.initializeStudentData();
         StaffController.initializeStaffData();
+    }
 
+    public void initializeCampData() {
         Camp camp = new Camp("Test Camp", ForDate.getDates("12/02/2024"), ForDate.getDates("15/02/2024"), ForDate.getDates("25/12/2024"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp Description", "HUKUMAR");
         camp.addCommittee("YCHERN");
         Database.CAMPS.put(camp.getCampId(), camp);
         StudentController.addCampCommittee("YCHERN");
+        StudentController.addCamp("YCHERN", camp.getCampId());
+        StaffController.addCamp("HUKUMAR", camp.getCampId());
+    }
+
+    public void initializeDummyData() {
+        clearDatabase();
+
+        initializeUserData();
+        initializeCampData();
 
         saveAllToDatabase();
+    }
+
+    public boolean checkDataEmpty(FileName fileName) {
+        switch (fileName) {
+            case USERS:
+                return USERS.size() == 0;
+            case CAMPS:
+                return CAMPS.size() == 0;
+            case ENQUIRIES:
+                return ENQUIRIES.size() == 0;
+            case SUGGESTIONS:
+                return SUGGESTIONS.size() == 0;
+            default:
+                break;
+        }
+
+        return false;
     }
 }

@@ -110,6 +110,16 @@ public class CampDAO {
         return camps;
     }
 
+    public static ArrayList<Camp> getCampsByCommitteeIdBeforeDate(String committeeId, Date date) {
+        ArrayList<Camp> camps = new ArrayList<>();
+
+        for (Camp camp : Database.CAMPS.values())
+            if (camp.getCommitteeIds().contains(committeeId) && camp.getEndDate().before(date))
+                camps.add(camp);
+        
+        return camps;
+    }
+
     public static Camp getCampsByCommitteeIdAfterDate(String committeeId, Date date) {
         for (Camp camp : Database.CAMPS.values())
             if (camp.getCommitteeIds().contains(committeeId) && camp.getEndDate().after(date))

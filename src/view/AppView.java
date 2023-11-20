@@ -1,5 +1,6 @@
 package view;
 
+import database.Database;
 import utils.HelperUtil;
 
 public class AppView extends MainView {
@@ -7,10 +8,15 @@ public class AppView extends MainView {
 
     private LoginView loginView;
     private DatabaseView databaseView;
+    private Database database;
 
     public AppView() {
         loginView = new LoginView();
         databaseView = new DatabaseView();
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     public void printMenu() {
@@ -35,6 +41,7 @@ public class AppView extends MainView {
                     break;
                 case 2:
                     databaseView.viewMenu();
+                    databaseView.setDatabase(database);
                     printMenu();
                     break;
                 case 3:

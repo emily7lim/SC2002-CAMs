@@ -7,12 +7,10 @@ import controller.CampController;
 import controller.EnquiryController;
 import controller.StaffController;
 import controller.StudentController;
-import controller.SuggestionController;
 import model.*;
 import model.enums.EnquiryStatus;
 import model.enums.Faculty;
 import model.enums.Role;
-import model.enums.SuggestionStatus;
 import report.ReportController;
 import report.enums.ReportOutputType;
 import report.enums.ReportType;
@@ -62,9 +60,11 @@ public class CommonUse {
 
     public void printCampDetailsWithRole(Camp camp, int index, String userId) {
         printCampDetails(camp, index);
-        if (camp.getParticipantIds().contains(userId) || camp.getCommitteeIds().contains(userId) || camp.getWithdrawnParticipantIds().contains(userId))
+        if (camp.getParticipantIds().contains(userId) || camp.getCommitteeIds().contains(userId)
+                || camp.getWithdrawnParticipantIds().contains(userId))
             System.out.printf("  Registered as: \t   %s%n",
-                    camp.getParticipantIds().contains(userId) ? "Participant" : camp.getCommitteeIds().contains(userId) ? "Committee" : "Withdrawn");
+                    camp.getParticipantIds().contains(userId) ? "Participant"
+                            : camp.getCommitteeIds().contains(userId) ? "Committee" : "Withdrawn");
         else
             System.out.printf("%n");
     }
@@ -135,7 +135,6 @@ public class CommonUse {
             shown = true;
             message = position == message.length() ? "" : message.substring(position + 1);
         }
-
     }
 
     public void printSuggestionDetailsWithIndex(Suggestion suggestion, int index) {
@@ -152,6 +151,42 @@ public class CommonUse {
             System.out.printf(" %-3s | %-38s | %-8s | %-10s %n", shown ? "" : index, temp,
                     shown ? "" : suggestion.getStatus().getSuggestionStatus(),
                     shown ? "" : suggestion.getCreatorId());
+            shown = true;
+            message = position == message.length() ? "" : message.substring(position + 1);
+        }
+    }
+
+    public void printUserSuggestionDetails(Suggestion suggestion) {
+        boolean shown = false;
+        String message = suggestion.getMessage();
+
+        printDivider(2);
+        while (!message.equals("")) {
+            int position = message.lastIndexOf(" ", 45) != -1 && message.length() > 44
+                    ? message.lastIndexOf(" ", 45)
+                    : message.length();
+            String temp = message.substring(0, position);
+
+            System.out.printf(" %-57s | %-8s %n", temp,
+                    shown ? "" : suggestion.getStatus().getSuggestionStatus());
+            shown = true;
+            message = position == message.length() ? "" : message.substring(position + 1);
+        }
+    }
+
+    public void printUserSuggestionDetailsWithIndex(Suggestion suggestion, int index) {
+        boolean shown = false;
+        String message = suggestion.getMessage();
+
+        printDivider(2);
+        while (!message.equals("")) {
+            int position = message.lastIndexOf(" ", 39) != -1 && message.length() > 38
+                    ? message.lastIndexOf(" ", 39)
+                    : message.length();
+            String temp = message.substring(0, position);
+
+            System.out.printf(" %-3s | %-51s | %-8s %n", shown ? "" : index, temp,
+                    shown ? "" : suggestion.getStatus().getSuggestionStatus());
             shown = true;
             message = position == message.length() ? "" : message.substring(position + 1);
         }
@@ -336,52 +371,6 @@ public class CommonUse {
         }
     }
 
-    public void Result() {
-        Boolean continues = true;
-        while (continues) {
-            System.out.println("1) View replies to enquiries\n2) View approved/rejected suggestions\n3) Quit");
-            Scanner sc = new Scanner(System.in);
-            Integer choice = sc.nextInt();
-            switch (choice) {
-                case 1: // enquiry
-                    System.out.println("These are the results of the enquiries");
-                    ViewReply();
-                    break;
-
-                case 2: // suggestion
-                    ArrayList<String> getsuggestmsg = new ArrayList<>();
-                    for (int i = 0; i < SuggestionController.getAllSuggestions().size(); i++) {
-                        if (SuggestionController.getAllSuggestions().get(i).getStatus() == SuggestionStatus.ACCEPTED) {
-
-                            getsuggestmsg.add(
-                                    SuggestionController.getAllSuggestions().get(i).getMessage() + " --> APPROVED");
-                        } else if (SuggestionController.getAllSuggestions().get(i)
-                                .getStatus() == SuggestionStatus.REJECTED) {
-
-                            getsuggestmsg.add(
-                                    SuggestionController.getAllSuggestions().get(i).getMessage() + " --> REJECTED");
-                        }
-
-                    }
-                    System.out.println("These are the results of the suggestions");
-                    for (int i = 0; i < getsuggestmsg.size(); i++) {
-
-                        System.out.println(i + ") " + getsuggestmsg.get(i));
-
-                    }
-                    break;
-
-                case 3:
-                    continues = false;
-                    break;
-
-                default:
-                    System.out.println("Please try agian");
-                    break;
-            }
-        }
-    }
-
     public static Integer dataValidation() {
         Scanner sc = new Scanner(System.in);
         Boolean validation = sc.hasNextInt();
@@ -393,11 +382,11 @@ public class CommonUse {
         }
         Integer validate = sc.nextInt();
 
+        sc.close();
         return validate;
     }
 
     public static void FileType(ArrayList<Camp> camps, FilterObj filtering, ReportType reportType) {
-        ReportController rp = new ReportController();
         System.out.println("\nSelect your format\n1) .txt \n2) .csv");
         Boolean continues = true;
         while (continues) {

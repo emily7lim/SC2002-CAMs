@@ -10,6 +10,7 @@ public class App {
         HelperUtil.clearScreen();
         printApplicationTitle();
         appView.viewMenu();
+        appView.setDatabase(database);
 
         database.saveAllToDatabase();
         System.out.println("\nClosing CAMs...");
