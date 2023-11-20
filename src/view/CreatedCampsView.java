@@ -95,6 +95,10 @@ public class CreatedCampsView extends MainView {
 
             if (name.equals(""))
                 System.out.println("Invalid name, please try again.\n");
+            else if (!CampController.checkCampNameUnique("", name)) {
+                System.out.println("Duplicate camp name, please try again.");
+                name = "";
+            }
         } while (name.equals(""));
 
         do {
@@ -233,6 +237,10 @@ public class CreatedCampsView extends MainView {
 
                         if (name.equals(""))
                             System.out.println("Invalid name, please try again.\n");
+                        else if (!CampController.checkCampNameUnique(camp.getCampId(), name)) {
+                            System.out.println("Duplicate camp name, please try again.");
+                            name = "";
+                        }
                     } while (name.equals(""));
 
                     CampController.updateCampName(camp.getCampId(), name);
@@ -362,8 +370,7 @@ public class CreatedCampsView extends MainView {
                         if (commSlots > camp.getTotalSlots()) {
                             System.out.println("Committee Slots cannot be more than Total Slots, please try again.");
                             commSlots = -1;
-                        }
-                        else if (commSlots > 10) {
+                        } else if (commSlots > 10) {
                             System.out.println("Committee Slots cannot be more than 10, please try again.");
                             commSlots = -1;
                         }
@@ -374,6 +381,12 @@ public class CreatedCampsView extends MainView {
                     break;
 
                 case 10:
+                    if (camp.getRemainingParticipantSlots() < camp.getParticipantSlots()
+                            || camp.getRemainingCommitteeSlots() < camp.getCommSlots()) {
+                        System.out.println("Unable to toggle camp visibility, camp has registered students.");
+                        break;
+                    }
+
                     System.out.println("Toggle Camp Visibility:\n  1)  Visible\n  2)  Not Visible");
                     int visibility = -1;
                     do {
@@ -437,6 +450,12 @@ public class CreatedCampsView extends MainView {
             confirm = HelperUtil.nextString().toLowerCase();
 
             if (confirm.equals("y")) {
+                if (camp.getRemainingParticipantSlots() < camp.getParticipantSlots()
+                        || camp.getRemainingCommitteeSlots() < camp.getCommSlots()) {
+                    System.out.println("Unable to toggle camp visibility, camp has registered students.");
+                    break;
+                }
+
                 CampController.deleteCamp(camp.getCampId());
                 System.out.println("Camp successfully deleted.\n");
                 break;

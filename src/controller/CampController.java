@@ -129,6 +129,16 @@ public class CampController {
         return camps;
     }
 
+    public static ArrayList<Camp> getWithdrawnCamps(String userId) {
+        ArrayList<Camp> camps = new ArrayList<>();
+
+        for (Camp camp : CampDAO.getAllCamps()) 
+            if (camp.getWithdrawnParticipantIds().contains(userId))
+                camps.add(camp);
+
+        return camps;
+    }
+
     /**
      * Finds a Camp from the database by the Camp ID
      * 
@@ -547,5 +557,13 @@ public class CampController {
                 return true;
 
         return false;
+    }
+
+    public static boolean checkCampNameUnique(String campId, String name) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getName() == name && !camp.getCampId().equals(campId))
+                return false;
+        
+        return true;
     }
 }

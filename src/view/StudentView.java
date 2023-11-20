@@ -129,6 +129,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Registered Camps");
         ArrayList<Camp> camps = CampController.getPastRegisteredCamps(userId);
+        camps.addAll(CampController.getWithdrawnCamps(userId));
 
         if (camps.size() == 0)
             System.out.printf(" No past registered camps found.\n\n", "", "");
@@ -173,7 +174,6 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
-    // TODO: Change to Committee View upon registering as Committee
     public void registerForCamp(Camp camp, int index) {
         int choice = -1;
         String confirm;
@@ -204,7 +204,8 @@ public class StudentView extends MainView {
 
                             if (confirm.equals("y")) {
                                 CampController.addCommittee(camp.getCampId(), userId);
-                                System.out.println("Successfully registered as Camp Committee.\n");
+                                StudentController.addCampCommittee(userId);
+                                System.out.println("Successfully registered as Camp Committee, \nplease log in again to access committee menu.\n");
                                 break;
                             } else if (!confirm.equals("n"))
                                 System.out.println("Invalid input, please try again.");
@@ -516,6 +517,7 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Submit New Enquiry");
         ArrayList<Camp> camps = CampController.getFutureRegisteredCamps(userId);
+        camps.remove(CampController.getCurrentCampByCommitteeId(userId));
 
         if (camps.size() == 0)
             System.out.printf(" No registered camps found.\n\n", "", "");

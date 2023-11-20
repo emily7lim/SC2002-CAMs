@@ -62,9 +62,9 @@ public class CommonUse {
 
     public void printCampDetailsWithRole(Camp camp, int index, String userId) {
         printCampDetails(camp, index);
-        if (camp.getParticipantIds().contains(userId) || camp.getCommitteeIds().contains(userId))
+        if (camp.getParticipantIds().contains(userId) || camp.getCommitteeIds().contains(userId) || camp.getWithdrawnParticipantIds().contains(userId))
             System.out.printf("  Registered as: \t   %s%n",
-                    camp.getParticipantIds().contains(userId) ? "Participant" : "Committee");
+                    camp.getParticipantIds().contains(userId) ? "Participant" : camp.getCommitteeIds().contains(userId) ? "Committee" : "Withdrawn");
         else
             System.out.printf("%n");
     }

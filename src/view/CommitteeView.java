@@ -421,8 +421,7 @@ public class CommitteeView extends StudentView {
 
         HelperUtil.pressAnyKeyToContinue();
     }
-
-    // TODO: Check if report should include past camps?
+    
     public void generateCampParticipantsCommitteeReport() {
         ArrayList<Camp> camps = CampController.getCampsByCommitteeId(userId);
         CommonUse.FilterReport(camps);
