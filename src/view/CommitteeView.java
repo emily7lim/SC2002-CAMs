@@ -67,6 +67,7 @@ public class CommitteeView extends StudentView {
                     break;
                 case 7:
                     manageStudentCampEnquiries();
+                    printMenu();
                     break;
                 case 8:
                     generateCampParticipantsCommitteeReport();
