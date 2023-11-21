@@ -92,35 +92,199 @@ public class CommitteeView extends StudentView {
     public void manageStudentCampEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
-        printMenuTitle("Manage Camp Enquiries");
+        printMenuTitle("Manage Student Camp Enquiries");
 
         System.out.println(
-                "  1)  Manage Pending Camp Enquiries\n  2)  Generate Camp Enquiry Report\n  3)  Back");
+                "  1)  View All Student Camp Enquiries\n  2)  View All Replied Student Camp Enquiries\n  3)  Manage Pending Student Camp Enquiries\n  4)  Generate Camp Enquiry Report\n  5)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 5);
+
+            switch (choice) {
+                case 1:
+                    viewAllStudentCampEnquiries();
+                    break;
+                case 2:
+                    viewAllStudentRepliedCampEnquiries();
+                    break;
+                case 3:
+                    managePendingStudentCampEnquiries();
+                    break;
+                case 4:
+                    generateCampEnquiriesReport();
+                    break;
+                case 5:
+                    HelperUtil.clearScreen();
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+    }
+
+    public void viewAllStudentCampEnquiries() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("View All Student Camp Enquiries");
+
+        System.out.println(
+                "  1)  View Past Student Camp Enquiries\n  2)  View Current Student Camp Enquiries\n  3)  Back");
         do {
             System.out.print("\nEnter your choice: ");
             choice = HelperUtil.nextInt(1, 3);
 
             switch (choice) {
                 case 1:
-                    managePendingCampEnquiries();
+                    viewPastStudentCampEnquiries();
                     break;
+
                 case 2:
-                    generateCampEnquiriesReport();
+                    viewCurrentStudentCampEnquiries();
                     break;
+
                 case 3:
                     break;
+
                 default:
                     break;
             }
         } while (choice == -1);
 
-        HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
+        manageStudentCampEnquiries();
     }
 
-    public void managePendingCampEnquiries() {
+    public void viewPastStudentCampEnquiries() {
         HelperUtil.clearScreen();
-        printMenuTitle("List of Pending Enquiries");
+        printMenuTitle("List of Past Student Camp Enquiries");
+
+        ArrayList<Camp> camps = CampController.getCommitteePastCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" Enquiry%38s | Status  | Creator%n", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getEnquiriesByCampId(camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printEnquiryDetails(campEnquiries.get(i));
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No enquiries found.\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void viewCurrentStudentCampEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Current Student Camp Enquiries");
+
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
+        ArrayList<Enquiry> enquiries = EnquiryController.getEnquiriesByCampId(camp.getCampId());
+
+        System.out.printf(" Enquiry%38s | Status  | Creator%n", "");
+        common.printDivider(2);
+
+        if (enquiries.size() != 0)
+            System.out.printf(" %s%n", camp.getName());
+        else
+            System.out.println(" No enquiries found.\n");
+
+        for (int i = 0; i < enquiries.size(); i++)
+            common.printEnquiryDetails(enquiries.get(i));
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void viewAllStudentRepliedCampEnquiries() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("View All Student Replied Camp Enquiries");
+
+        System.out.println(
+                "  1)  View Past Student Replied Camp Enquiries\n  2)  View Current Student Replied Camp Enquiries\n  3)  Back");
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    viewPastStudentRepliedCampEnquiries();
+                    break;
+
+                case 2:
+                    viewCurrentStudentRepliedCampEnquiries();
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        HelperUtil.clearScreen();
+        manageStudentCampEnquiries();
+    }
+
+    public void viewPastStudentRepliedCampEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Past Student Replied Camp Enquiries");
+
+        ArrayList<Camp> camps = CampController.getCommitteePastCamps(userId);
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        System.out.printf(" Enquiry%20s | Response%n", "", "");
+        for (Camp camp : camps) {
+            ArrayList<Enquiry> campEnquiries = EnquiryController.getRepliedEnquiriesByCampId(camp.getCampId());
+            if (campEnquiries.size() != 0) {
+                common.printDivider(2);
+                System.out.printf(" %s%n", camp.getName());
+            }
+            for (int i = 0; i < campEnquiries.size(); i++)
+                common.printEnquiryDetailsWithReply(campEnquiries.get(i));
+            enquiries.addAll(campEnquiries);
+        }
+
+        if (enquiries.size() == 0) {
+            common.printDivider(2);
+            System.out.println(" No enquiries found.\n");
+        }
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void viewCurrentStudentRepliedCampEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Current Student Replied Camp Enquiries");
+
+        Camp camp = CampController.getCommitteeCurrentCamp(userId);
+        ArrayList<Enquiry> enquiries = EnquiryController.getRepliedEnquiriesByCampId(camp.getCampId());
+
+        System.out.printf(" Enquiry%20s | Response%n", "", "");
+        common.printDivider(2);
+
+        if (enquiries.size() != 0)
+            System.out.printf(" %s%n", camp.getName());
+        else
+            System.out.println(" No enquiries found.\n");
+
+        for (int i = 0; i < enquiries.size(); i++)
+            common.printEnquiryDetailsWithReply(enquiries.get(i));
+
+        HelperUtil.pressAnyKeyToContinue();
+    }
+
+    public void managePendingStudentCampEnquiries() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Pending Student Camp Enquiries");
 
         Camp camp = CampController.getCommitteeCurrentCamp(userId);
         ArrayList<Enquiry> enquiries = EnquiryController.getPendingEnquiriesByCampId(camp.getCampId());
@@ -132,6 +296,9 @@ public class CommitteeView extends StudentView {
         } else {
             common.printDivider(2);
             System.out.println(" No pending suggestions found.\n");
+            HelperUtil.pressAnyKeyToContinue();
+            HelperUtil.clearScreen();
+            manageStudentCampEnquiries();
             return;
         }
 
@@ -152,22 +319,23 @@ public class CommitteeView extends StudentView {
                         index = HelperUtil.nextInt(1, enquiries.size());
                     } while (index == -1);
 
-                    replyEnquiry(enquiries.get(index - 1), index);
-                    choice = 2;
+                    replyStudentCampEnquiry(enquiries.get(index - 1), index);
                     break;
 
                 case 2:
+                    HelperUtil.clearScreen();
+                    manageStudentCampEnquiries();
                     break;
                 default:
                     break;
             }
-        } while (choice != 2);
+        } while (choice == -1);
     }
 
-    public void replyEnquiry(Enquiry enquiry, int index) {
+    public void replyStudentCampEnquiry(Enquiry enquiry, int index) {
         String reply = "";
         HelperUtil.clearScreen();
-        printMenuTitle("Reply Enquiry " + index);
+        printMenuTitle("Reply Camp Enquiry " + index);
 
         System.out.printf(" Enquiry%38s | Status  | Creator%n", "");
         common.printEnquiryDetails(enquiry);
@@ -186,7 +354,7 @@ public class CommitteeView extends StudentView {
         } while (reply.equals(""));
 
         HelperUtil.pressAnyKeyToContinue();
-        managePendingCampEnquiries();
+        managePendingStudentCampEnquiries();
     }
 
     public void generateCampEnquiriesReport() {
@@ -194,6 +362,10 @@ public class CommitteeView extends StudentView {
         CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
 
         System.out.println("\nCamp Enquiries Report generated successfully.");
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+        manageStudentCampEnquiries();
     }
 
     public void manageCampSuggestions() {
