@@ -9,13 +9,26 @@ import model.Suggestion;
 import report.enums.ReportType;
 import utils.HelperUtil;
 
+/**
+ * User Interface for Camp Committees
+ * 
+ * @author Emily, Chloie
+ * @version 2.4.0
+ * @since 2023-11-04
+ */
 public class CommitteeView extends StudentView {
     private final String MENU_TITLE = "Committee Menu";
 
+    /**
+     * Default constructor
+     */
     public CommitteeView() {
         super();
     }
 
+    /**
+     * Menu for the Committee Menu Interface
+     */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Camps");
@@ -31,6 +44,9 @@ public class CommitteeView extends StudentView {
         System.out.println("  11) Logout");
     }
 
+    /**
+     * Application for the Committee Menu
+     */
     public void viewMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -89,6 +105,9 @@ public class CommitteeView extends StudentView {
         } while (choice != 11);
     }
 
+    /**
+     * Menu for managing Student Camp Enquiries
+     */
     public void manageStudentCampEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -122,6 +141,9 @@ public class CommitteeView extends StudentView {
         } while (choice == -1);
     }
 
+    /**
+     * Menu for the Committee's Camp Enquiries from Students
+     */
     public void viewAllStudentCampEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -154,6 +176,9 @@ public class CommitteeView extends StudentView {
         manageStudentCampEnquiries();
     }
 
+    /**
+     * Prints a list of the Committee's past Camp Enquiries from Students
+     */
     public void viewPastStudentCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Student Camp Enquiries");
@@ -181,6 +206,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Prints a list of the Committee's current Camp Enquiries from Students
+     */
     public void viewCurrentStudentCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Current Student Camp Enquiries");
@@ -202,6 +230,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Menu for the Committee's Camp Enquiries with replies from Students
+     */
     public void viewAllStudentRepliedCampEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -234,6 +265,9 @@ public class CommitteeView extends StudentView {
         manageStudentCampEnquiries();
     }
 
+    /**
+     * Prints a list of the Committee's past Camp Enquiries with replies from Students
+     */
     public void viewPastStudentRepliedCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Student Replied Camp Enquiries");
@@ -261,6 +295,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Prints a list of the Committee's current Camp Enquiries with replies from Students
+     */
     public void viewCurrentStudentRepliedCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Current Student Replied Camp Enquiries");
@@ -282,6 +319,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Menu for managing the Committee's current pending Camp Enquiries from Students
+     */
     public void managePendingStudentCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Pending Student Camp Enquiries");
@@ -332,6 +372,11 @@ public class CommitteeView extends StudentView {
         } while (choice == -1);
     }
 
+    /** 
+     * Menu for replying an Enquiry
+     * @param enquiry The Enquiry that the Committee selected to reply
+     * @param index The index of the Enquiry in the enquiries list
+     */
     public void replyStudentCampEnquiry(Enquiry enquiry, int index) {
         String reply = "";
         HelperUtil.clearScreen();
@@ -357,6 +402,9 @@ public class CommitteeView extends StudentView {
         managePendingStudentCampEnquiries();
     }
 
+    /**
+     * Calls a method to generate a report of all Enquiries of the Committee's Camps
+     */
     public void generateCampEnquiriesReport() {
         ArrayList<Camp> camps = CampController.getCommitteeCamps(userId);
         CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
@@ -368,6 +416,9 @@ public class CommitteeView extends StudentView {
         manageStudentCampEnquiries();
     }
 
+    /**
+     * Menu to manage the Committee's Camp Suggestion
+     */
     public void manageCampSuggestions() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -405,6 +456,9 @@ public class CommitteeView extends StudentView {
         } while (choice != 5);
     }
 
+    /**
+     * Menu for the Committee's Camp Suggestions
+     */
     public void viewAllCampSuggestions() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -432,6 +486,9 @@ public class CommitteeView extends StudentView {
         manageCampSuggestions();
     }
 
+    /**
+     * Prints a list of the Committee's past Camp Suggestions
+     */
     public void viewPastCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Camp Suggestions");
@@ -460,6 +517,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Prints a list of the Committee's current Camp Suggestions
+     */
     public void viewCurrentCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Current Camp Suggestions");
@@ -483,6 +543,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Menu for the Committee's approved/rejected Camp Suggestions
+     */
     public void viewAllApprovedRejectedCampSuggestions() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -511,6 +574,9 @@ public class CommitteeView extends StudentView {
         manageCampSuggestions();
     }
 
+    /**
+     * Prints a list of the Committee's approved/rejected past Camp Suggestions
+     */
     public void viewPastApprovedRejectedCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Approved/Rejected Camp Suggestions");
@@ -539,6 +605,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Prints a list of the Committee's approved/rejected current Camp Suggestions
+     */
     public void viewCurrentApprovedRejectedCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Current Approved/Rejected Camp Suggestions");
@@ -562,6 +631,9 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Menu for submitting a new Suggestion
+     */
     public void submitNewSuggestion() {
         String message = "";
         HelperUtil.clearScreen();
@@ -577,7 +649,8 @@ public class CommitteeView extends StudentView {
             if (message.equals(""))
                 System.out.println("Invalid message, please try again.");
             else {
-                SuggestionController.createSuggestion(camp.getCampId(), userId, message);
+                String suggestionId = SuggestionController.createSuggestion(camp.getCampId(), userId, message);
+                CampController.addSuggestion(camp.getCampId(), suggestionId);
                 System.out.println("\nSuggestion successfully submitted.");
             }
         } while (message.equals(""));
@@ -586,6 +659,9 @@ public class CommitteeView extends StudentView {
         manageCampSuggestions();
     }
 
+    /**
+     * Menu for managing the Committee's pending Camp Suggestions
+     */
     public void managePendingCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("Manage Pending Suggestions");
@@ -645,6 +721,11 @@ public class CommitteeView extends StudentView {
         manageCampSuggestions();
     }
 
+    /**
+     * Menu for editing a pending Camp Suggestion
+     * @param suggestion The Suggestion that the Committee selected for editing
+     * @param index The index of the Suggestion in the suggestions list
+     */
     public void editSuggestion(Suggestion suggestion, int index) {
         String message = "";
         HelperUtil.clearScreen();
@@ -668,6 +749,11 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Menu for deleting a pending Camp Suggestion
+     * @param suggestion The Suggestion that the Committee selected for editing
+     * @param index The index of the Suggestion in the suggestions list
+     */
     public void deleteSuggestion(Suggestion suggestion, int index) {
         String confirm = "";
         HelperUtil.clearScreen();
@@ -681,6 +767,7 @@ public class CommitteeView extends StudentView {
             confirm = HelperUtil.nextString().toLowerCase();
 
             if (confirm.equals("y")) {
+                CampController.removeSuggestion(suggestion.getCampId(), suggestion.getSuggestionId());
                 SuggestionController.deleteSuggestion(suggestion.getSuggestionId());
                 System.out.println("Suggestion successfully deleted.\n");
                 break;
@@ -693,6 +780,10 @@ public class CommitteeView extends StudentView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Calls a method to generate a report of all the Camp Participants/Committee of
+     * the Committee's Camps
+     */
     public void generateCampParticipantsCommitteeReport() {
         ArrayList<Camp> camps = CampController.getCommitteeCamps(userId);
         CommonUse.FilterReport(camps);

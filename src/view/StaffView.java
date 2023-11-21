@@ -10,6 +10,13 @@ import utils.HelperUtil;
 
 import java.util.*;
 
+/**
+ * User Interface for Staff
+ * 
+ * @author Emily, Chloie
+ * @version 2.2.2
+ * @since 2023-11-02
+ */
 public class StaffView extends MainView {
     private final String MENU_TITLE = "Staff Menu";
 
@@ -17,15 +24,26 @@ public class StaffView extends MainView {
     private CommonUse common;
     private CreatedCampsView createdCampsView;
 
+    /**
+     * Default constructor
+     */
     public StaffView() {
         common = new CommonUse();
         createdCampsView = new CreatedCampsView();
     }
 
+    /**
+     * Sets the logged in User's ID
+     * 
+     * @param userId The User ID of the logged in Staff
+     */
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    /**
+     * Menu for the Staff Menu interface
+     */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Camps/Participants");
@@ -39,6 +57,9 @@ public class StaffView extends MainView {
         System.out.println("  9)  Logout");
     }
 
+    /**
+     * Application for the Staff Menu
+     */
     public void viewMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -102,6 +123,9 @@ public class StaffView extends MainView {
         } while (choice != 9);
     }
 
+    /**
+     * Menu for all Camp or Camp Participants
+     */
     public void viewAllCampsParticipantsMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -130,6 +154,9 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of all the Camps
+     */
     public void viewAllCampDetails() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Camps");
@@ -139,6 +166,9 @@ public class StaffView extends MainView {
             common.printCampDetails(campList.get(i), i + 1);
     }
 
+    /**
+     * Prints a list of all Camp participants
+     */
     public void viewAllCampParticipants() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Camp Participants/Committee");
@@ -148,6 +178,9 @@ public class StaffView extends MainView {
             common.printCampParticipants(campList.get(i), i + 1);
     }
 
+    /**
+     * Menu for managing Enquiries of the Staff's created Camps
+     */
     public void manageCampEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -183,6 +216,9 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of all Enquiries of the Staff's created Camps
+     */
     public void viewAllCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Enquiries");
@@ -208,6 +244,9 @@ public class StaffView extends MainView {
         }
     }
 
+    /**
+     * Prints a list of all replied Enquiries of the Staff's created Camps
+     */
     public void viewAllRepliedCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Replied Enquiries");
@@ -233,6 +272,9 @@ public class StaffView extends MainView {
         }
     }
 
+    /**
+     * Menu for managing the pending Enquiries of the Staff's created Camps
+     */
     public void managePendingCampEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Pending Enquiries");
@@ -284,6 +326,12 @@ public class StaffView extends MainView {
         } while (choice != 2);
     }
 
+    /**
+     * Menu for replying an Enquiry
+     * 
+     * @param enquiry The Enquiry that the Staff selected to reply
+     * @param index   The index of the Enquiry in the enquiries list
+     */
     public void replyEnquiry(Enquiry enquiry, int index) {
         String reply = "";
         HelperUtil.clearScreen();
@@ -308,6 +356,10 @@ public class StaffView extends MainView {
         managePendingCampEnquiries();
     }
 
+    /**
+     * Calls a method to generate a report of all Enquiries of the Staff's created
+     * Camps
+     */
     public void generateCampEnquiriesReport() {
         ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
@@ -315,6 +367,10 @@ public class StaffView extends MainView {
         System.out.println("\nCamp Enquiries Report generated successfully.");
     }
 
+    /**
+     * Calls a method to generate a report of all the Camp Participants/Committee of
+     * the Staff's created Camps
+     */
     public void generateCampParticipantsCommitteeReport() {
         ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         CommonUse.FilterReport(camps);
@@ -324,6 +380,10 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Calls a method to generate a report of the performance of the Camp Committee
+     * of the Staff's created Camps
+     */
     public void generateCampCommitteePerformanceReport() {
         ArrayList<Camp> camps = CampController.getStaffCamps(userId);
         CommonUse.FileType(camps, null, ReportType.PERFORMANCE_REPORT);
@@ -333,6 +393,9 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for managing the Suggestions of the Staff's created Camps
+     */
     public void manageCampSuggestions() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -365,6 +428,9 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of all Suggestions of the Staff's created Camps
+     */
     public void viewAllCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Suggestions");
@@ -390,6 +456,10 @@ public class StaffView extends MainView {
         }
     }
 
+    /**
+     * Prints a list of all approved/rejected Suggestions of the Staff's created
+     * Camps
+     */
     public void viewAllApprovedRejectedCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Approved/Rejected Suggestions");
@@ -416,6 +486,9 @@ public class StaffView extends MainView {
         }
     }
 
+    /**
+     * Menu for managing the pending Suggestions of the Staff's created Camps
+     */
     public void managePendingCampSuggestions() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Pending Suggestions");
@@ -479,6 +552,12 @@ public class StaffView extends MainView {
         } while (choice != 3);
     }
 
+    /**
+     * Menu for approving a Suggestion
+     * 
+     * @param suggestion The Suggestion that the Staff selected to approve
+     * @param index      The index of the Suggesetion in the suggestions list
+     */
     public void approveSuggestion(Suggestion suggestion, int index) {
         String confirm;
         HelperUtil.clearScreen();
@@ -506,6 +585,12 @@ public class StaffView extends MainView {
         managePendingCampSuggestions();
     }
 
+    /**
+     * Menu for rejecting a Suggestion
+     * 
+     * @param suggestion The Suggestion that the Staff selected to reject
+     * @param index      The index of the Suggestion in the suggestions list
+     */
     public void rejectSuggestion(Suggestion suggestion, int index) {
         String confirm;
         HelperUtil.clearScreen();
@@ -532,6 +617,9 @@ public class StaffView extends MainView {
         managePendingCampSuggestions();
     }
 
+    /**
+     * Prints the profile of the Staff
+     */
     public void viewProfile() {
         Staff user = StaffController.getStaffByUserId(userId);
         HelperUtil.clearScreen();
@@ -547,6 +635,9 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for changing password
+     */
     public void changePassword() {
         String currentPassword, newPassword, confirmPassword;
         HelperUtil.clearScreen();

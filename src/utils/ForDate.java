@@ -1,10 +1,15 @@
-package view;
+package utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
 
 public class ForDate {
+    
+    /** 
+     * @param dateString
+     * @return Date
+     */
     public static Date getDates(String dateString) {
         Date date = null;
         try {

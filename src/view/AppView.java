@@ -3,6 +3,13 @@ package view;
 import database.Database;
 import utils.HelperUtil;
 
+/**
+ * User Interface for Main Menu of the application
+ * 
+ * @author Chloie
+ * @version 1.1.2
+ * @since 2023-11-19
+ */
 public class AppView extends MainView {
     private final String MENU_TITLE = "Main Menu";
 
@@ -10,15 +17,25 @@ public class AppView extends MainView {
     private DatabaseView databaseView;
     private Database database;
 
+    /**
+     * Default constructor
+     */
     public AppView() {
         loginView = new LoginView();
         databaseView = new DatabaseView();
     }
-
+    
+    /**
+     * Sets the Database object of the application instance 
+     * @param database The Database object of the application instance
+     */
     public void setDatabase(Database database) {
         this.database = database;
     }
 
+    /**
+     * Menu for the Main Menu interface
+     */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  Login");
@@ -26,6 +43,9 @@ public class AppView extends MainView {
         System.out.println("  3)  Exit");
     }
 
+    /**
+     * Application for the Main Menu
+     */
     public void viewMenu() {
         int choice = -1;
         printMenu();

@@ -14,6 +14,10 @@ public class Staff extends User {
         createdCampIds = new ArrayList<>();
     }
 
+    
+    /** 
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getCreatedCampIds() {
         return createdCampIds;
     }

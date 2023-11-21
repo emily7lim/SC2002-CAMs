@@ -12,7 +12,7 @@ import controller.StaffController;
 import controller.StudentController;
 import model.*;
 import model.enums.Faculty;
-import view.ForDate;
+import utils.ForDate;
 
 public class Database {
     /**
@@ -243,6 +243,11 @@ public class Database {
         saveAllToDatabase();
     }
 
+    
+    /** 
+     * @param fileName
+     * @return boolean
+     */
     public boolean checkDataEmpty(FileName fileName) {
         switch (fileName) {
             case USERS:

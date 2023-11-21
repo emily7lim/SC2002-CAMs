@@ -30,6 +30,12 @@ public class HelperUtil {
         }
     }
 
+    
+    /** 
+     * @param min
+     * @param max
+     * @return int
+     */
     public static int nextInt(int min, int max) {
         try {
             int input = sc.nextInt();

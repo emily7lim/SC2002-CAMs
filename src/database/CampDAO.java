@@ -74,6 +74,12 @@ public class CampDAO {
         return camps;
     }
 
+    
+    /** 
+     * @param participantId
+     * @param date
+     * @return ArrayList<Camp>
+     */
     public static ArrayList<Camp> getCampsByParticipantIdBeforeDate(String participantId, Date date) {
         ArrayList<Camp> camps = new ArrayList<>();
 

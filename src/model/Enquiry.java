@@ -35,6 +35,10 @@ public class Enquiry implements Serializable {
 		this.status = status;
 	}
 
+	
+	/** 
+	 * @return String
+	 */
 	public String getEnquiryId() {
 		return enquiryId;
 	}

@@ -41,6 +41,12 @@ public class SuggestionDAO {
         return suggestions;
     }
 
+    
+    /** 
+     * @param campId
+     * @param creatorId
+     * @return ArrayList<Suggestion>
+     */
     public static ArrayList<Suggestion> getSuggestionsbyCampIdAndCreatorId(String campId, String creatorId) {
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 

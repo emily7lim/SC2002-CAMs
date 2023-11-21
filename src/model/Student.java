@@ -22,6 +22,10 @@ public class Student extends User {
         this.campIds = new ArrayList<String>();
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getPoints() {
         return points;
     }

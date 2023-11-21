@@ -75,6 +75,10 @@ public class Camp implements Serializable {
         this.visible = true;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getCampId() {
         return campId;
     }

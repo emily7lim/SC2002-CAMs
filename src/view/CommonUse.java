@@ -8,21 +8,46 @@ import report.ReportController;
 import report.enums.ReportOutputType;
 import report.enums.ReportType;
 
+/**
+ * @author
+ * @version
+ * @since
+ */
 public class CommonUse {
+    
+    /** 
+     * @param total
+     * @param length
+     * @return String
+     */
     public String getWhitespace(int total, int length) {
         return String.format("%" + (total - length) / 2 + "s", "");
     }
 
+    /**
+     * 
+     * @param date
+     * @return
+     */
     public String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(date);
     }
 
+    /**
+     * 
+     * @param type
+     */
     public void printDivider(int type) {
         System.out.println(type == 1 ? "======================================================================"
                 : "----------------------------------------------------------------------");
     }
 
+    /**
+     * 
+     * @param camp
+     * @param index
+     */
     public void printCampDetails(Camp camp, int index) {
         printDivider(1);
         String name = String.format("Camp %d: %s", index, camp.getName());
@@ -51,6 +76,12 @@ public class CommonUse {
         System.out.printf("  Visibility: \t\t   %s%n", camp.isVisible() ? "Visible" : "Not Visible");
     }
 
+    /**
+     * 
+     * @param camp
+     * @param index
+     * @param userId
+     */
     public void printCampDetailsWithRole(Camp camp, int index, String userId) {
         printCampDetails(camp, index);
         if (camp.getParticipantIds().contains(userId) || camp.getCommitteeIds().contains(userId)
@@ -62,6 +93,11 @@ public class CommonUse {
             System.out.printf("%n");
     }
 
+    /**
+     * 
+     * @param camp
+     * @param index
+     */
     public void printCampParticipants(Camp camp, int index) {
         printDivider(1);
         String name = String.format("Camp %d: %s", index, camp.getName());
@@ -111,6 +147,10 @@ public class CommonUse {
         System.out.printf("%34s|%35s%n", "", "");
     }
 
+    /**
+     * 
+     * @param suggestion
+     */
     public void printSuggestionDetails(Suggestion suggestion) {
         boolean shown = false;
         String message = suggestion.getMessage();
@@ -130,6 +170,11 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param suggestion
+     * @param index
+     */
     public void printSuggestionDetailsWithIndex(Suggestion suggestion, int index) {
         boolean shown = false;
         String message = suggestion.getMessage();
@@ -149,6 +194,10 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param suggestion
+     */
     public void printUserSuggestionDetails(Suggestion suggestion) {
         boolean shown = false;
         String message = suggestion.getMessage();
@@ -167,6 +216,11 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param suggestion
+     * @param index
+     */
     public void printUserSuggestionDetailsWithIndex(Suggestion suggestion, int index) {
         boolean shown = false;
         String message = suggestion.getMessage();
@@ -185,6 +239,10 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param enquiry
+     */
     public void printEnquiryDetails(Enquiry enquiry) {
         boolean shown = false;
         String message = enquiry.getMessage();
@@ -203,6 +261,11 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param enquiry
+     * @param index
+     */
     public void printEnquiryDetailsWithIndex(Enquiry enquiry, int index) {
         boolean shown = false;
         String message = enquiry.getMessage();
@@ -222,6 +285,10 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param enquiry
+     */
     public void printEnquiryDetailsWithReply(Enquiry enquiry) {
         String message = enquiry.getMessage();
         String reply = enquiry.getReply();
@@ -244,6 +311,10 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param enquiry
+     */
     public void printUserEnquiryDetails(Enquiry enquiry) {
         boolean shown = false;
         String message = enquiry.getMessage();
@@ -261,6 +332,11 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @param enquiry
+     * @param index
+     */
     public void printUserEnquiryDetailsWithIndex(Enquiry enquiry, int index) {
         boolean shown = false;
         String message = enquiry.getMessage();
@@ -279,6 +355,10 @@ public class CommonUse {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public static Integer dataValidation() {
         Scanner sc = new Scanner(System.in);
         Boolean validation = sc.hasNextInt();
@@ -294,6 +374,12 @@ public class CommonUse {
         return validate;
     }
 
+    /**
+     * 
+     * @param camps
+     * @param filtering
+     * @param reportType
+     */
     public static void FileType(ArrayList<Camp> camps, FilterObj filtering, ReportType reportType) {
         System.out.println("\nSelect your format\n1) .txt \n2) .csv");
         Boolean continues = true;
@@ -318,6 +404,10 @@ public class CommonUse {
 
     }
 
+    /**
+     * 
+     * @param camps
+     */
     public static void FilterReport(ArrayList<Camp> camps) {
         FilterObj filtering = new FilterObj();
         System.out.println("\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) All\n4) Quit");

@@ -21,6 +21,10 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getUserId() {
         return userId;
     }

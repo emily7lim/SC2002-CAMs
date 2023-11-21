@@ -4,14 +4,29 @@ import database.Database;
 import database.FileName;
 import utils.HelperUtil;
 
+/**
+ * User Interface for Managing Database
+ * 
+ * @author Chloie
+ * @version 1.1.2
+ * @since 2023-11-19
+ */
 public class DatabaseView extends MainView {
     private final String MENU_TITLE = "Manage Database";
     private Database database;
 
+    /**
+     * Sets the Database object of the application
+     * 
+     * @param database The Database object of the application
+     */
     public void setDatabase(Database database) {
         this.database = database;
     }
 
+    /**
+     * Menu for Managing Database interface
+     */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  Reset Database");
@@ -20,6 +35,9 @@ public class DatabaseView extends MainView {
         System.out.println("  4)  Back");
     }
 
+    /**
+     * Application for Managing Database
+     */
     public void viewMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -50,10 +68,13 @@ public class DatabaseView extends MainView {
                 default:
             }
         } while (choice != 4);
-        
+
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for resetting application's Database
+     */
     public void resetDatabase() {
         String confirm = "";
         HelperUtil.clearScreen();
@@ -77,6 +98,9 @@ public class DatabaseView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for initializing dummy User data
+     */
     public void initializeUserData() {
         String confirm = "";
         HelperUtil.clearScreen();
@@ -103,7 +127,10 @@ public class DatabaseView extends MainView {
         HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
     }
-    
+
+    /**
+     * Menu for initializing dummy Camp data
+     */
     public void initializeCampData() {
         String confirm = "";
         HelperUtil.clearScreen();

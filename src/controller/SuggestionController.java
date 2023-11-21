@@ -14,10 +14,12 @@ public class SuggestionController {
      * @param creatorId The User ID of the creator of the new Suggestion
      * @param message The message of the new Suggestion
      */
-    public static void createSuggestion(String campId, String creatorId, String message) {
+    public static String createSuggestion(String campId, String creatorId, String message) {
         Suggestion suggestion = new Suggestion(campId, creatorId, message);
         SuggestionDAO.createSuggestion(suggestion);
         CampDAO.updateSuggestion(campId, suggestion.getSuggestionId(), true);
+
+        return suggestion.getSuggestionId();
     }
 
     /**
@@ -58,6 +60,12 @@ public class SuggestionController {
         return SuggestionDAO.getSuggestionsbyCampIdAndStatus(campId, SuggestionStatus.PENDING);
     }
 
+    
+    /** 
+     * @param campId
+     * @param creatorId
+     * @return ArrayList<Suggestion>
+     */
     public static ArrayList<Suggestion> getSuggestionsbyCampIdAndCreatorId(String campId, String creatorId) {
         return SuggestionDAO.getSuggestionsbyCampIdAndCreatorId(campId, creatorId);
     }

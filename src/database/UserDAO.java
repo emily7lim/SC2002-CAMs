@@ -43,6 +43,11 @@ public class UserDAO {
         else return false;
     }
 
+    
+    /** 
+     * @param userId
+     * @param password
+     */
     public static void updateUserPassword(String userId, String password) {
         Database.USERS.get(userId).setPassword(password);
     }

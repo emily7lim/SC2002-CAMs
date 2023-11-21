@@ -32,6 +32,10 @@ public class Suggestion implements Serializable {
 		this.status = status;
 	}
 
+	
+	/** 
+	 * @return String
+	 */
 	public String getSuggestionId() {
 		return suggestionId;
 	}

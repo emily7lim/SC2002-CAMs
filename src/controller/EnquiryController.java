@@ -13,9 +13,11 @@ public class EnquiryController {
      * @param creatorId The User ID of the creator of the new Enquiry
      * @param message The message of the new Enquiry
      */
-    public static void createEnquiry(String campId, String creatorId, String message) {
+    public static String createEnquiry(String campId, String creatorId, String message) {
         Enquiry enquiry = new Enquiry(campId, creatorId, message);
         EnquiryDAO.createEnquiry(enquiry);
+
+        return enquiry.getEnquiryId();
     }
 
     /**
@@ -62,6 +64,12 @@ public class EnquiryController {
         return EnquiryDAO.getEnquiriesByCreatorIdAndCampId(creatorId, campId);
     }
 
+    
+    /** 
+     * @param creatorId
+     * @param campId
+     * @return ArrayList<Enquiry>
+     */
     public static ArrayList<Enquiry> getPendingEnquiriesByCreatorIdAndCampId(String creatorId, String campId) {
         return EnquiryDAO.getEnquiriesByCreatorIdAndCampIdAndStatus(creatorId, campId, EnquiryStatus.PENDING);
     }

@@ -5,22 +5,43 @@ import java.util.*;
 import controller.*;
 import model.Camp;
 import model.enums.Faculty;
+import utils.ForDate;
 import utils.HelperUtil;
 
+/**
+ * User Interface for managing Staff's Created Camps
+ * 
+ * @author Emily, Chloie
+ * @version 2.2.4
+ * @since 2023-11-02
+ */
 public class CreatedCampsView extends MainView {
     private final String MENU_TITLE = "Manage Created Camps";
 
     private String userId;
     private CommonUse common;
 
+    /**
+     * Sets the logged in User's ID
+     * 
+     * @param userId The User ID of the logged in Staff
+     */
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    /**
+     * Sets the CommonUse object of the application instance
+     * 
+     * @param common The CommonUse object of the application instance
+     */
     public void setCommon(CommonUse common) {
         this.common = common;
     }
 
+    /**
+     * Menu for managing Staff's Created Camps
+     */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Created Camps");
@@ -30,6 +51,9 @@ public class CreatedCampsView extends MainView {
         System.out.println("  5)  Back");
     }
 
+    /**
+     * Application for managing Staff's Created Camps
+     */
     public void viewMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -66,6 +90,9 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of all the Staff's Created Camps
+     */
     public void viewAllCreatedCamps() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Created Camps");
@@ -80,6 +107,9 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for creating a new Camp
+     */
     public void createNewCamp() {
         HelperUtil.clearScreen();
         printMenuTitle("Create New Camp");
@@ -183,7 +213,8 @@ public class CreatedCampsView extends MainView {
             }
         } while (commSlots == -1);
 
-        String campId = CampController.createCamp(name, startDate, endDate, registrationCloseDate, userGroup, location, totalSlots,
+        String campId = CampController.createCamp(name, startDate, endDate, registrationCloseDate, userGroup, location,
+                totalSlots,
                 commSlots, description, userId);
         StaffController.addCamp(userId, campId);
         System.out.println("Camp successfully created");
@@ -192,6 +223,9 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for selecting a Camp to edit
+     */
     public void editCreatedCamps() {
         int index = -1;
         HelperUtil.clearScreen();
@@ -216,6 +250,12 @@ public class CreatedCampsView extends MainView {
         editCreatedCamp(camps.get(index - 1), index);
     }
 
+    /**
+     * Menu for editing a Camp
+     * 
+     * @param camp  The Camp that the Staff selected for editing
+     * @param index The index of the Camp in the camps list
+     */
     public void editCreatedCamp(Camp camp, int index) {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -415,6 +455,9 @@ public class CreatedCampsView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for selecting a Camp to delete
+     */
     public void deleteCreatedCamps() {
         int index = -1;
         HelperUtil.clearScreen();
@@ -439,6 +482,12 @@ public class CreatedCampsView extends MainView {
         deleteCreatedCamp(camps.get(index - 1), index);
     }
 
+    /**
+     * Menu for deleting a Camp
+     * 
+     * @param camp  The Camp that the Staff selected for deletion
+     * @param index The index of the Camp in the camps list
+     */
     public void deleteCreatedCamp(Camp camp, int index) {
         String confirm;
         HelperUtil.clearScreen();
@@ -453,7 +502,7 @@ public class CreatedCampsView extends MainView {
             if (confirm.equals("y")) {
                 if (camp.getRemainingParticipantSlots() < camp.getParticipantSlots()
                         || camp.getRemainingCommitteeSlots() < camp.getCommSlots()) {
-                    System.out.println("Unable to toggle camp visibility, camp has registered students.");
+                    System.out.println("Unable to delete camp, camp has registered students.");
                     break;
                 }
 

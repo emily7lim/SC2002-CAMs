@@ -75,6 +75,13 @@ public class EnquiryDAO {
         return enquiries;
     }
 
+    
+    /** 
+     * @param creatorId
+     * @param campId
+     * @param status
+     * @return ArrayList<Enquiry>
+     */
     public static ArrayList<Enquiry> getEnquiriesByCreatorIdAndCampIdAndStatus(String creatorId, String campId, EnquiryStatus status) {
         ArrayList<Enquiry> enquiries = new ArrayList<Enquiry>();
 

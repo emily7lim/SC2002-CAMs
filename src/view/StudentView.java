@@ -9,20 +9,38 @@ import model.Student;
 import model.enums.Role;
 import utils.HelperUtil;
 
+/**
+ * User Interface for Students
+ * 
+ * @author Emily, Chloie
+ * @version 2.2.3
+ * @since 2023-11-04
+ */
 public class StudentView extends MainView {
     private final String MENU_TITLE = "Student Menu";
 
     protected String userId;
     protected CommonUse common;
 
+    /**
+     * Default constructor
+     */
     public StudentView() {
         common = new CommonUse();
     }
 
+    /**
+     * Sets the logged in User's ID
+     * 
+     * @param userId The User ID of the logged in Student
+     */
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    /**
+     * Menu for the Student Menu interface
+     */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Camps");
@@ -35,6 +53,9 @@ public class StudentView extends MainView {
         System.out.println("  8)  Logout");
     }
 
+    /**
+     * Application for the Student Menu
+     */
     public void viewMenu() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -81,11 +102,15 @@ public class StudentView extends MainView {
         } while (choice != 8);
     }
 
+    /**
+     * Prints a list of all camps available to the Student
+     */
     public void viewAllCamps() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Camps");
 
-        ArrayList<Camp> camps = CampController.getStudentAvailableCamps(UserController.getUserByUserId(userId).getFaculty());
+        ArrayList<Camp> camps = CampController
+                .getStudentAvailableCamps(UserController.getUserByUserId(userId).getFaculty());
 
         if (camps.size() == 0)
             System.out.printf(" No camps found.\n\n", "", "");
@@ -96,6 +121,9 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for the Student's registered Camps
+     */
     public void viewRegisteredCamps() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -125,6 +153,9 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of the Student's past registered Camps
+     */
     public void viewPastRegisteredCamps() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Registered Camps");
@@ -137,6 +168,9 @@ public class StudentView extends MainView {
             common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
     }
 
+    /**
+     * Prints a list of the Student's current/future registered Camps
+     */
     public void viewFutureRegisteredCamps() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Future Registered Camps");
@@ -148,6 +182,9 @@ public class StudentView extends MainView {
             common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
     }
 
+    /**
+     * Menu for selecting Camp for registration
+     */
     public void registerForCamps() {
         int index = -1;
         HelperUtil.clearScreen();
@@ -174,6 +211,12 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for Camp registration
+     * 
+     * @param camp  The Camp that the Student selected for registration
+     * @param index The index of the Camp in the camps list
+     */
     public void registerForCamp(Camp camp, int index) {
         int choice = -1;
         String confirm;
@@ -205,7 +248,8 @@ public class StudentView extends MainView {
                             if (confirm.equals("y")) {
                                 CampController.addCommittee(camp.getCampId(), userId);
                                 StudentController.addCampCommittee(userId);
-                                System.out.println("Successfully registered as Camp Committee, \nplease log in again to access committee menu.\n");
+                                System.out.println(
+                                        "Successfully registered as Camp Committee, \nplease log in again to access committee menu.\n");
                                 break;
                             } else if (!confirm.equals("n"))
                                 System.out.println("Invalid input, please try again.");
@@ -246,6 +290,9 @@ public class StudentView extends MainView {
         } while (choice == -1);
     }
 
+    /**
+     * Menu for selecting Camp for withdrawal
+     */
     public void withdrawFromCamps() {
         int index = -1;
         HelperUtil.clearScreen();
@@ -271,6 +318,12 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for Camp withdrawal
+     * 
+     * @param camp  The Camp that the Student selected for withdrawal
+     * @param index The index of the Camp in the camps list
+     */
     public void withdrawFromCamp(Camp camp, int index) {
         String confirm;
         HelperUtil.clearScreen();
@@ -293,6 +346,9 @@ public class StudentView extends MainView {
         } while (true);
     }
 
+    /**
+     * Menu for managing Enquiries
+     */
     public void manageEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -335,6 +391,9 @@ public class StudentView extends MainView {
         } while (choice != 5);
     }
 
+    /**
+     * Menu for the Student's Camp Enquiries
+     */
     public void viewAllEnquiries() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -365,6 +424,9 @@ public class StudentView extends MainView {
         manageEnquiries();
     }
 
+    /**
+     * Prints a list of the Student's Enquiries for past Camps
+     */
     public void viewPastCampsEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Camps Enquiries");
@@ -394,6 +456,9 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of the Student's Enquiries for current/future Camps
+     */
     public void viewFutureCampsEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Future Camps Enquiries");
@@ -423,6 +488,9 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for the Student's Camp Enquiries with replies
+     */
     public void viewEnquiryReplies() {
         int choice = -1;
         HelperUtil.clearScreen();
@@ -454,6 +522,9 @@ public class StudentView extends MainView {
         manageEnquiries();
     }
 
+    /**
+     * Prints a list of the Student's Enquiries with replies for past Camps
+     */
     public void viewPastCampsEnquiryReplies() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Past Camps Enquiry Replies");
@@ -483,6 +554,10 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Prints a list of the Student's Enquiries with replies for current/future
+     * Camps
+     */
     public void viewFutureCampsEnquiryReplies() {
         HelperUtil.clearScreen();
         printMenuTitle("List of Future Camps Enquiry Replies");
@@ -512,7 +587,9 @@ public class StudentView extends MainView {
         HelperUtil.clearScreen();
     }
 
-    // TODO: Add Enquiry ID to Enquiry List of Camp
+    /**
+     * Menu for selecting Camp for new Enquiry
+     */
     public void submitNewEnquiry() {
         int index = -1;
         HelperUtil.clearScreen();
@@ -538,6 +615,12 @@ public class StudentView extends MainView {
         manageEnquiries();
     }
 
+    /**
+     * Menu for submitting new Camp Enquiry
+     * 
+     * @param camp  The Camp that the Student selected for a new Enquiry
+     * @param index The index of the Camp in the camps list
+     */
     public void submitEnquiry(Camp camp, int index) {
         String message = "";
         HelperUtil.clearScreen();
@@ -552,12 +635,16 @@ public class StudentView extends MainView {
             if (message.equals(""))
                 System.out.println("Invalid message, please try again.");
             else {
-                EnquiryController.createEnquiry(camp.getCampId(), userId, message);
+                String enquiryId = EnquiryController.createEnquiry(camp.getCampId(), userId, message);
+                CampController.addEnquiry(camp.getCampId(), enquiryId);
                 System.out.println("\nEnquiry successfully submitted.");
             }
         } while (message.equals(""));
     }
 
+    /**
+     * Menu for managing pending Enquiries
+     */
     public void managePendingEnquiries() {
         HelperUtil.clearScreen();
         printMenuTitle("Manage Pending Enquiries");
@@ -623,6 +710,12 @@ public class StudentView extends MainView {
         manageEnquiries();
     }
 
+    /**
+     * Menu for editing pending Enquiry
+     * 
+     * @param enquiry The Enquiry that the Student selected for edits
+     * @param index   The index of the Enquiry in the enquiries list
+     */
     public void editEnquiry(Enquiry enquiry, int index) {
         String message = "";
         HelperUtil.clearScreen();
@@ -646,6 +739,12 @@ public class StudentView extends MainView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Menu for deleting pending Enquiry
+     * 
+     * @param enquiry The Enquiry that the Student selected for deletion
+     * @param index   The index of the Enquiry in the enquiries list
+     */
     public void deleteEnquiry(Enquiry enquiry, int index) {
         String confirm = "";
         HelperUtil.clearScreen();
@@ -659,6 +758,7 @@ public class StudentView extends MainView {
             confirm = HelperUtil.nextString().toLowerCase();
 
             if (confirm.equals("y")) {
+                CampController.removeEnquiry(enquiry.getCampId(), enquiry.getEnquiryId());
                 EnquiryController.deleteEnquiry(enquiry.getEnquiryId());
                 System.out.println("Enquiry successfully deleted.\n");
                 break;
@@ -671,6 +771,9 @@ public class StudentView extends MainView {
         HelperUtil.pressAnyKeyToContinue();
     }
 
+    /**
+     * Prints the profile of the Student
+     */
     public void viewProfile() {
         Student user = StudentController.getStudentByUserId(userId);
         HelperUtil.clearScreen();
@@ -680,12 +783,17 @@ public class StudentView extends MainView {
         System.out.printf("Name:\t  %s%n", user.getName());
         System.out.printf("Faculty:  %s%n", user.getFaculty().getFaculty());
         System.out.printf("Points:\t  %d%n", user.getPoints());
-        System.out.printf("Role:\t  %s%s%n\n", user.getRole().getRole(), user.getRole() == Role.COMMITTEE ? " (" + CampController.getCommitteeCurrentCamp(userId).getName() +")" : "");
+        System.out.printf("Role:\t  %s%s%n\n", user.getRole().getRole(),
+                user.getRole() == Role.COMMITTEE ? " (" + CampController.getCommitteeCurrentCamp(userId).getName() + ")"
+                        : "");
 
         HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
     }
 
+    /**
+     * Menu for changing password
+     */
     public void changePassword() {
         String currentPassword, newPassword, confirmPassword;
         HelperUtil.clearScreen();
