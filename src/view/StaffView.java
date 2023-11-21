@@ -6,6 +6,7 @@ import model.Enquiry;
 import model.Staff;
 import model.Suggestion;
 import report.enums.ReportType;
+import utils.ForDate;
 import utils.HelperUtil;
 
 import java.util.*;
@@ -130,7 +131,8 @@ public class StaffView extends MainView {
         int choice = -1;
         HelperUtil.clearScreen();
         printMenuTitle("View All Camps/Participants");
-        System.out.println("  1)  View All Camp Details\n  2)  View All Camp Participants/Committee\n  3)  Back");
+        System.out.println(
+                "  1)  View All Camp Details\n  2)  View All Camp Participants/Committee\n  3)  Filter View\n  4)  Back");
 
         do {
             System.out.print("\nEnter your choice: ");
@@ -144,6 +146,9 @@ public class StaffView extends MainView {
                     viewAllCampParticipants();
                     break;
                 case 3:
+                    viewFilteredCamp();
+                    break;
+                case 4:
                     break;
                 default:
                     break;
@@ -176,6 +181,150 @@ public class StaffView extends MainView {
         ArrayList<Camp> campList = CampController.getAllCamps();
         for (int i = 0; i < campList.size(); i++)
             common.printCampParticipants(campList.get(i), i + 1);
+    }
+
+    /**
+     * Prints a list of filtered camps
+     */
+    public void viewFilteredCamp() {
+        HelperUtil.clearScreen();
+        printMenuTitle("Filtered camps");
+        int choice = -1, totalSlots = -1, commSlots = -1;
+
+        ArrayList<Camp> camp = CampController.getAllCamps();
+        if (camp.size() == 0) {
+            System.out.println(" No camps found.\n");
+            HelperUtil.pressAnyKeyToContinue();
+            HelperUtil.clearScreen();
+            return;
+        }
+
+        System.out.println(
+                "\nSelect a field to filter\n  1)  Name\n  2)  Location\n  3)  Start Date\n  4)  End Date\n  5)  Registration Close Date\n  6)  User Group\n  7)  Total Slots\n  8)  Committee Slots");
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 8);
+
+            switch (choice) {
+                case 1:
+                    String name = "";
+
+                    System.out.print("Enter Camp Name: ");
+                    name = HelperUtil.nextString();
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampName(name))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 2:
+                    String location = "";
+
+                    System.out.print("Enter Camp Location: ");
+                    location = HelperUtil.nextString();
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampLocation(location))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 3:
+                    Date startDate = null;
+                    do {
+                        System.out.print("Enter Camp Start Date (dd/MM/yyy): ");
+                        startDate = ForDate.getDates(HelperUtil.nextString());
+                        if (startDate == null)
+                            System.out.println("Invalid date, please try again.");
+                    } while (startDate == null);
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampStart(startDate))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 4:
+                    Date endDate = null;
+                    do {
+                        System.out.print("Enter Camp End Date (dd/MM/yyy): ");
+                        endDate = ForDate.getDates(HelperUtil.nextString());
+                        if (endDate == null)
+                            System.out.println("Invalid date, please try again.");
+                    } while (endDate == null);
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampEnd(endDate))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 5:
+                    Date registrationCloseDate = null;
+                    do {
+                        System.out.print("Enter Camp Registration Close Date (dd/MM/yyy): ");
+                        registrationCloseDate = ForDate.getDates(HelperUtil.nextString());
+                        if (registrationCloseDate == null)
+                            System.out.println("Invalid date, please try again.");
+                    } while (registrationCloseDate == null);
+
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampDeadline(registrationCloseDate))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 6:
+                    System.out.println("Enter Faculty");
+                    String faculty = HelperUtil.nextString();
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampFaculty(faculty))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 7:
+                    do {
+                        System.out.print("Enter Camp Total Slots: ");
+                        totalSlots = HelperUtil.nextInt(1);
+                    } while (totalSlots == -1);
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampTotalSlots(totalSlots))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+
+                case 8:
+
+                    do {
+                        System.out.print("Enter Committee Slots: ");
+                        totalSlots = HelperUtil.nextInt(1);
+                    } while (totalSlots == -1);
+
+                    for (int i = 0; i < camp.size(); i++) {
+
+                        if (CampController.filterCampCommSlot(commSlots))
+                            common.printCampDetails(camp.get(i), i + 1);
+                    }
+                    System.out.println("\nEnd of list of filtered camp details\n");
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
     }
 
     /**

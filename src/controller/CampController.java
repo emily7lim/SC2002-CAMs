@@ -381,6 +381,101 @@ public class CampController {
     }
 
     /**
+     * Filter the name of a Camp
+     * @param name   The name that user inputs
+     * @return boolean Whether the Camp name matches
+     */
+    public static boolean filterCampName(String name) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getName().equalsIgnoreCase(name))
+                return true;
+        return false;
+    }
+
+    /**
+     * Filter the location of a Camp
+     * @param location   The location that user inputs
+     * @return boolean Whether the Camp location matches
+     */
+    public static boolean filterCampLocation(String location) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getLocation().equalsIgnoreCase(location))
+                return true;
+        return false;
+    }
+
+    /**
+     * Filter the startDate of a Camp
+     * @param startDate   The startDate that user inputs
+     * @return boolean Whether the Camp startDate matches
+     */
+    public static boolean filterCampStart(Date startDate) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getStartDate().equals(startDate))
+                return true;
+        return false;
+    }
+
+    /**
+     * Filter the endDate of a Camp
+     * @param endDate   The endDate that user inputs
+     * @return boolean Whether the Camp endDate matches
+     */
+    public static boolean filterCampEnd(Date endDate) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getEndDate().equals(endDate))
+                return true;
+        return false;
+    }
+
+    /**
+     * Filter the deadline of a Camp
+     * @param deadline   The deadline that user inputs
+     * @return boolean Whether the Camp deadline matches
+     */
+    public static boolean filterCampDeadline(Date deadline) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getRegistrationCloseDate().equals(deadline))
+                return true;
+        return false;
+    }
+
+    /**
+     * Filter the faculty of a Camp
+     * @param faculty   The faculty that user inputs
+     * @return boolean Whether the Camp faculty matches
+     */
+    public static boolean filterCampFaculty(String faculty) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getUserGroup().toString().equalsIgnoreCase(faculty))
+                return true;
+        return false;
+    }
+    
+    /**
+     * Filter the totalSlots of a Camp
+     * @param totalSlots   The totalSlots that user inputs
+     * @return boolean Whether the Camp totalSlots matches
+     */
+    public static boolean filterCampTotalSlots(int totalSlots) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getTotalSlots()==totalSlots)
+                return true;
+        return false;
+    }
+    /**
+     * Filter the commSlots of a Camp
+     * @param commSlots   The commSlots that user inputs
+     * @return boolean Whether the Camp commSlots matches
+     */
+    public static boolean filterCampCommSlot(int commSlots) {
+        for (Camp camp : CampDAO.getAllCamps())
+            if (camp.getCommSlots()==commSlots)
+                return true;
+        return false;
+    }
+
+    /**
      * Adds a Student to the list of participants for a Camp
      * 
      * @param campId The Camp ID of the Camp
@@ -590,7 +685,7 @@ public class CampController {
      */
     public static boolean checkCampNameUnique(String campId, String name) {
         for (Camp camp : CampDAO.getAllCamps())
-            if (camp.getName().equals(name) && !camp.getCampId().equals(campId))
+            if (camp.getName().equalsIgnoreCase(name) && !camp.getCampId().equals(campId))
                 return false;
 
         return true;
