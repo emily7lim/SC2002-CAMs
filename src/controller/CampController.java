@@ -382,7 +382,8 @@ public class CampController {
 
     /**
      * Filter the name of a Camp
-     * @param name   The name that user inputs
+     * 
+     * @param name The name that user inputs
      * @return boolean Whether the Camp name matches
      */
     public static boolean filterCampName(String name) {
@@ -394,7 +395,8 @@ public class CampController {
 
     /**
      * Filter the location of a Camp
-     * @param location   The location that user inputs
+     * 
+     * @param location The location that user inputs
      * @return boolean Whether the Camp location matches
      */
     public static boolean filterCampLocation(String location) {
@@ -406,7 +408,8 @@ public class CampController {
 
     /**
      * Filter the startDate of a Camp
-     * @param startDate   The startDate that user inputs
+     * 
+     * @param startDate The startDate that user inputs
      * @return boolean Whether the Camp startDate matches
      */
     public static boolean filterCampStart(Date startDate) {
@@ -418,7 +421,8 @@ public class CampController {
 
     /**
      * Filter the endDate of a Camp
-     * @param endDate   The endDate that user inputs
+     * 
+     * @param endDate The endDate that user inputs
      * @return boolean Whether the Camp endDate matches
      */
     public static boolean filterCampEnd(Date endDate) {
@@ -430,7 +434,8 @@ public class CampController {
 
     /**
      * Filter the deadline of a Camp
-     * @param deadline   The deadline that user inputs
+     * 
+     * @param deadline The deadline that user inputs
      * @return boolean Whether the Camp deadline matches
      */
     public static boolean filterCampDeadline(Date deadline) {
@@ -442,7 +447,8 @@ public class CampController {
 
     /**
      * Filter the faculty of a Camp
-     * @param faculty   The faculty that user inputs
+     * 
+     * @param faculty The faculty that user inputs
      * @return boolean Whether the Camp faculty matches
      */
     public static boolean filterCampFaculty(String faculty) {
@@ -451,27 +457,42 @@ public class CampController {
                 return true;
         return false;
     }
-    
+
     /**
      * Filter the totalSlots of a Camp
-     * @param totalSlots   The totalSlots that user inputs
+     * 
+     * @param totalSlots The totalSlots that user inputs
      * @return boolean Whether the Camp totalSlots matches
      */
     public static boolean filterCampTotalSlots(int totalSlots) {
         for (Camp camp : CampDAO.getAllCamps())
-            if (camp.getTotalSlots()==totalSlots)
+            if (camp.getTotalSlots() == totalSlots)
                 return true;
         return false;
     }
+
     /**
      * Filter the commSlots of a Camp
-     * @param commSlots   The commSlots that user inputs
+     * 
+     * @param commSlots The commSlots that user inputs
      * @return boolean Whether the Camp commSlots matches
      */
     public static boolean filterCampCommSlot(int commSlots) {
         for (Camp camp : CampDAO.getAllCamps())
-            if (camp.getCommSlots()==commSlots)
+            if (camp.getCommSlots() == commSlots)
                 return true;
+        return false;
+    }
+
+    public static boolean filterAttendee(String name) {
+
+        for (int i = 0; i < CampDAO.getAllCamps().size(); i++) {
+            if (CampDAO.getAllCamps().get(i).getParticipantIds().size() == 0)
+                return false;
+            if (CampDAO.getAllCamps().get(i).getParticipantIds().get(i).equalsIgnoreCase(name))
+                return true;
+        }
+
         return false;
     }
 
@@ -480,7 +501,8 @@ public class CampController {
      * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the Student
-     * @return boolean Whether the Student is successfully added as a Camp Participant
+     * @return boolean Whether the Student is successfully added as a Camp
+     *         Participant
      */
     public static boolean addParticipant(String campId, String userId) {
         if (!checkCampExists(campId))
@@ -495,7 +517,8 @@ public class CampController {
      * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the Student
-     * @return boolean Whether the Student is succesfully removed as a Camp Participant
+     * @return boolean Whether the Student is succesfully removed as a Camp
+     *         Participant
      */
     public static boolean removeParticipant(String campId, String userId) {
         if (!checkCampExists(campId))
@@ -677,8 +700,7 @@ public class CampController {
         return false;
     }
 
-    
-    /** 
+    /**
      * @param campId
      * @param name
      * @return boolean
