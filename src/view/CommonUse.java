@@ -3,10 +3,12 @@ package view;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import controller.CampController;
 import model.*;
 import report.ReportController;
 import report.enums.ReportOutputType;
 import report.enums.ReportType;
+import utils.HelperUtil;
 
 /**
  * @author
@@ -382,65 +384,29 @@ public class CommonUse {
      */
     public static void FileType(ArrayList<Camp> camps, FilterObj filtering, ReportType reportType) {
         System.out.println("\nSelect your format\n1) .txt \n2) .csv");
-        Boolean continues = true;
-        while (continues) {
+        int choice = 1;
+        do {
             Integer format = CommonUse.dataValidation();
             switch (format) {
                 case 1: // txt
                     ReportController.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.TXT);
-                    continues = false;
+                    
                     break;
 
                 case 2: // csv
                     ReportController.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.CSV);
-                    continues = false;
+                    
                     break;
 
                 default:
                     System.out.print("Please select file format 1 or 2: ");
                     break;
             }
-        }
-
+        } while(choice == -1);
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
     }
 
-    /**
-     * 
-     * @param camps
-     */
-    public static void FilterReport(ArrayList<Camp> camps) {
-        FilterObj filtering = new FilterObj();
-        System.out.println("\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) All\n4) Quit");
-        System.out.println("Enter your choice and select 4 to quit");
-        Boolean continues = true;
-        while (continues) {
-            Integer filter = CommonUse.dataValidation();
-            // report includes camp details n filtered results
-            switch (filter) {
-                case 1: // report includes attendee name
-                    filtering.setSelectedAttendee(true);
-                    break;
 
-                case 2: // report includes comm name
-                    filtering.setSelectedCampCommittee(true);
-                    break;
-
-                case 3: // include everything?
-                    filtering.setAllCase5(true); // this sets all the vars u need for case 5
-                    filtering.isAnyCase5();
-
-                case 4:
-                    continues = false;
-                    break;
-
-                default:
-                    System.out.println("Invalid detail");
-                    break;
-            }
-
-        }
-
-        FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
-
-    }
+    
 }

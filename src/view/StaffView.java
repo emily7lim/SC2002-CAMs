@@ -136,7 +136,7 @@ public class StaffView extends MainView {
 
         do {
             System.out.print("\nEnter your choice: ");
-            choice = HelperUtil.nextInt(1, 3);
+            choice = HelperUtil.nextInt(1, 4);
 
             switch (choice) {
                 case 1:
@@ -515,6 +515,79 @@ public class StaffView extends MainView {
 
         System.out.println("\nCamp Enquiries Report generated successfully.");
     }
+//FOR REPORT
+    /**
+     * Prints a list of all Camp participants
+     */
+    public boolean viewFilteredCampParticipants() {
+        HelperUtil.clearScreen();
+        ArrayList<Camp> camp = CampController.getAllCamps();
+
+        if (camp.size() == 0) {
+            System.out.println(" No camps found.\n");
+            HelperUtil.pressAnyKeyToContinue();
+            HelperUtil.clearScreen();
+            return false;
+        }
+        String name = "";
+        System.out.println(name);
+        System.out.print("Enter Participant Name: ");
+        name = HelperUtil.nextString();
+        for (int i = 0; i < camp.size(); i++) {
+
+            if (CampController.filterAttendee(name))
+                return true;
+        }
+        return false;
+
+    }
+
+    /**
+     * 
+     * @param camps
+     */
+    public void FilterReport(ArrayList<Camp> camps) {
+        int choice = -1;
+        FilterObj filtering = new FilterObj();
+        System.out.println("\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) All\n4) Quit");
+
+        do {
+            System.out.println("Enter your choice and select 4 to quit");
+            choice = HelperUtil.nextInt(1, 4);
+            // report includes camp details n filtered results
+            switch (choice) {
+                case 1: // report includes attendee name
+                    filtering.setSelectedAttendee(true);
+                    if (viewFilteredCampParticipants()) {
+                        CommonUse.FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
+                        System.out.println("Report generated successfully");
+                    } else
+                        System.out.println("Participant not in any camp, no report generated");
+
+                    break;
+
+                case 2: // report includes comm name
+                    filtering.setSelectedCampCommittee(true);
+
+                    break;
+
+                case 3: // include everything?
+                    filtering.setAllCase5(true); // this sets all the vars u need for case 5
+                    filtering.isAnyCase5();
+
+                    break;
+                case 4:
+
+                    break;
+
+                default:
+                    System.out.println("Invalid detail");
+                    break;
+            }
+
+        } while (choice == -1);
+
+    }
 
     /**
      * Calls a method to generate a report of all the Camp Participants/Committee of
@@ -522,9 +595,8 @@ public class StaffView extends MainView {
      */
     public void generateCampParticipantsCommitteeReport() {
         ArrayList<Camp> camps = CampController.getStaffCamps(userId);
-        CommonUse.FilterReport(camps);
+        FilterReport(camps);
 
-        System.out.println("\nCamp Participants/Committee Report generated successfully.");
         HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
     }
