@@ -85,10 +85,10 @@ public class Report {
                             reportContent.append("\n");
                             int i = 1;
                             for (Student student : participants) {
-                                reportContent.append("Participant " + i + "Id: " + student.getUserId() + "\n");
-                                reportContent.append("Participant " + i + "Name: " + student.getName() + "\n");
-                                reportContent.append("Participant " + i + "Faculty: " + student.getFaculty() + "\n");
-                                reportContent.append("Participant " + i++ + "Role: " + student.getRole() + "\n");
+                                reportContent.append("Participant " + i + " Id: " + student.getUserId() + "\n");
+                                reportContent.append("Participant " + i + " Name: " + student.getName() + "\n");
+                                reportContent.append("Participant " + i + " Faculty: " + student.getFaculty() + "\n");
+                                reportContent.append("Participant " + i++ + " Role: " + student.getRole() + "\n");
                             }
                         }
                     }
@@ -103,12 +103,12 @@ public class Report {
                             reportContent.append("\n");
                             int i = 1;
                             for (Student student : commMembers) {
-                                reportContent.append("Committee member " + i + "Id: " + student.getUserId() + "\n");
-                                reportContent.append("Committee member " + i + "Name: " + student.getName() + "\n");
-                                reportContent.append("Committee member " + i + "points: " + student.getPoints() + "\n");
+                                reportContent.append("Committee member " + i + " Id: " + student.getUserId() + "\n");
+                                reportContent.append("Committee member " + i + " Name: " + student.getName() + "\n");
+                                reportContent.append("Committee member " + i + " points: " + student.getPoints() + "\n");
                                 reportContent
-                                        .append("Committee member " + i + "Faculty: " + student.getFaculty() + "\n");
-                                reportContent.append("Committee member " + i++ + "Role: " + student.getRole() + "\n");
+                                        .append("Committee member " + i + " Faculty: " + student.getFaculty() + "\n");
+                                reportContent.append("Committee member " + i++ + " Role: " + student.getRole() + "\n");
                             }
                         }
                     }
