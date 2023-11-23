@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The FilterObj class is used to filter what details to print in a report.
  * It allows users to specify which information should be included in the report
@@ -11,8 +14,10 @@ package view;
  */
 public class FilterObj {
     private boolean selectedAttendee;
+    private ArrayList<String> matchAttendeeName;
     private boolean selectedCampCommittee;
-    private boolean selectedRoles;
+    private ArrayList<String> matchCampCommitteeName;
+    
 
     /**
      * Constructs a new FilterObj with default selection status (all set to false).
@@ -27,7 +32,9 @@ public class FilterObj {
      * @param init true to initialize all filters as selected, false for deselected
      */
     public FilterObj(boolean init) {
-        this.selectedAttendee = this.selectedCampCommittee = this.selectedRoles = init;
+        this.selectedAttendee = this.selectedCampCommittee = init;
+        this.matchAttendeeName = new ArrayList<String>();
+        this.matchCampCommitteeName = new ArrayList<String>();
     }
 
     /**
@@ -40,7 +47,8 @@ public class FilterObj {
     public FilterObj(boolean selectedAttendee, boolean selectedCampCommittee, boolean selectedRoles) {
         this.selectedAttendee = selectedAttendee;
         this.selectedCampCommittee = selectedCampCommittee;
-        this.selectedRoles = selectedRoles;
+        this.matchAttendeeName = new ArrayList<String>();
+        this.matchCampCommitteeName = new ArrayList<String>();
     }
 
     /**
@@ -94,31 +102,80 @@ public class FilterObj {
     public void toggleSelectedCampCommittee() {
         this.selectedCampCommittee = !this.selectedCampCommittee;
     }
-
+    
     /**
-     * Gets the current selection status for roles information.
+     * Returns the strings to match with camp attendee name.
      *
-     * @return true if roles information is selected, false otherwise
+     * @return Arraylist<String> of strings to match with camp attendee name.
      */
-    public boolean isSelectedRoles() {
-        return selectedRoles;
+    public ArrayList<String> getMatchAttendeeName() {
+        return matchAttendeeName;
     }
 
     /**
-     * Sets the selection status for roles information.
+     * Sets the strings to match for camp attendees.
      *
-     * @param selectedRoles true to select roles information, false to deselect
+     * @param matchAttendeeName the list of names to match
      */
-    public void setSelectedRoles(boolean selectedRoles) {
-        this.selectedRoles = selectedRoles;
+    public void setMatchAttendeeName(ArrayList<String> matchAttendeeName) {
+        this.matchAttendeeName = matchAttendeeName == null ? new ArrayList<String>() : matchAttendeeName;
     }
 
     /**
-     * Toggles the selection status for roles information.
-     * If it was selected, it will be deselected, and vice versa.
+     * Adds the parameter to the camp attendee name arraylist.
+     *
+     * @param matchAttendeeName the new string to match
      */
-    public void toggleSelectedRoles() {
-        this.selectedRoles = !this.selectedRoles;
+    public void addMatchAttendeeName(String matchAttendeeName) {
+        if(this.matchAttendeeName == null) this.matchAttendeeName = new ArrayList<String>();
+        this.matchAttendeeName.add(matchAttendeeName);
+    }
+
+    /**
+     * Remove the specified string from the camp attendee name arraylist.
+     *
+     * @param matchAttendeeName the string to remove
+     */
+    public void removeMatchAttendeeName(String matchAttendeeName) {
+        if(this.matchAttendeeName == null) return;
+        this.matchAttendeeName.remove(matchAttendeeName);
+    }
+
+    /**
+     * Returns the strings to match with camp committee name.
+     *
+     * @return Arraylist<String> of strings to match with camp committee name.
+     */
+    public ArrayList<String> getMatchCampCommitteeName() {
+        return matchCampCommitteeName;
+    }
+/**
+     * Sets the strings to match for camp committee.
+     *
+     * @param matchAttendeeName the list of names to match
+     */
+    public void setMatchCampCommitteeName(ArrayList<String> matchCampCommitteeName) {
+        this.matchCampCommitteeName = matchCampCommitteeName == null ? new ArrayList<String>() : matchCampCommitteeName;
+    }
+
+    /**
+     * Adds the parameter to the camp committee name arraylist.
+     *
+     * @param matchAttendeeName the new string to match
+     */
+    public void addMatchCampCommitteeName(String matchCampCommitteeName) {
+        if(this.matchCampCommitteeName == null) this.matchCampCommitteeName = new ArrayList<String>();
+        this.matchCampCommitteeName.add(matchCampCommitteeName);
+    }
+
+    /**
+     * Remove the specified string from the camp committee name arraylist.
+     *
+     * @param matchAttendeeName the string to remove
+     */
+    public void removeMatchCampCommitteeName(String matchCampCommitteeName) {
+        if(this.matchCampCommitteeName == null) return;
+        this.matchCampCommitteeName.remove(matchCampCommitteeName);
     }
 
     /**
@@ -128,7 +185,6 @@ public class FilterObj {
     public void setAllCase5(boolean all) {
         this.setSelectedAttendee(all);
         this.setSelectedCampCommittee(all);
-        this.setSelectedRoles(all);
     }
 
     /**
@@ -139,6 +195,6 @@ public class FilterObj {
      * @return true if any filtering option is selected, false otherwise
      */
     public boolean isAnyCase5() {
-        return this.selectedAttendee || this.selectedCampCommittee || this.selectedRoles;
+        return this.selectedAttendee || this.selectedCampCommittee;
     }
 }

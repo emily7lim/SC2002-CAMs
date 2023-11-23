@@ -372,7 +372,9 @@ public class CommonUse {
         }
         Integer validate = sc.nextInt();
 
-        sc.close();
+        // this line breaks helperutil.nextInt
+        // complains iostream closed
+        // sc.close(); 
         return validate;
     }
 
@@ -403,10 +405,81 @@ public class CommonUse {
                     break;
             }
         } while(choice == -1);
-        HelperUtil.pressAnyKeyToContinue();
-        HelperUtil.clearScreen();
     }
 
+/**
+     * 
+     * @param camps
+     */
+    public static void FilterReport(ArrayList<Camp> camps) {
+        int choice = -1;
+        FilterObj filtering = new FilterObj();
+        System.out.println("\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) All\n4) Quit");
 
-    
+        do {
+            System.out.println("Enter your choice and select 4 to quit");
+            choice = HelperUtil.nextInt(1, 4);
+            // report includes camp details n filtered results
+            switch (choice) {
+                case 1: // report includes attendee name
+                    filtering.setSelectedAttendee(true);
+                    break;
+
+                case 2: // report includes comm name
+                    filtering.setSelectedCampCommittee(true);
+                    break;
+
+                case 3: // include everything?
+                    filtering.setAllCase5(true); // this sets all the vars u need for case 5
+
+                    break;
+                case 4: // quit menu
+                    return;
+
+                default:
+                    System.out.println("Invalid detail");
+                    break;
+            }
+
+        } while (choice == -1);
+        
+        setFilteredCampParticipants(filtering);
+        CommonUse.FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
+    }
+
+    /**
+     * Menu for inputing the strings to match with participants name
+     * and updates the filterObj given
+     * 
+     * @param filtering the filterObj be changed
+     */
+    public static void setFilteredCampParticipants(FilterObj filtering) {
+        System.out.println("\nName Filtering:\nNote that no filter input means all members will be included");
+
+        String name = "";
+        
+        if(filtering.isSelectedAttendee()){
+            System.out.println("\nInput the names you want to match with attendees\n");
+            while(!name.equals("-1")){
+                System.out.print("Enter Participant Name (-1 to end): ");
+                name = HelperUtil.nextString();
+                if(name.length() != 0 && !name.equals("-1")){
+                    filtering.addMatchAttendeeName(name.toUpperCase());
+                }
+            }
+        }
+        
+        name = "";
+        if(filtering.isSelectedCampCommittee()){
+            System.out.println("\nInput the names you want to match with committee\n");
+            while(!name.equals("-1")){
+                System.out.print("Enter Participant Name (-1 to end): ");
+                name = HelperUtil.nextString();
+                if(name.length() != 0 && !name.equals("-1")){
+                    filtering.addMatchCampCommitteeName(name.toUpperCase());
+                }
+            }
+        }        
+    }
+
 }
