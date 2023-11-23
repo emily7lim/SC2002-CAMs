@@ -405,8 +405,6 @@ public class CommonUse {
                     break;
             }
         } while(choice == -1);
-        HelperUtil.pressAnyKeyToContinue();
-        HelperUtil.clearScreen();
     }
 
 

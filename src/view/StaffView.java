@@ -539,7 +539,43 @@ public class StaffView extends MainView {
                 return true;
         }
         return false;
+    }
+    
+    /**
+     * Menu for inputing the strings to match with participants name
+     * and updates the filterObj given
+     * 
+     * @param filtering the filterObj be changed
+     */
+    public void setFilteredCampParticipants(FilterObj filtering) {
+        HelperUtil.clearScreen();
 
+        System.out.println("\nName Filtering Screen\nNote that no filter input means all members will be included");
+
+        String name = "";
+        
+        if(filtering.isSelectedAttendee()){
+            System.out.println("\nInput the names you want to match with attendees\n");
+            while(!name.equals("-1")){
+                System.out.print("Enter Participant Name (-1 to end): ");
+                name = HelperUtil.nextString();
+                if(name.length() != 0 && !name.equals("-1")){
+                    filtering.addMatchAttendeeName(name.toUpperCase());
+                }
+            }
+        }
+        
+        name = "";
+        if(filtering.isSelectedCampCommittee()){
+            System.out.println("\nInput the names you want to match with committee\n");
+            while(!name.equals("-1")){
+                System.out.print("Enter Participant Name (-1 to end): ");
+                name = HelperUtil.nextString();
+                if(name.length() != 0 && !name.equals("-1")){
+                    filtering.addMatchCampCommitteeName(name.toUpperCase());
+                }
+            }
+        }        
     }
 
     /**
@@ -558,13 +594,6 @@ public class StaffView extends MainView {
             switch (choice) {
                 case 1: // report includes attendee name
                     filtering.setSelectedAttendee(true);
-                    if (viewFilteredCampParticipants()) {
-                        CommonUse.FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
-                        System.out.println("Report generated successfully");
-                    } else
-                        System.out.println("Participant not in any camp, no report generated");
-
-                    break;
 
                 case 2: // report includes comm name
                     filtering.setSelectedCampCommittee(true);
@@ -573,7 +602,6 @@ public class StaffView extends MainView {
 
                 case 3: // include everything?
                     filtering.setAllCase5(true); // this sets all the vars u need for case 5
-                    filtering.isAnyCase5();
 
                     break;
                 case 4:
@@ -586,7 +614,9 @@ public class StaffView extends MainView {
             }
 
         } while (choice == -1);
-
+        
+        setFilteredCampParticipants(filtering);
+        CommonUse.FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
     }
 
     /**
@@ -595,6 +625,13 @@ public class StaffView extends MainView {
      */
     public void generateCampParticipantsCommitteeReport() {
         ArrayList<Camp> camps = CampController.getStaffCamps(userId);
+        if (camps.size() == 0) {
+            System.out.println(" No camps found :(\n");
+            HelperUtil.pressAnyKeyToContinue();
+            HelperUtil.clearScreen();
+            return;
+        }
+
         FilterReport(camps);
 
         HelperUtil.pressAnyKeyToContinue();

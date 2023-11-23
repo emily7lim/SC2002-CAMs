@@ -1,6 +1,7 @@
 package report;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import controller.EnquiryController;
@@ -78,6 +79,25 @@ public class Report {
                     // if user wants attendee list in report
                     if (filterObj.isSelectedAttendee()) {
                         List<Student> participants = getParticipantMembers(camp);
+
+                        // removes committee member if their names dont match with any
+                        Iterator<Student> iterator = participants.iterator();
+                        while (iterator.hasNext()) {
+                            Student participant = iterator.next();
+                            boolean containsSubstring = false; // track if there is a match
+
+                            // Check if the name contains any substring from filterArray
+                            for (String filter : filterObj.getMatchAttendeeName()) {
+                                if (participant.getUserId().contains(filter)) {
+                                    containsSubstring = true;
+                                    break;
+                                }
+                            }
+
+                            // Remove if no matches
+                            if (!containsSubstring) iterator.remove();
+                        }
+
                         reportContent.append("Participant List:");
                         if (participants.size() == 0) {
                             reportContent.append("(No Participants)\n");
@@ -96,6 +116,25 @@ public class Report {
                     // if user wants committee list in report
                     if (filterObj.isSelectedCampCommittee()) {
                         List<Student> commMembers = getCommitteeMembers(camp);
+
+                        // removes committee member if their names dont match with any
+                        Iterator<Student> iterator = commMembers.iterator();
+                        while (iterator.hasNext()) {
+                            Student member = iterator.next();
+                            boolean containsSubstring = false; // track if there is a match
+
+                            // Check if the name contains any substring from filterArray
+                            for (String filter : filterObj.getMatchCampCommitteeName()) {
+                                if (member.getUserId().contains(filter)) {
+                                    containsSubstring = true;
+                                    break;
+                                }
+                            }
+
+                            // Remove if no matches
+                            if (!containsSubstring) iterator.remove();
+                        }
+
                         reportContent.append("Committee List:");
                         if (commMembers.size() == 0) {
                             reportContent.append("(No Committee Members)\n");
@@ -105,7 +144,8 @@ public class Report {
                             for (Student student : commMembers) {
                                 reportContent.append("Committee member " + i + " Id: " + student.getUserId() + "\n");
                                 reportContent.append("Committee member " + i + " Name: " + student.getName() + "\n");
-                                reportContent.append("Committee member " + i + " points: " + student.getPoints() + "\n");
+                                reportContent
+                                        .append("Committee member " + i + " points: " + student.getPoints() + "\n");
                                 reportContent
                                         .append("Committee member " + i + " Faculty: " + student.getFaculty() + "\n");
                                 reportContent.append("Committee member " + i++ + " Role: " + student.getRole() + "\n");
