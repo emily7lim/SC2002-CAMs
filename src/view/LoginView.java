@@ -35,6 +35,7 @@ public class LoginView extends MainView {
         printMenuTitle(MENU_TITLE);
     }
 
+    // TODO: Prompt User to change password if first time login
     /**
      * Application for the User Login Menu
      */

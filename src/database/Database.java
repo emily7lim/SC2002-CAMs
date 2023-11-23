@@ -225,13 +225,18 @@ public class Database {
     }
 
     public void initializeCampData() {
-        Camp camp = new Camp("Test Camp", ForDate.getDates("12/02/2024"), ForDate.getDates("15/02/2024"),
-                ForDate.getDates("25/12/2024"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp Description", "HUKUMAR");
-        camp.addCommittee("YCHERN");
-        Database.CAMPS.put(camp.getCampId(), camp);
-        StudentController.addCampCommittee("YCHERN");
-        StudentController.addCamp("YCHERN", camp.getCampId());
-        StaffController.addCamp("HUKUMAR", camp.getCampId());
+        Camp camp1 = new Camp("Test Camp 1", ForDate.getDates("12/02/2023"), ForDate.getDates("15/02/2023"),
+                ForDate.getDates("25/01/2023"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp 1 Description", "HUKUMAR");
+        Camp camp2 = new Camp("Test Camp 2", ForDate.getDates("12/06/2023"), ForDate.getDates("15/06/2023"),
+                ForDate.getDates("25/05/2023"), Faculty.SCSE, "Jurong East", 10, 3, "Testing Camp Description", "HUKUMAR");
+        Camp camp3 = new Camp("Test Camp 3", ForDate.getDates("12/02/2022"), ForDate.getDates("15/02/2022"),
+                ForDate.getDates("25/01/2022"), Faculty.SCSE, "Sentosa Palawan", 10, 3, "Testing Camp Palawan Description", "HUKUMAR");
+        Database.CAMPS.put(camp1.getCampId(), camp1);
+        Database.CAMPS.put(camp2.getCampId(), camp2);
+        Database.CAMPS.put(camp3.getCampId(), camp3);
+        StaffController.addCamp("HUKUMAR", camp1.getCampId());
+        StaffController.addCamp("HUKUMAR", camp2.getCampId());
+        StaffController.addCamp("HUKUMAR", camp3.getCampId());
     }
 
     public void initializeDummyData() {
