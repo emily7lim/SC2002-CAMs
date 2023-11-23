@@ -372,7 +372,9 @@ public class CommonUse {
         }
         Integer validate = sc.nextInt();
 
-        sc.close();
+        // this line breaks helperutil.nextInt
+        // complains iostream closed
+        // sc.close(); 
         return validate;
     }
 
