@@ -4,9 +4,18 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * HelperUtil class to store support functions for other classes
+ * @author Emily, Chloie
+ * @version 1.1.3
+ * @since 2023-1-19
+ */
 public class HelperUtil {
     private static final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Clear viewable terminal
+     */
     public static void clearScreen() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
@@ -20,6 +29,9 @@ public class HelperUtil {
         }
     }
 
+    /**
+     * Require user to press any key to continue using the applicatio
+     */
     public static void pressAnyKeyToContinue() {
         System.out.println("Press any key to continue...");
         try {
@@ -30,11 +42,11 @@ public class HelperUtil {
         }
     }
 
-    
-    /** 
-     * @param min
-     * @param max
-     * @return int
+    /**
+     * Read integer from user input and validate if it is within range
+     * @param min The lowest value the user can input
+     * @param max The highest value the user can input
+     * @return int The user input, -1 if invalid
      */
     public static int nextInt(int min, int max) {
         try {
@@ -55,6 +67,11 @@ public class HelperUtil {
         return -1;
     }
 
+    /** 
+     * Read integer from user input and validate if it is within range
+     * @param min The lowest value the user can input
+     * @return int The user input, -1 if invalid
+     */
     public static int nextInt(int min) {
         try {
             int input = sc.nextInt();
@@ -74,8 +91,27 @@ public class HelperUtil {
         return -1;
     }
 
+    /**
+     * Read and trim String from user input
+     * @return String The trimmed user input
+     */
     public static String nextString() {
         String input = sc.nextLine();
         return input.trim();
+    }
+
+    /**
+     * Validate the password using a regex
+     * @param password The password to be validated
+     * @return String The password, "" if invalid
+     */
+    public static String validatePassword(String password) {
+        if (password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
+            return password;
+        else {
+            System.out.println("Invalid password, please enter a password with at least 8 characters \ncontaining at least one lowercase, uppercase, number and special character.\n");
+            return "";
+        }
+
     }
 }

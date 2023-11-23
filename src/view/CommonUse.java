@@ -3,7 +3,6 @@ package view;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import controller.CampController;
 import model.*;
 import report.ReportController;
 import report.enums.ReportOutputType;
@@ -11,25 +10,29 @@ import report.enums.ReportType;
 import utils.HelperUtil;
 
 /**
- * @author
- * @version
- * @since
+ * Generic view functions that are reused in the application
+ * 
+ * @author Emily, Chloie, Owen
+ * @version 3.2.2
+ * @since 2023-11-12
  */
 public class CommonUse {
-    
-    /** 
-     * @param total
-     * @param length
-     * @return String
+    /**
+     * Get the whitespace shown before a text based on application maximum length
+     * 
+     * @param total  The maximum length of the application
+     * @param length The length of the text
+     * @return String The whitespace to be shown before the text
      */
     public String getWhitespace(int total, int length) {
         return String.format("%" + (total - length) / 2 + "s", "");
     }
 
     /**
+     * Formats a Date to a String
      * 
-     * @param date
-     * @return
+     * @param date The Date to be formatted to a String
+     * @return String The formatted Date String
      */
     public String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -37,8 +40,9 @@ public class CommonUse {
     }
 
     /**
+     * Prints a divider based on the specified type
      * 
-     * @param type
+     * @param type The type of divider to be printed
      */
     public void printDivider(int type) {
         System.out.println(type == 1 ? "======================================================================"
@@ -46,9 +50,10 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Camp
      * 
-     * @param camp
-     * @param index
+     * @param camp  The Camp which details are to be printed
+     * @param index The index of the Camp in the camps list
      */
     public void printCampDetails(Camp camp, int index) {
         printDivider(1);
@@ -79,10 +84,11 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Camp with the Role that Student signed up as
      * 
-     * @param camp
-     * @param index
-     * @param userId
+     * @param camp   The Camp which details are to be printed
+     * @param index  The index of the Camp in the camps list
+     * @param userId The User ID of the Student whose Role is to be printed
      */
     public void printCampDetailsWithRole(Camp camp, int index, String userId) {
         printCampDetails(camp, index);
@@ -96,9 +102,10 @@ public class CommonUse {
     }
 
     /**
+     * Prints the participants/committees of a Camp
      * 
-     * @param camp
-     * @param index
+     * @param camp  The Camp which participants/committees are to be printed
+     * @param index The index of the Camp in the camps list
      */
     public void printCampParticipants(Camp camp, int index) {
         printDivider(1);
@@ -150,8 +157,9 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Suggestion
      * 
-     * @param suggestion
+     * @param suggestion The Suggestion which details are to be printed
      */
     public void printSuggestionDetails(Suggestion suggestion) {
         boolean shown = false;
@@ -173,9 +181,10 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Suggestion and its index
      * 
-     * @param suggestion
-     * @param index
+     * @param suggestion The Suggestion which details are to be printed
+     * @param index      The index of the Suggestion in the suggestions list
      */
     public void printSuggestionDetailsWithIndex(Suggestion suggestion, int index) {
         boolean shown = false;
@@ -197,8 +206,9 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Committee's Suggestion
      * 
-     * @param suggestion
+     * @param suggestion The Suggestion which details are to be printed
      */
     public void printUserSuggestionDetails(Suggestion suggestion) {
         boolean shown = false;
@@ -219,9 +229,10 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Committee's Suggestion and its index
      * 
-     * @param suggestion
-     * @param index
+     * @param suggestion The Suggestion which details are to be printed
+     * @param index      The index of the Suggestion in the suggestions list
      */
     public void printUserSuggestionDetailsWithIndex(Suggestion suggestion, int index) {
         boolean shown = false;
@@ -242,8 +253,9 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of an Enquiry
      * 
-     * @param enquiry
+     * @param enquiry The Enquiry which details are to be printed
      */
     public void printEnquiryDetails(Enquiry enquiry) {
         boolean shown = false;
@@ -264,9 +276,10 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of an Enquiry and its index
      * 
-     * @param enquiry
-     * @param index
+     * @param enquiry The Enquiry which details are to be printed
+     * @param index   The index of the Enquiry in the enquiries list
      */
     public void printEnquiryDetailsWithIndex(Enquiry enquiry, int index) {
         boolean shown = false;
@@ -288,8 +301,9 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a replied Enquiry
      * 
-     * @param enquiry
+     * @param enquiry The Enquiry which details are to be printed
      */
     public void printEnquiryDetailsWithReply(Enquiry enquiry) {
         String message = enquiry.getMessage();
@@ -314,8 +328,9 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Student's Enquiry
      * 
-     * @param enquiry
+     * @param enquiry The Enquiry which details are to be printed
      */
     public void printUserEnquiryDetails(Enquiry enquiry) {
         boolean shown = false;
@@ -335,9 +350,10 @@ public class CommonUse {
     }
 
     /**
+     * Prints the details of a Student's Enquiry and its index
      * 
-     * @param enquiry
-     * @param index
+     * @param enquiry The Enquiry which details are to be printed
+     * @param index   The index of the Enquiry in the enquiries list
      */
     public void printUserEnquiryDetailsWithIndex(Enquiry enquiry, int index) {
         boolean shown = false;
@@ -358,58 +374,39 @@ public class CommonUse {
     }
 
     /**
+     * Menu for selecting the File Type of a generated report
      * 
-     * @return
-     */
-    public static Integer dataValidation() {
-        Scanner sc = new Scanner(System.in);
-        Boolean validation = sc.hasNextInt();
-
-        while (!validation) {
-            System.out.println("Please input integer");
-            sc = new Scanner(System.in);
-            validation = sc.hasNextInt();
-        }
-        Integer validate = sc.nextInt();
-
-        // this line breaks helperutil.nextInt
-        // complains iostream closed
-        // sc.close(); 
-        return validate;
-    }
-
-    /**
-     * 
-     * @param camps
-     * @param filtering
-     * @param reportType
+     * @param camps      The list of Camps to be generated in the report
+     * @param filtering  The filters of the report
+     * @param reportType The type of report to be generated
      */
     public static void FileType(ArrayList<Camp> camps, FilterObj filtering, ReportType reportType) {
         System.out.println("\nSelect your format\n1) .txt \n2) .csv");
         int choice = 1;
         do {
-            Integer format = CommonUse.dataValidation();
+            Integer format = HelperUtil.nextInt(1, 2);
             switch (format) {
                 case 1: // txt
                     ReportController.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.TXT);
-                    
+
                     break;
 
                 case 2: // csv
                     ReportController.generateAndWriteReports(camps, filtering, reportType, ReportOutputType.CSV);
-                    
+
                     break;
 
                 default:
                     System.out.print("Please select file format 1 or 2: ");
                     break;
             }
-        } while(choice == -1);
+        } while (choice == -1);
     }
 
-/**
+    /**
+     * Menu for filtering camp student roles to be included in report
      * 
-     * @param camps
+     * @param camps The list of Camps to be generated in the report
      */
     public static void FilterReport(ArrayList<Camp> camps) {
         int choice = -1;
@@ -442,7 +439,7 @@ public class CommonUse {
             }
 
         } while (choice == -1);
-        
+
         setFilteredCampParticipants(filtering);
         CommonUse.FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
     }
@@ -457,29 +454,29 @@ public class CommonUse {
         System.out.println("\nName Filtering:\nNote that no filter input means all members will be included");
 
         String name = "";
-        
-        if(filtering.isSelectedAttendee()){
+
+        if (filtering.isSelectedAttendee()) {
             System.out.println("\nInput the names you want to match with attendees\n");
-            while(!name.equals("-1")){
+            while (!name.equals("-1")) {
                 System.out.print("Enter Participant Name (-1 to end): ");
                 name = HelperUtil.nextString();
-                if(name.length() != 0 && !name.equals("-1")){
+                if (name.length() != 0 && !name.equals("-1")) {
                     filtering.addMatchAttendeeName(name.toUpperCase());
                 }
             }
         }
-        
+
         name = "";
-        if(filtering.isSelectedCampCommittee()){
+        if (filtering.isSelectedCampCommittee()) {
             System.out.println("\nInput the names you want to match with committee\n");
-            while(!name.equals("-1")){
+            while (!name.equals("-1")) {
                 System.out.print("Enter Participant Name (-1 to end): ");
                 name = HelperUtil.nextString();
-                if(name.length() != 0 && !name.equals("-1")){
+                if (name.length() != 0 && !name.equals("-1")) {
                     filtering.addMatchCampCommitteeName(name.toUpperCase());
                 }
             }
-        }        
+        }
     }
 
 }

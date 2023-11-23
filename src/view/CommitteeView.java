@@ -58,7 +58,7 @@ public class CommitteeView extends StudentView {
 
             switch (choice) {
                 case 1:
-                    viewAllCamps();
+                    viewAvailableCamps();
                     printMenu();
                     break;
                 case 2:

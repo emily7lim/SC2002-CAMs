@@ -1,7 +1,6 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The FilterObj class is used to filter what details to print in a report.
@@ -17,7 +16,6 @@ public class FilterObj {
     private ArrayList<String> matchAttendeeName;
     private boolean selectedCampCommittee;
     private ArrayList<String> matchCampCommitteeName;
-    
 
     /**
      * Constructs a new FilterObj with default selection status (all set to false).
@@ -38,11 +36,15 @@ public class FilterObj {
     }
 
     /**
-     * Constructs a new FilterObj with custom initial selection status for each filter.
+     * Constructs a new FilterObj with custom initial selection status for each
+     * filter.
      *
-     * @param selectedAttendee true to select attendee information, false to deselect
-     * @param selectedCampCommittee true to select camp committee information, false to deselect
-     * @param selectedRoles true to select roles information, false to deselect
+     * @param selectedAttendee      true to select attendee information, false to
+     *                              deselect
+     * @param selectedCampCommittee true to select camp committee information, false
+     *                              to deselect
+     * @param selectedRoles         true to select roles information, false to
+     *                              deselect
      */
     public FilterObj(boolean selectedAttendee, boolean selectedCampCommittee, boolean selectedRoles) {
         this.selectedAttendee = selectedAttendee;
@@ -63,7 +65,8 @@ public class FilterObj {
     /**
      * Sets the selection status for attendee information.
      *
-     * @param selectedAttendee true to select attendee information, false to deselect
+     * @param selectedAttendee true to select attendee information, false to
+     *                         deselect
      */
     public void setSelectedAttendee(boolean selectedAttendee) {
         this.selectedAttendee = selectedAttendee;
@@ -76,7 +79,7 @@ public class FilterObj {
     public void toggleSelectedAttendee() {
         this.selectedAttendee = !this.selectedAttendee;
     }
-    
+
     /**
      * Gets the current selection status for camp committee information.
      *
@@ -89,7 +92,8 @@ public class FilterObj {
     /**
      * Sets the selection status for camp committee information.
      *
-     * @param selectedCampCommittee true to select camp committee information, false to deselect
+     * @param selectedCampCommittee true to select camp committee information, false
+     *                              to deselect
      */
     public void setSelectedCampCommittee(boolean selectedCampCommittee) {
         this.selectedCampCommittee = selectedCampCommittee;
@@ -102,7 +106,7 @@ public class FilterObj {
     public void toggleSelectedCampCommittee() {
         this.selectedCampCommittee = !this.selectedCampCommittee;
     }
-    
+
     /**
      * Returns the strings to match with camp attendee name.
      *
@@ -127,7 +131,8 @@ public class FilterObj {
      * @param matchAttendeeName the new string to match
      */
     public void addMatchAttendeeName(String matchAttendeeName) {
-        if(this.matchAttendeeName == null) this.matchAttendeeName = new ArrayList<String>();
+        if (this.matchAttendeeName == null)
+            this.matchAttendeeName = new ArrayList<String>();
         this.matchAttendeeName.add(matchAttendeeName);
     }
 
@@ -137,7 +142,8 @@ public class FilterObj {
      * @param matchAttendeeName the string to remove
      */
     public void removeMatchAttendeeName(String matchAttendeeName) {
-        if(this.matchAttendeeName == null) return;
+        if (this.matchAttendeeName == null)
+            return;
         this.matchAttendeeName.remove(matchAttendeeName);
     }
 
@@ -149,7 +155,8 @@ public class FilterObj {
     public ArrayList<String> getMatchCampCommitteeName() {
         return matchCampCommitteeName;
     }
-/**
+
+    /**
      * Sets the strings to match for camp committee.
      *
      * @param matchAttendeeName the list of names to match
@@ -164,7 +171,8 @@ public class FilterObj {
      * @param matchAttendeeName the new string to match
      */
     public void addMatchCampCommitteeName(String matchCampCommitteeName) {
-        if(this.matchCampCommitteeName == null) this.matchCampCommitteeName = new ArrayList<String>();
+        if (this.matchCampCommitteeName == null)
+            this.matchCampCommitteeName = new ArrayList<String>();
         this.matchCampCommitteeName.add(matchCampCommitteeName);
     }
 
@@ -174,13 +182,15 @@ public class FilterObj {
      * @param matchAttendeeName the string to remove
      */
     public void removeMatchCampCommitteeName(String matchCampCommitteeName) {
-        if(this.matchCampCommitteeName == null) return;
+        if (this.matchCampCommitteeName == null)
+            return;
         this.matchCampCommitteeName.remove(matchCampCommitteeName);
     }
 
     /**
      * Sets multiple variables relevant to staff view case 5
-     * "generate a report of a list of students attending each camp the staff created."
+     * "generate a report of a list of students attending each camp the staff
+     * created."
      */
     public void setAllCase5(boolean all) {
         this.setSelectedAttendee(all);
@@ -190,7 +200,8 @@ public class FilterObj {
     /**
      * Checks multiple variables if any is true.
      * Variables relevant to staff view case 5
-     * "generate a report of a list of students attending each camp the staff created."
+     * "generate a report of a list of students attending each camp the staff
+     * created."
      *
      * @return true if any filtering option is selected, false otherwise
      */

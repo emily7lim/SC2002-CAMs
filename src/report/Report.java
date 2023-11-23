@@ -83,7 +83,7 @@ public class Report {
 
                         reportContent.append("Participant List:");
                         if (participants.size() == 0) {
-                            if(filterObj.getMatchCampCommitteeName().size() == 0){
+                            if (filterObj.getMatchCampCommitteeName().size() == 0) {
                                 reportContent.append("(No Participants)\n");
                             } else {
                                 reportContent.append("(No Participants Matched)\n");
@@ -108,7 +108,7 @@ public class Report {
 
                         reportContent.append("Committee List:");
                         if (commMembers.size() == 0) {
-                            if(filterObj.getMatchCampCommitteeName().size() == 0){
+                            if (filterObj.getMatchCampCommitteeName().size() == 0) {
                                 reportContent.append("(No Committee Members)\n");
                             } else {
                                 reportContent.append("(No Committee Members Matched)\n");
@@ -157,7 +157,7 @@ public class Report {
                         if (participants.size() == 0) {
                             reportContent.append(campStr);
 
-                            if(filterObj.getMatchCampCommitteeName().size() == 0){
+                            if (filterObj.getMatchCampCommitteeName().size() == 0) {
                                 reportContent.append(",No Participants,-,-,-,-\n");
                             } else {
                                 reportContent.append(",No Participants Matched,-,-,-,-\n");
@@ -174,7 +174,7 @@ public class Report {
                         if (commMembers.size() == 0) {
                             reportContent.append(campStr);
 
-                            if(filterObj.getMatchCampCommitteeName().size() == 0){
+                            if (filterObj.getMatchCampCommitteeName().size() == 0) {
                                 reportContent.append(",No Committee Members,-,-,-,-\n");
                             } else {
                                 reportContent.append(",No Committee Members Matched,-,-,-,-\n");
@@ -202,7 +202,8 @@ public class Report {
      * @param filterList  The list of strings to use for matching
      */
     private static void matchNames(List<Student> studentList, List<String> filterList) {
-        if(filterList.size() == 0) return;
+        if (filterList.size() == 0)
+            return;
         // removes members if their names dont match with any
         Iterator<Student> iterator = studentList.iterator();
         while (iterator.hasNext()) {
@@ -517,7 +518,8 @@ public class Report {
      * @return The properly formatted field.
      */
     private static String formatCsvField(String field) {
-        if (field == null) return "";
+        if (field == null)
+            return "";
         // If the field contains a special character or whitespace, enclose it within
         // double quotes
         // Plus if the field contains double quotes, escape them

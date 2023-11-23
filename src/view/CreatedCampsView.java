@@ -20,6 +20,15 @@ public class CreatedCampsView extends MainView {
 
     private String userId;
     private CommonUse common;
+    private FilterCampsView filterCampsView;
+
+    /**
+     * Default constructor
+     */
+    public CreatedCampsView() {
+        common = new CommonUse();
+        filterCampsView = new FilterCampsView();
+    }
 
     /**
      * Sets the logged in User's ID
@@ -31,20 +40,12 @@ public class CreatedCampsView extends MainView {
     }
 
     /**
-     * Sets the CommonUse object of the application instance
-     * 
-     * @param common The CommonUse object of the application instance
-     */
-    public void setCommon(CommonUse common) {
-        this.common = common;
-    }
-
-    /**
      * Menu for managing Staff's Created Camps
      */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Created Camps");
+        System.out.println("  2)  Filter Created Camps");
         System.out.println("  2)  Create New Camp");
         System.out.println("  3)  Edit Created Camp");
         System.out.println("  4)  Delete Created Camp");
@@ -61,7 +62,7 @@ public class CreatedCampsView extends MainView {
 
         do {
             System.out.print("\nEnter your choice: ");
-            choice = HelperUtil.nextInt(1, 5);
+            choice = HelperUtil.nextInt(1, 6);
 
             switch (choice) {
                 case 1:
@@ -69,23 +70,26 @@ public class CreatedCampsView extends MainView {
                     printMenu();
                     break;
                 case 2:
-                    createNewCamp();
                     printMenu();
                     break;
                 case 3:
-                    editCreatedCamps();
+                    createNewCamp();
                     printMenu();
                     break;
                 case 4:
-                    deleteCreatedCamps();
+                    editCreatedCamps();
                     printMenu();
                     break;
                 case 5:
+                    deleteCreatedCamps();
+                    printMenu();
+                    break;
+                case 6:
                     break;
                 default:
                     break;
             }
-        } while (choice != 5);
+        } while (choice != 6);
 
         HelperUtil.clearScreen();
     }
@@ -103,6 +107,15 @@ public class CreatedCampsView extends MainView {
         for (int i = 0; i < camps.size(); i++)
             common.printCampDetails(camps.get(i), i + 1);
 
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    /**
+     * Menu for filtering created Camps
+     */
+    public void viewFilteredCreatedCamps() {
+        filterCampsView.filterCamps("Filter Created Camps", common, CampController.getStaffCamps(userId));
         HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
     }

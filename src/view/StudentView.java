@@ -21,12 +21,14 @@ public class StudentView extends MainView {
 
     protected String userId;
     protected CommonUse common;
+    protected FilterCampsView filterCampsView;
 
     /**
      * Default constructor
      */
     public StudentView() {
         common = new CommonUse();
+        filterCampsView = new FilterCampsView();
     }
 
     /**
@@ -43,7 +45,7 @@ public class StudentView extends MainView {
      */
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
-        System.out.println("  1)  View All Camps");
+        System.out.println("  1)  View Available Camps");
         System.out.println("  2)  View Registered Camps");
         System.out.println("  3)  Register for Camp");
         System.out.println("  4)  Withdraw from Camp");
@@ -67,7 +69,7 @@ public class StudentView extends MainView {
 
             switch (choice) {
                 case 1:
-                    viewAllCamps();
+                    viewAvailableCamps();
                     printMenu();
                     break;
                 case 2:
@@ -103,11 +105,43 @@ public class StudentView extends MainView {
     }
 
     /**
+     * Menu for Camps available to Student
+     */
+    public void viewAvailableCamps() {
+        int choice = -1;
+        HelperUtil.clearScreen();
+        printMenuTitle("View Available Camps");
+        System.out.println("  1)  View Available Camps\n  2)  Filter Available Camps\n  3)  Back");
+
+        do {
+            System.out.print("\nEnter your choice: ");
+            choice = HelperUtil.nextInt(1, 3);
+
+            switch (choice) {
+                case 1:
+                    viewStudentAvailableCamps();
+                    break;
+                case 2:
+                    viewFilteredAvailableCamps();
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        } while (choice == -1);
+
+        if (choice != 3)
+            HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    /**
      * Prints a list of all camps available to the Student
      */
-    public void viewAllCamps() {
+    public void viewStudentAvailableCamps() {
         HelperUtil.clearScreen();
-        printMenuTitle("List of Camps");
+        printMenuTitle("List of Available Camps");
 
         ArrayList<Camp> camps = CampController
                 .getStudentAvailableCamps(UserController.getUserByUserId(userId).getFaculty());
@@ -116,9 +150,14 @@ public class StudentView extends MainView {
             System.out.printf(" No camps found.\n\n", "", "");
         for (int i = 0; i < camps.size(); i++)
             common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
+    }
 
-        HelperUtil.pressAnyKeyToContinue();
-        HelperUtil.clearScreen();
+    /**
+     * Menu for filtering the Camps available to the Student
+     */
+    public void viewFilteredAvailableCamps() {
+        filterCampsView.filterCamps("Filter Available Camps", common, CampController
+                .getStudentAvailableCamps(UserController.getUserByUserId(userId).getFaculty()));
     }
 
     /**
@@ -128,7 +167,8 @@ public class StudentView extends MainView {
         int choice = -1;
         HelperUtil.clearScreen();
         printMenuTitle("View Registered Camps");
-        System.out.println("  1)  View Past Registered Camps\n  2)  View Future Registered Camps\n  3)  Back");
+        System.out.println(
+                "  1)  View Past Registered Camps\n  2)  View Future Registered Camps\n  3)  Filter Registered Camps\n  4)  Back");
 
         do {
             System.out.print("\nEnter your choice: ");
@@ -142,13 +182,16 @@ public class StudentView extends MainView {
                     viewFutureRegisteredCamps();
                     break;
                 case 3:
+                    viewFilteredRegisteredCamps();
+                    break;
+                case 4:
                     break;
                 default:
                     break;
             }
         } while (choice == -1);
 
-        if (choice != 3)
+        if (choice != 4)
             HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
     }
@@ -180,6 +223,13 @@ public class StudentView extends MainView {
             System.out.printf(" No future registered camps found.\n\n", "", "");
         for (int i = 0; i < camps.size(); i++)
             common.printCampDetailsWithRole(camps.get(i), i + 1, userId);
+    }
+
+    /**
+     * Menu for filtering a Student's registered Camps
+     */
+    public void viewFilteredRegisteredCamps() {
+        filterCampsView.filterCamps("Filter Registered Camps", common, CampController.getCommitteeCamps(userId));
     }
 
     /**
@@ -805,8 +855,10 @@ public class StudentView extends MainView {
             if (currentPassword.equals("b"))
                 break;
 
-            System.out.print("Enter your new password: ");
-            newPassword = HelperUtil.nextString();
+                do {
+                    System.out.print("Enter your new password: ");
+                    newPassword = HelperUtil.validatePassword(HelperUtil.nextString());
+                } while (newPassword.equals(""));
 
             System.out.print("Re-enter your new password: ");
             confirmPassword = HelperUtil.nextString();
