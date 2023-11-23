@@ -35,7 +35,6 @@ public class LoginView extends MainView {
         printMenuTitle(MENU_TITLE);
     }
 
-    // TODO: Prompt User to change password if first time login
     /**
      * Application for the User Login Menu
      */
@@ -53,6 +52,10 @@ public class LoginView extends MainView {
             password = HelperUtil.nextString();
 
             if (UserController.validateUserCredentials(userId, password)) {
+                if (UserController.checkUserFirstLogin(userId))
+                    changeDefaultPassword(userId);
+
+                UserController.login(userId);
                 switch (UserController.getUserRoleByUserId(userId)) {
                     case STAFF:
                         loggedIn = true;
@@ -81,6 +84,40 @@ public class LoginView extends MainView {
             } else
                 System.out.println("Invalid credentials, try again.\n");
         } while (!loggedIn);
+
+        HelperUtil.clearScreen();
+    }
+
+    /**
+     * Menu for changing default temporary password
+     * 
+     * @param userId The User ID of the logged in User
+     */
+    public void changeDefaultPassword(String userId) {
+        String newPassword = "", confirmPassword = "";
+        HelperUtil.clearScreen();
+        printMenuTitle("Change Password");
+
+        System.out.println("You need to update your password because this is the first time\nyou are signing in.\n");
+
+        do {
+            do {
+                System.out.print("Enter your new password: ");
+                newPassword = HelperUtil.validatePassword(HelperUtil.nextString());
+            } while (newPassword.equals(""));
+
+            System.out.print("Re-enter your new password: ");
+            confirmPassword = HelperUtil.nextString();
+
+            if (!newPassword.equals(confirmPassword)) {
+                System.out.println("Passwords do not match, please try again.\n");
+            } else {
+                UserController.changePassword(userId, newPassword);
+                System.out.println("\nPassword successfully updated.");
+                HelperUtil.pressAnyKeyToContinue();
+                break;
+            }
+        } while (true);
 
         HelperUtil.clearScreen();
     }
