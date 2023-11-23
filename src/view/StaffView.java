@@ -352,7 +352,7 @@ public class StaffView extends MainView {
                     managePendingCampEnquiries();
                     break;
                 case 4:
-                    generateCampEnquiriesReport();
+                    generateCampEnquiriesOrSuggestionReport(ReportType.ENQUIRIES_REPORT);
                     break;
                 case 5:
                     break;
@@ -506,16 +506,26 @@ public class StaffView extends MainView {
     }
 
     /**
-     * Calls a method to generate a report of all Enquiries of the Staff's created
+     * Calls a method to generate a report of all Enquiries or Suggestion of the Staff's created
      * Camps
      */
-    public void generateCampEnquiriesReport() {
+    public void generateCampEnquiriesOrSuggestionReport(ReportType reportType) {
         ArrayList<Camp> camps = CampController.getStaffCamps(userId);
-        CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
-
-        System.out.println("\nCamp Enquiries Report generated successfully.");
+        switch (reportType) {
+            case ENQUIRIES_REPORT:
+                CommonUse.FileType(camps, null, ReportType.ENQUIRIES_REPORT);
+                break;
+            case SUGGESTION_REPORT:
+                CommonUse.FileType(camps, null, ReportType.SUGGESTION_REPORT);
+                break;
+            default:
+                // add in more as needed
+                return;
+        }
+        System.out.println("\n" + reportType.getReportTypeName() + " generated successfully.");
     }
-//FOR REPORT
+
+    // FOR REPORT
     /**
      * Prints a list of all Camp participants
      */
@@ -540,84 +550,6 @@ public class StaffView extends MainView {
         }
         return false;
     }
-    
-    /**
-     * Menu for inputing the strings to match with participants name
-     * and updates the filterObj given
-     * 
-     * @param filtering the filterObj be changed
-     */
-    public void setFilteredCampParticipants(FilterObj filtering) {
-        HelperUtil.clearScreen();
-
-        System.out.println("\nName Filtering Screen\nNote that no filter input means all members will be included");
-
-        String name = "";
-        
-        if(filtering.isSelectedAttendee()){
-            System.out.println("\nInput the names you want to match with attendees\n");
-            while(!name.equals("-1")){
-                System.out.print("Enter Participant Name (-1 to end): ");
-                name = HelperUtil.nextString();
-                if(name.length() != 0 && !name.equals("-1")){
-                    filtering.addMatchAttendeeName(name.toUpperCase());
-                }
-            }
-        }
-        
-        name = "";
-        if(filtering.isSelectedCampCommittee()){
-            System.out.println("\nInput the names you want to match with committee\n");
-            while(!name.equals("-1")){
-                System.out.print("Enter Participant Name (-1 to end): ");
-                name = HelperUtil.nextString();
-                if(name.length() != 0 && !name.equals("-1")){
-                    filtering.addMatchCampCommitteeName(name.toUpperCase());
-                }
-            }
-        }        
-    }
-
-    /**
-     * 
-     * @param camps
-     */
-    public void FilterReport(ArrayList<Camp> camps) {
-        int choice = -1;
-        FilterObj filtering = new FilterObj();
-        System.out.println("\nSelect what you want to be generated \n1) Attendee\n2) Camp committee\n3) All\n4) Quit");
-
-        do {
-            System.out.println("Enter your choice and select 4 to quit");
-            choice = HelperUtil.nextInt(1, 4);
-            // report includes camp details n filtered results
-            switch (choice) {
-                case 1: // report includes attendee name
-                    filtering.setSelectedAttendee(true);
-
-                case 2: // report includes comm name
-                    filtering.setSelectedCampCommittee(true);
-
-                    break;
-
-                case 3: // include everything?
-                    filtering.setAllCase5(true); // this sets all the vars u need for case 5
-
-                    break;
-                case 4:
-
-                    break;
-
-                default:
-                    System.out.println("Invalid detail");
-                    break;
-            }
-
-        } while (choice == -1);
-        
-        setFilteredCampParticipants(filtering);
-        CommonUse.FileType(camps, filtering, ReportType.CAMP_DETAILS_REPORT);
-    }
 
     /**
      * Calls a method to generate a report of all the Camp Participants/Committee of
@@ -632,7 +564,7 @@ public class StaffView extends MainView {
             return;
         }
 
-        FilterReport(camps);
+        CommonUse.FilterReport(camps);
 
         HelperUtil.pressAnyKeyToContinue();
         HelperUtil.clearScreen();
@@ -659,7 +591,7 @@ public class StaffView extends MainView {
         HelperUtil.clearScreen();
         printMenuTitle("Manage Camp Suggestions");
         System.out.println(
-                "  1)  View All Camp Suggestions\n  2)  View All Approved/Rejected Camp Suggestions\n  3)  Manage Pending Camp Suggestions\n  4)  Back");
+                "  1)  View All Camp Suggestions\n  2)  View All Approved/Rejected Camp Suggestions\n  3)  Manage Pending Camp Suggestions\n  4)  Generate Camp Suggestion Report\n  5)  Back");
 
         do {
             System.out.print("\nEnter your choice: ");
@@ -676,6 +608,9 @@ public class StaffView extends MainView {
                     managePendingCampSuggestions();
                     break;
                 case 4:
+                    generateCampEnquiriesOrSuggestionReport(ReportType.SUGGESTION_REPORT);
+                    break;
+                case 5:
                     break;
                 default:
                     break;
