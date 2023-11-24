@@ -46,10 +46,10 @@ public class CreatedCampsView extends MainView {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Created Camps");
         System.out.println("  2)  Filter Created Camps");
-        System.out.println("  2)  Create New Camp");
-        System.out.println("  3)  Edit Created Camp");
-        System.out.println("  4)  Delete Created Camp");
-        System.out.println("  5)  Back");
+        System.out.println("  3)  Create New Camp");
+        System.out.println("  4)  Edit Created Camp");
+        System.out.println("  5)  Delete Created Camp");
+        System.out.println("  6)  Back");
     }
 
     /**
