@@ -13,8 +13,8 @@ import java.util.*;
 /**
  * User Interface for Staff
  * 
- * @author Emily, Chloie
- * @version 2.2.4
+ * @author Emily, Chloie, Owen
+ * @version 2.2.5
  * @since 2023-11-02
  */
 public class StaffView extends MainView {
@@ -462,7 +462,7 @@ public class StaffView extends MainView {
 
         do {
             System.out.print("\nEnter your choice: ");
-            choice = HelperUtil.nextInt(1, 4);
+            choice = HelperUtil.nextInt(1, 5);
 
             switch (choice) {
                 case 1:
