@@ -42,7 +42,9 @@ public class CampController {
      * @return ArrayList<Camp> The list of all the Camps
      */
     public static ArrayList<Camp> getAllCamps() {
-        return CampDAO.getAllCamps();
+        ArrayList<Camp> camps = CampDAO.getAllCamps();
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName())); 
+        return camps;
     }
 
     /**

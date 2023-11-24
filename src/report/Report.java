@@ -485,12 +485,7 @@ public class Report {
      * @return A list of enquiries.
      */
     private static List<Enquiry> getEnquiries(Camp camp) {
-        ArrayList<String> enqIds = camp.getEnquiryIds();
-        List<Enquiry> enquiries = new ArrayList<>();
-
-        for (String id : enqIds) {
-            enquiries.add(EnquiryController.getEnquiryById(id));
-        }
+        List<Enquiry> enquiries = EnquiryController.getEnquiriesByCampId(camp.getCampId());
         return enquiries;
     }
 
@@ -501,12 +496,7 @@ public class Report {
      * @return A list of suggestions.
      */
     private static List<Suggestion> getSuggestions(Camp camp) {
-        ArrayList<String> sugIds = camp.getSuggestionIds();
-        List<Suggestion> suggestions = new ArrayList<>();
-
-        for (String id : sugIds) {
-            suggestions.add(SuggestionController.getSuggestionById(id));
-        }
+        List<Suggestion> suggestions = SuggestionController.getSuggestionsByCampId(camp.getCampId());
         return suggestions;
     }
 

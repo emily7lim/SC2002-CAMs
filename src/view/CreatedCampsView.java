@@ -112,6 +112,21 @@ public class CreatedCampsView extends MainView {
     }
 
     /**
+     * Prints a list of all participants of the Staff's Created Camps
+     */
+    public void viewCreatedCampParticipants() {
+        HelperUtil.clearScreen();
+        printMenuTitle("List of Created Camp Participants/Committee");
+
+        ArrayList<Camp> campList = CampController.getStaffCamps(userId);
+        for (int i = 0; i < campList.size(); i++)
+            common.printCampParticipants(campList.get(i), i + 1);
+
+        HelperUtil.pressAnyKeyToContinue();
+        HelperUtil.clearScreen();
+    }
+
+    /**
      * Menu for filtering created Camps
      */
     public void viewFilteredCreatedCamps() {
