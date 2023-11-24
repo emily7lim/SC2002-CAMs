@@ -45,11 +45,12 @@ public class CreatedCampsView extends MainView {
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Created Camps");
-        System.out.println("  2)  Filter Created Camps");
-        System.out.println("  3)  Create New Camp");
-        System.out.println("  4)  Edit Created Camp");
-        System.out.println("  5)  Delete Created Camp");
-        System.out.println("  6)  Back");
+        System.out.println("  2)  View Created Camps ");
+        System.out.println("  3)  Filter Created Camps");
+        System.out.println("  4)  Create New Camp");
+        System.out.println("  5)  Edit Created Camp");
+        System.out.println("  6)  Delete Created Camp");
+        System.out.println("  7)  Back");
     }
 
     /**
@@ -62,7 +63,7 @@ public class CreatedCampsView extends MainView {
 
         do {
             System.out.print("\nEnter your choice: ");
-            choice = HelperUtil.nextInt(1, 6);
+            choice = HelperUtil.nextInt(1, 7);
 
             switch (choice) {
                 case 1:
@@ -70,26 +71,31 @@ public class CreatedCampsView extends MainView {
                     printMenu();
                     break;
                 case 2:
+                    viewCreatedCampParticipants();
                     printMenu();
                     break;
                 case 3:
-                    createNewCamp();
+                    viewFilteredCreatedCamps();
                     printMenu();
                     break;
                 case 4:
-                    editCreatedCamps();
+                    createNewCamp();
                     printMenu();
                     break;
                 case 5:
-                    deleteCreatedCamps();
+                    editCreatedCamps();
                     printMenu();
                     break;
                 case 6:
+                    deleteCreatedCamps();
+                    printMenu();
+                    break;
+                case 7:
                     break;
                 default:
                     break;
             }
-        } while (choice != 6);
+        } while (choice != 7);
 
         HelperUtil.clearScreen();
     }

@@ -22,7 +22,9 @@ public class CampDAO {
      * @return ArrayList<Camp> The list of all Camps
      */
     public static ArrayList<Camp> getAllCamps() {
-        return new ArrayList<Camp>(Database.CAMPS.values());
+        ArrayList<Camp> camps = new ArrayList<Camp>(Database.CAMPS.values());
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
+        return camps;
     }
 
     /**
@@ -38,6 +40,7 @@ public class CampDAO {
             if (camp.getStaffInCharge().equals(creatorId))
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
@@ -55,6 +58,7 @@ public class CampDAO {
             if (camp.getStaffInCharge().equals(creatorId) && camp.getStartDate().after(date))
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
@@ -71,6 +75,7 @@ public class CampDAO {
             if ((camp.getUserGroup().equals(userGroup) || camp.getUserGroup() == Faculty.NTU) && camp.getEndDate().after(date) && camp.isVisible() == visible)
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
@@ -87,6 +92,7 @@ public class CampDAO {
             if ((camp.getParticipantIds().contains(participantId) || camp.getCommitteeIds().contains(participantId)) && camp.getStartDate().before(date))
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
@@ -103,6 +109,7 @@ public class CampDAO {
             if ((camp.getParticipantIds().contains(participantId) || camp.getCommitteeIds().contains(participantId)) && camp.getStartDate().after(date))
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
@@ -113,6 +120,7 @@ public class CampDAO {
             if (camp.getCommitteeIds().contains(committeeId))
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
@@ -123,6 +131,7 @@ public class CampDAO {
             if (camp.getCommitteeIds().contains(committeeId) && camp.getEndDate().before(date))
                 camps.add(camp);
         
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
