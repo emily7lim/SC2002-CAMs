@@ -45,7 +45,7 @@ public class CreatedCampsView extends MainView {
     public void printMenu() {
         printMenuTitle(MENU_TITLE);
         System.out.println("  1)  View All Created Camps");
-        System.out.println("  2)  View Created Camps ");
+        System.out.println("  2)  View Created Camps Participants/Committee");
         System.out.println("  3)  Filter Created Camps");
         System.out.println("  4)  Create New Camp");
         System.out.println("  5)  Edit Created Camp");
