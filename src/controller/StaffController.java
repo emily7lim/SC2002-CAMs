@@ -11,7 +11,7 @@ import database.UserDAO;
 /**
  * StaffController class to manage Staff
  * 
- * @author Emily, Chloie
+ * @author Kevin, Chloie
  * @version 1.1.3
  * @since 2023-11-01
  */

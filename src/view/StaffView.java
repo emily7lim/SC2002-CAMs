@@ -409,31 +409,6 @@ public class StaffView extends MainView {
     }
 
     /**
-     * Prints a list of all Camp participants
-     */
-    public boolean viewFilteredCampParticipants() {
-        HelperUtil.clearScreen();
-        ArrayList<Camp> camp = CampController.getAllCamps();
-
-        if (camp.size() == 0) {
-            System.out.println(" No camps found.\n");
-            HelperUtil.pressAnyKeyToContinue();
-            HelperUtil.clearScreen();
-            return false;
-        }
-        String name = "";
-        System.out.println(name);
-        System.out.print("Enter Participant Name: ");
-        name = HelperUtil.nextString();
-        for (int i = 0; i < camp.size(); i++) {
-
-            if (CampController.filterAttendee(name))
-                return true;
-        }
-        return false;
-    }
-
-    /**
      * Calls a method to generate a report of all the Camp Participants/Committee of
      * the Staff's created Camps
      */

@@ -491,18 +491,6 @@ public class CampController {
         return false;
     }
 
-    public static boolean filterAttendee(String name) {
-
-        for (int i = 0; i < CampDAO.getAllCamps().size(); i++) {
-            if (CampDAO.getAllCamps().get(i).getParticipantIds().size() == 0)
-                return false;
-            if (CampDAO.getAllCamps().get(i).getParticipantIds().get(i).equalsIgnoreCase(name))
-                return true;
-        }
-
-        return false;
-    }
-
     /**
      * Adds a Student to the list of participants for a Camp
      * 
