@@ -8,6 +8,12 @@ import java.util.Date;
 
 import database.CampDAO;
 
+/**
+ * CampController class to manage Camps
+ * @author Kevin, Chloie, Owen, Emily
+ * @version 2.2.5
+ * @since 2023-11-01
+ */
 public class CampController {
     /**
      * Creates a new Camp and add to the database
@@ -501,8 +507,7 @@ public class CampController {
      * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the Student
-     * @return boolean Whether the Student is successfully added as a Camp
-     *         Participant
+     * @return boolean Whether the Student is successfully added as a Camp Participant
      */
     public static boolean addParticipant(String campId, String userId) {
         if (!checkCampExists(campId))
@@ -559,7 +564,7 @@ public class CampController {
     }
 
     /**
-     * Removes a Enquiry to the list of Enquiry for a Camp
+     * Removes an Enquiry to the list of Enquiry for a Camp
      * 
      * @param campId    The Camp ID of the Camp
      * @param enquiryId The ID of the Enquiry
@@ -628,8 +633,7 @@ public class CampController {
     }
 
     /**
-     * Check if a User with User ID has previously withdrawn from the Camp with Camp
-     * ID
+     * Check if a User with User ID has previously withdrawn from the Camp with Camp ID
      * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the User
@@ -653,8 +657,7 @@ public class CampController {
     }
 
     /**
-     * Check if a User with User ID has registered as Committee for the Camp with
-     * Camp ID
+     * Check if a User with User ID has registered as Committee for the Camp with Camp ID
      * 
      * @param campId The Camp ID of the Camp
      * @param userId The User ID of the User
@@ -667,8 +670,7 @@ public class CampController {
     }
 
     /**
-     * Check if a User with User ID is currently a Committee for any Camp in the
-     * database
+     * Check if a User with User ID is currently a Committee for any Camp in the database
      * 
      * @param userId The User ID of the User
      * @return boolean Whether the User is currently a Committee for a Camp
@@ -682,14 +684,12 @@ public class CampController {
     }
 
     /**
-     * Check if a User with User ID is already registered for another Camp during a
-     * time frame
+     * Check if a User with User ID is already registered for another Camp during a time frame
      * 
      * @param userId    The User ID of the User
      * @param startDate The Start Date of the Camp
      * @param endDate   The End Date of the Camp
-     * @return boolean Whether the User is already registered for another Camp
-     *         during a time frame
+     * @return boolean Whether the User is already registered for another Camp during a time frame
      */
     public static boolean checkCampParticipant(String userId, Date startDate, Date endDate) {
         for (Camp camp : CampDAO.getAllCamps())
@@ -701,9 +701,11 @@ public class CampController {
     }
 
     /**
-     * @param campId
-     * @param name
-     * @return boolean
+     * Check if Camp Name is unique
+     * 
+     * @param campId    The Camp ID of the Camp
+     * @param name      The name of the Camp
+     * @return boolean  Whether the Camp name is unique
      */
     public static boolean checkCampNameUnique(String campId, String name) {
         for (Camp camp : CampDAO.getAllCamps())

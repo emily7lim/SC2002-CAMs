@@ -8,6 +8,12 @@ import model.User;
 import model.enums.Faculty;
 import model.enums.Role;
 
+/**
+ * UserController class to manage User and check for user validation
+ * @author Chloie
+ * @version 1.1.5
+ * @since 2023-11-04
+ */
 public class UserController {
     /**
      * Creates a new User and adds to the Database
@@ -109,6 +115,11 @@ public class UserController {
         return true;
     }
 
+    /**
+     * For user login
+     * 
+     * @param userId   The User ID of the User
+     */
     public static void login(String userId) {
         Database.USERS.get(userId).login();
     }

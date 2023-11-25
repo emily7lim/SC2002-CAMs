@@ -6,6 +6,12 @@ import model.Enquiry;
 import model.enums.EnquiryStatus;
 import database.EnquiryDAO;
 
+/**
+ * EnquiryController class to manage Enquiries from Student
+ * @author Kevin, Chloie, Owen
+ * @version 1.1.8
+ * @since 2023-11-01
+ */
 public class EnquiryController {
     /**
      * Creates a new Enquiry and add to the database
@@ -65,7 +71,8 @@ public class EnquiryController {
     }
 
     
-    /** 
+    /**
+     * Retrieves a list of all pending Enquiries from the database with Creator ID and Camp ID
      * @param creatorId
      * @param campId
      * @return ArrayList<Enquiry>
@@ -74,6 +81,12 @@ public class EnquiryController {
         return EnquiryDAO.getEnquiriesByCreatorIdAndCampIdAndStatus(creatorId, campId, EnquiryStatus.PENDING);
     }
 
+    /**
+     * Retrieves a list of replied Enquiries from the database with Creator ID and Camp ID
+     * @param creatorId
+     * @param campId
+     * @return ArrayList<Enquiry>
+     */
     public static ArrayList<Enquiry> getRepliedEnquiriesByCreatorIdAndCampId(String creatorId, String campId) {
         return EnquiryDAO.getEnquiriesByCreatorIdAndCampIdAndStatus(creatorId, campId, EnquiryStatus.CLOSED);
     }

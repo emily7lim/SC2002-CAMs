@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import database.StaffDAO;
 import database.UserDAO;
 
+/**
+ * StaffController class to manage Staff
+ * @author Emily, Chloie
+ * @version 1.1.3
+ * @since 2023-11-01
+ */
 public class StaffController {
     /**
      * Creates a new Staff and adds to the Database

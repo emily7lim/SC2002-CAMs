@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import database.StudentDAO;
 import database.UserDAO;
 
+/**
+ * StudentController class to manage Students
+ * @author Kevin, Chloie
+ * @version 1.1.6
+ * @since 2023-11-01
+ */
 public class StudentController {
     /**
      * Creates a new Student and adds to database
@@ -86,7 +92,8 @@ public class StudentController {
     }
 
     
-    /** 
+    /**
+     * Removes Camp Committee
      * @param userId
      * @return boolean
      */

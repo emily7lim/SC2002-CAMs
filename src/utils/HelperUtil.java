@@ -8,7 +8,7 @@ import java.util.Scanner;
  * HelperUtil class to store support functions for other classes
  * @author Emily, Chloie
  * @version 1.1.3
- * @since 2023-1-19
+ * @since 2023-11-19
  */
 public class HelperUtil {
     private static final Scanner sc = new Scanner(System.in);
