@@ -42,7 +42,7 @@ public class User implements Serializable {
 
     /**
      * Constructs and initializes a User object with User ID, Name, Password,
-     * Faculty and Role
+     * Faculty, Role and Login Count
      * 
      * @param userId     The ID of the User
      * @param name       The Name of the User
