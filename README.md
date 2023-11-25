@@ -23,12 +23,12 @@ The Camp Application and Management System (CAMs) is designed and implemented to
 ./src
 │   App.java    // Entry point of Application
 │
-├───controller  // Controller Classes
-├───database    // Database (DAO) Classes
-├───model       // Model Classes
-├───report      // Report Classes
-├───utils       // Utilities Classes
-└───view        // View (User Interface) Classes
+├── controller  // Controller Classes - Application Logic
+├── database    // Database (DAO) Classes - Database Access and Manipulation
+├── model       // Model Classes - Data Models
+├── report      // Report Classes - Generate Reports
+├── utils       // Utilities Classes - Common Functionalities
+└── view        // View Classes - User Interface and Presentation
 ```
 
 ## Setup Instructions
