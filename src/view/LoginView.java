@@ -13,10 +13,22 @@ import utils.HelperUtil;
  * @since 2023-10-30
  */
 public class LoginView extends MainView {
+    /**
+     * Login Title
+     */
     private final String MENU_TITLE = "Login";
 
+    /**
+     * StaffView object for Staff Menu
+     */
     private StaffView staffView;
+    /**
+     * StudentView object for Student Menu
+     */
     private StudentView studentView;
+    /**
+     * CommitteeView object for Committee Menu
+     */
     private CommitteeView committeeView;
 
     /**

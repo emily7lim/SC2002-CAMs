@@ -17,10 +17,22 @@ import utils.HelperUtil;
  * @since 2023-11-04
  */
 public class StudentView extends MainView {
+    /**
+     * Student Menu Title
+     */
     private final String MENU_TITLE = "Student Menu";
 
+    /**
+     * User ID of logged in User
+     */
     protected String userId;
+    /**
+     * CommonUse object for generic view functions
+     */
     protected CommonUse common;
+    /**
+     * FilterCampsView object for Filter Camps Menu
+     */
     protected FilterCampsView filterCampsView;
 
     /**

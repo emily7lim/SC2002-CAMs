@@ -4,9 +4,12 @@ package model.enums;
  * The Status of an Eqnuiry
  */
 public enum EnquiryStatus {
+    /** Pending Enquiry Status */
     PENDING("Pending"),
+    /** Closed Enquiry Status */
     CLOSED("Closed");
 
+    /** The display name of an Enquiry Status */
     private final String enquiryStatusStr;
 
     /**

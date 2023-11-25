@@ -11,6 +11,9 @@ import java.util.Scanner;
  * @since 2023-11-19
  */
 public class HelperUtil {
+    /**
+     * Scanner object to get user input
+     */
     private static final Scanner sc = new Scanner(System.in);
 
     /**

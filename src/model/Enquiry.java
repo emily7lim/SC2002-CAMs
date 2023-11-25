@@ -13,14 +13,22 @@ import model.enums.EnquiryStatus;
  * @since 2023-10-31
  */
 public class Enquiry implements Serializable {
-	protected static final long serialVersionUID = 3L; // Serializable Unique Identifier
-	private String enquiryId; // The ID of the Enquiry
-	private String campId; // The ID of the Enquiry Camp
-	private String creatorId; // The ID of the Enquiry Creator
-	private String responderId; // The ID of the Enquiry Responder
-	private String message; // The Message of the Enquiry
-	private String reply; // The Reply of the Enquiry
-	private EnquiryStatus status; // The Status of the Enquiry
+	/** Serializable Unique Identifier */
+	protected static final long serialVersionUID = 3L; 	 
+    /** The ID of the Enquiry */
+	private String enquiryId; 						     
+	/** The ID of the Enquiry Camp */
+	private String campId; 								 
+	/** The ID of the Enquiry Creator */
+	private String creatorId; 							 
+	/** The ID of the Enquiry Responder */
+	private String responderId; 						 
+	/** The Message of the Enquiry */
+	private String message; 							 
+	/** The Reply of the Enquiry */
+	private String reply; 								 
+	/** The Status of the Enquiry */
+	private EnquiryStatus status; 						 
 
 	/**
 	 * Constructs and initializes an Enquiry object with Camp ID, Creator ID and

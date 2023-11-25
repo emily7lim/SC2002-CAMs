@@ -8,12 +8,16 @@ package report.enums;
  * @since 2023-11-03
  */
 public enum ReportType {
+    /** Camp Details Report Type */
     CAMP_DETAILS_REPORT("Camp Details Report"),
+    /** Performance Report Type */
     PERFORMANCE_REPORT("Performance Report"),
+    /** Enquiries Report Type */
     ENQUIRIES_REPORT("Enquiries Report"),
-    SUGGESTION_REPORT("Suggestion Report")
-    ;
+    /** Sugestions Report Type */
+    SUGGESTION_REPORT("Suggestion Report");
 
+    /** The display name of the report type */
     private final String reportTypeName;
 
     /**

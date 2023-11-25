@@ -5,6 +5,7 @@ import java.util.Date;
 
 import model.Camp;
 import model.enums.Faculty;
+
 /**
  * Database file for Camps
  * 
@@ -45,16 +46,16 @@ public class CampDAO {
         for (Camp camp : Database.CAMPS.values())
             if (camp.getStaffInCharge().equals(creatorId))
                 camps.add(camp);
-        
+
         camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
     /**
-     * Retrieve all Camps from the database using Creator ID
+     * Retrieve all Camps from the database using Creator ID after specified date
      * 
      * @param creatorId The User ID of the Staff in Charge
-     * @param date The minimum Date required
+     * @param date      The minimum Date required
      * @return ArrayList<Camp> The list of all Camps with Creator ID
      */
     public static ArrayList<Camp> getCampsByCreatorIdAfterDate(String creatorId, Date date) {
@@ -63,7 +64,7 @@ public class CampDAO {
         for (Camp camp : Database.CAMPS.values())
             if (camp.getStaffInCharge().equals(creatorId) && camp.getStartDate().after(date))
                 camps.add(camp);
-        
+
         camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
@@ -74,78 +75,112 @@ public class CampDAO {
      * @param userGroup The User Group of the Camp
      * @return ArrayList<Camp> The list of all Camps with User Group
      */
-    public static ArrayList<Camp> getCampsByUserGroupAndDateAndVisibility(Faculty userGroup, Date date, boolean visible) {
+    public static ArrayList<Camp> getCampsByUserGroupAndDateAndVisibility(Faculty userGroup, Date date,
+            boolean visible) {
         ArrayList<Camp> camps = new ArrayList<>();
 
         for (Camp camp : Database.CAMPS.values())
-            if ((camp.getUserGroup().equals(userGroup) || camp.getUserGroup() == Faculty.NTU) && camp.getEndDate().after(date) && camp.isVisible() == visible)
+            if ((camp.getUserGroup().equals(userGroup) || camp.getUserGroup() == Faculty.NTU)
+                    && camp.getEndDate().after(date) && camp.isVisible() == visible)
                 camps.add(camp);
-        
-        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
-        return camps;
-    }
 
-    
-    /** 
-     * @param participantId
-     * @param date
-     * @return ArrayList<Camp>
-     */
-    public static ArrayList<Camp> getCampsByParticipantIdBeforeDate(String participantId, Date date) {
-        ArrayList<Camp> camps = new ArrayList<>();
-
-        for (Camp camp : Database.CAMPS.values())
-            if ((camp.getParticipantIds().contains(participantId) || camp.getCommitteeIds().contains(participantId)) && camp.getStartDate().before(date))
-                camps.add(camp);
-        
         camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
     /**
-     * Retrieve all Camps from the database using Participant ID
+     * Retrieve all Camps from the database using Participant ID before specified
+     * date
      * 
      * @param participantId The User ID of the Participant
-     * @return ArrayList<Camp> The list of all Camps with Participant
+     * @param date          The maximum Date required
+     * @return ArrayList<Camp> The list of all Camps with Participant before
+     *         specified date
+     */
+    public static ArrayList<Camp> getCampsByParticipantIdBeforeDate(String participantId, Date date) {
+        ArrayList<Camp> camps = new ArrayList<>();
+
+        for (Camp camp : Database.CAMPS.values())
+            if ((camp.getParticipantIds().contains(participantId) || camp.getCommitteeIds().contains(participantId))
+                    && camp.getStartDate().before(date))
+                camps.add(camp);
+
+        camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
+        return camps;
+    }
+
+    /**
+     * Retrieve all Camps from the database using Participant ID after specified
+     * datre
+     * 
+     * @param participantId The User ID of the Participant
+     * @param date          The minimum Date required
+     * @return ArrayList<Camp> The list of all Camps with Participant after
+     *         specified date
      */
     public static ArrayList<Camp> getCampsByParticipantIdAfterDate(String participantId, Date date) {
         ArrayList<Camp> camps = new ArrayList<>();
 
         for (Camp camp : Database.CAMPS.values())
-            if ((camp.getParticipantIds().contains(participantId) || camp.getCommitteeIds().contains(participantId)) && camp.getStartDate().after(date))
+            if ((camp.getParticipantIds().contains(participantId) || camp.getCommitteeIds().contains(participantId))
+                    && camp.getStartDate().after(date))
                 camps.add(camp);
-        
+
         camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
+    /**
+     * Retrieve all Camps from the database using Committee ID
+     * 
+     * @param committeeId The User ID of the Committee Member
+     * @return ArrayList<Camp> The list of all the Camps with Committee Member
+     */
     public static ArrayList<Camp> getCampsByCommitteeId(String committeeId) {
         ArrayList<Camp> camps = new ArrayList<>();
 
         for (Camp camp : Database.CAMPS.values())
             if (camp.getCommitteeIds().contains(committeeId))
                 camps.add(camp);
-        
+
         camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
+    /**
+     * Retreieve all Camps from the database using Committee ID before specified
+     * date
+     * 
+     * @param committeeId The User ID of the Committee Member
+     * @param date        The maximum date required
+     * @return ArrayList<Camp> The list of all Camps with Committee before specified
+     *         date
+     */
     public static ArrayList<Camp> getCampsByCommitteeIdBeforeDate(String committeeId, Date date) {
         ArrayList<Camp> camps = new ArrayList<>();
 
         for (Camp camp : Database.CAMPS.values())
             if (camp.getCommitteeIds().contains(committeeId) && camp.getEndDate().before(date))
                 camps.add(camp);
-        
+
         camps.sort((camp1, camp2) -> camp1.getName().compareTo(camp2.getName()));
         return camps;
     }
 
+    /**
+     * Retreieve first Camp from the database using Committee ID after specified
+     * date
+     * 
+     * @param committeeId The User ID of the Committee Member
+     * @param date        The maximum date required
+     * @return Camp The first Camp from the database with Committee ID after
+     *         specified date
+     */
     public static Camp getCampsByCommitteeIdAfterDate(String committeeId, Date date) {
         for (Camp camp : Database.CAMPS.values())
             if (camp.getCommitteeIds().contains(committeeId) && camp.getEndDate().after(date))
                 return camp;
-        
+
         return null;
     }
 

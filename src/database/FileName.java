@@ -1,4 +1,5 @@
 package database;
+
 /**
  * FileName
  * 
@@ -7,34 +8,27 @@ package database;
  * @since 2023-10-30
  */
 public enum FileName {
+    /** Users */
+    USERS("Users"),
+    /** Camps */
+    CAMPS("Camps"),
+    /** Enquiries */
+    ENQUIRIES("Enquiries"),
+    /** Suggestions */
+    SUGGESTIONS("Suggestions");
 
-    /**
-     * Users
-     */
-    USERS ("Users"), 
-    /**
-     * Camps
-     */
-    CAMPS ("Camps"),
-    /**
-     * Enquiries
-     */
-    ENQUIRIES ("Enquiries"),
-    /**
-     * Suggestions
-     */
-    SUGGESTIONS ("Suggestions");
-
+    /** The display name of the File Name */
     private final String fileNameStr;
 
-     /**
+    /**
      * Constructs and initializes a FileName object with File Name
      * 
-     * @param fileNameStr   The Name of the file
+     * @param fileNameStr The Name of the file
      */
     private FileName(String fileNameStr) {
         this.fileNameStr = fileNameStr;
     }
+
     /**
      * Gets the Name of the File
      * 

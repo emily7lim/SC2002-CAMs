@@ -66,6 +66,8 @@ public class Database {
     }
 
     /**
+     * Sets specific database variable from the corresponsing .dat file
+     * 
      * @param fileName The appropriate file from enum FileName
      * @return boolean Whether the database variable is retrieved
      */
@@ -146,6 +148,8 @@ public class Database {
     }
 
     /**
+     * Saves a specific database variable to .dat file
+     * 
      * @param fileName The appropriate file from enum FileName
      * @return boolean Whether the database variable is saved to the file
      */
@@ -219,6 +223,8 @@ public class Database {
     }
 
     /**
+     * Get the relative file path for a specific file
+     * 
      * @param fileName The file from enum FileName
      * @return String Returns the filepath for the database file
      */
@@ -226,18 +232,27 @@ public class Database {
         return "./src/database/" + folder + "/" + fileName.getFileNameStr() + fileExtension;
     }
 
+    /**
+     * Initializes test User data
+     */
     public void initializeUserData() {
         StudentController.initializeStudentData();
         StaffController.initializeStaffData();
     }
 
+    /**
+     * Initializes test Camp data
+     */
     public void initializeCampData() {
         Camp camp1 = new Camp("Test Camp 1", ForDate.getDates("12/02/2023"), ForDate.getDates("15/02/2023"),
-                ForDate.getDates("25/01/2023"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp 1 Description", "HUKUMAR");
+                ForDate.getDates("25/01/2023"), Faculty.SCSE, "Sentosa", 10, 3, "Testing Camp 1 Description",
+                "HUKUMAR");
         Camp camp2 = new Camp("Test Camp 2", ForDate.getDates("12/06/2023"), ForDate.getDates("15/06/2023"),
-                ForDate.getDates("25/05/2023"), Faculty.SCSE, "Jurong East", 10, 3, "Testing Camp Description", "HUKUMAR");
+                ForDate.getDates("25/05/2023"), Faculty.SCSE, "Jurong East", 10, 3, "Testing Camp Description",
+                "HUKUMAR");
         Camp camp3 = new Camp("Test Camp 3", ForDate.getDates("12/02/2022"), ForDate.getDates("15/02/2022"),
-                ForDate.getDates("25/01/2022"), Faculty.SCSE, "Sentosa Palawan", 10, 3, "Testing Camp Palawan Description", "HUKUMAR");
+                ForDate.getDates("25/01/2022"), Faculty.SCSE, "Sentosa Palawan", 10, 3,
+                "Testing Camp Palawan Description", "HUKUMAR");
         Database.CAMPS.put(camp1.getCampId(), camp1);
         Database.CAMPS.put(camp2.getCampId(), camp2);
         Database.CAMPS.put(camp3.getCampId(), camp3);
@@ -246,6 +261,9 @@ public class Database {
         StaffController.addCamp("HUKUMAR", camp3.getCampId());
     }
 
+    /**
+     * Clears database and intializes test data
+     */
     public void initializeDummyData() {
         clearDatabase();
 
@@ -255,10 +273,11 @@ public class Database {
         saveAllToDatabase();
     }
 
-    
-    /** 
-     * @param fileName
-     * @return boolean
+    /**
+     * Check if specific file data is empty
+     * 
+     * @param fileName The file from enum FileName
+     * @return boolean Whether the file data is empty
      */
     public boolean checkDataEmpty(FileName fileName) {
         switch (fileName) {

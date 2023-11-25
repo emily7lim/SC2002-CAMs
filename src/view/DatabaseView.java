@@ -12,7 +12,13 @@ import utils.HelperUtil;
  * @since 2023-11-19
  */
 public class DatabaseView extends MainView {
+    /**
+     * Database Menu Title
+     */
     private final String MENU_TITLE = "Manage Database";
+    /**
+     * Database object for database functions
+     */
     private Database database;
 
     /**

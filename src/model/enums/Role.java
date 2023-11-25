@@ -8,10 +8,14 @@ package model.enums;
  * @since 2023-10-23
  */
 public enum Role {
+    /** Student Role */
     STUDENT("Student"),
+    /** Staff Role */
     STAFF("Staff"),
+    /** Camp Committee Role */
     COMMITTEE("Camp Committee");
 
+    /** The display name of the User Role */
     private final String roleStr;
 
     /**

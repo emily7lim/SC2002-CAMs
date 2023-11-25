@@ -15,24 +15,42 @@ import model.enums.Faculty;
  * @since 2023-10-30
  */
 public class Camp implements Serializable {
-    protected static final long serialVersionUID = 2L; // Serializable Unique Identifier
-    private String campId; // ID of the Camp
-    private String name; // Name of the Camp
-    private Date startDate; // Start Date of the Camp
-    private Date endDate; // End Date of the Camp
-    private Date registrationCloseDate; // Registration Close Date of the Camp
-    private Faculty userGroup; // User Group of the Camp
-    private String location; // Location of the Camp
-    private int totalSlots; // Total Slots of the Camp
-    private int commSlots; // Committee Slots of the Camp
-    private String description; // Description of the Camp
-    private String staffInCharge; // Staff in Charge of the Camp
-    private ArrayList<String> withdrawnParticipantIds; // IDs of the Camp's Withdrawn Participants
-    private ArrayList<String> participantIds; // IDs of the Camp's Participants
-    private ArrayList<String> committeeIds; // IDs of the Camp's Committee
-    private ArrayList<String> enquiryIds; // IDs of the Camp's Enquiries
-    private ArrayList<String> suggestionIds; // IDs of the Camp's Suggestions
-    private boolean visible; // Visibility of the Camp
+    /** Serializable Unique Identifier */
+    protected static final long serialVersionUID = 2L;  
+    /** ID of the Camp */
+    private String campId;                              
+    /** Name of the Camp */
+    private String name;                                
+    /** Start Date of the Camp */
+    private Date startDate;                             
+    /** End Date of the Camp */
+    private Date endDate;                               
+    /** Registration Close Date of the Camp */
+    private Date registrationCloseDate;                 
+    /** User Group of the Camp */
+    private Faculty userGroup;                          
+    /** Location of the Camp */
+    private String location;                            
+    /** Total Slots of the Camp */
+    private int totalSlots;                             
+    /** Committee Slots of the Camp */
+    private int commSlots;                              
+    /** Description of the Camp */
+    private String description;                         
+    /** Staff in Charge of the Camp */
+    private String staffInCharge;                       
+    /** IDs of the Camp's Withdrawn Participants */
+    private ArrayList<String> withdrawnParticipantIds;  
+    /** IDs of the Camp's Participants */
+    private ArrayList<String> participantIds;           
+    /** IDs of the Camp's Committee */
+    private ArrayList<String> committeeIds;             
+    /** IDs of the Camp's Enquiries */
+    private ArrayList<String> enquiryIds;               
+    /** IDs of the Camp's Suggestions */
+    private ArrayList<String> suggestionIds;            
+    /** Visibility of the Camp */
+    private boolean visible;                            
 
     /**
      * Default constructor

@@ -11,10 +11,22 @@ import utils.HelperUtil;
  * @since 2023-11-19
  */
 public class AppView extends MainView {
+    /**
+     * Main Menu Title
+     */
     private final String MENU_TITLE = "Main Menu";
 
+    /**
+     * LoginView object for Login User Interface
+     */
     private LoginView loginView;
+    /**
+     * DatabaseView object for Database Menu
+     */
     private DatabaseView databaseView;
+    /**
+     * Database object to intialize and save data
+     */
     private Database database;
 
     /**

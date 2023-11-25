@@ -50,7 +50,8 @@ public class SuggestionController {
     }
 
     /**
-     * Retrieves a list of all approved/ or rejected Suggestion from the database by the Camp ID
+     * Retrieves a list of all approved/ or rejected Suggestion from the database by
+     * the Camp ID
      * 
      * @param campId The Camp ID of the Suggestion
      * @return ArrayList<Suggestion> The list of all the Suggestions with Camp ID
@@ -74,7 +75,8 @@ public class SuggestionController {
     }
 
     /**
-     * Retrieves a list of all Suggestion from the database by the Camp ID and creator ID
+     * Retrieves a list of all Suggestion from the database by the Camp ID and
+     * creator ID
      * 
      * @param campId
      * @param creatorId
@@ -85,7 +87,8 @@ public class SuggestionController {
     }
 
     /**
-     * Retrieves a list of approved or rejected Suggestion from the database by the Camp ID and creator ID
+     * Retrieves a list of approved or rejected Suggestion from the database by the
+     * Camp ID and creator ID
      * 
      * @param campId
      * @param creatorId

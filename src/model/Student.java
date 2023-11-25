@@ -13,9 +13,12 @@ import model.enums.Role;
  * @since 2023-10-23
  */
 public class Student extends User {
-    protected static final long serialVersionUID = 6L; // Serializable Unique Identifier
-    private int points; // Points of the Student
-    private ArrayList<String> campIds; // Camp IDs of the Student
+    /** Serializable Unique Identifier */
+    protected static final long serialVersionUID = 6L;  
+    /** Points of the Student */
+    private int points;                                 
+    /** Camp IDs of the Student */
+    private ArrayList<String> campIds;                  
 
     /**
      * Constructs and initializes a Student object with User Id, Name, Password and

@@ -8,10 +8,14 @@ package model.enums;
  * @since 2023-11-04
  */
 public enum SuggestionStatus {
+    /** Pending Suggestion Status */
     PENDING("Pending"),
+    /** Accepted Suggestion Status */
     ACCEPTED("Accepted"),
+    /** Rejected Suggestion Status */
     REJECTED("Rejected");
 
+    /** The display name of the Suggestion Status */
     private final String suggestionStatusStr;
 
     /**

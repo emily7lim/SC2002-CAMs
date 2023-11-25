@@ -1,4 +1,4 @@
-# SC2002-CAMs
+# SC2002 CAMs
 **Camp Application and Management System (CAMs)**
 
 ## Project Folder Structure

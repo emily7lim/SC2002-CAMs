@@ -44,15 +44,17 @@ public class SuggestionDAO {
         for (Suggestion suggestion : Database.SUGGESTIONS.values())
             if (suggestion.getCampId().equals(campId))
                 suggestions.add(suggestion);
-        
+
         return suggestions;
     }
 
-    
-    /** 
-     * @param campId
-     * @param creatorId
-     * @return ArrayList<Suggestion>
+    /**
+     * Retrieves all Suggestions from the database using the Camp ID and Creator ID
+     * 
+     * @param campId    The Camp ID of the Camp the Suggestion is for
+     * @param creatorId The User ID of the Committee that created the Suggestion
+     * @return ArrayList<Suggestion> The list of Suggestions with Camp ID and
+     *         Creator ID
      */
     public static ArrayList<Suggestion> getSuggestionsbyCampIdAndCreatorId(String campId, String creatorId) {
         ArrayList<Suggestion> suggestions = new ArrayList<>();
@@ -60,17 +62,17 @@ public class SuggestionDAO {
         for (Suggestion suggestion : Database.SUGGESTIONS.values())
             if (suggestion.getCampId().equals(campId) && suggestion.getCreatorId().equals(creatorId))
                 suggestions.add(suggestion);
-        
+
         return suggestions;
     }
-
 
     /**
      * Retrieve all Suggestions from the database using the Camp ID and Status
      * 
      * @param campId The Camp ID of the Suggestion
      * @param status The Status of the Suggestion
-     * @return ArrayList<Suggestion> The list of all Suggestions with Camp ID and Status
+     * @return ArrayList<Suggestion> The list of all Suggestions with Camp ID and
+     *         Status
      */
     public static ArrayList<Suggestion> getSuggestionsbyCampIdAndStatus(String campId, SuggestionStatus status) {
         ArrayList<Suggestion> suggestions = new ArrayList<>();
@@ -78,17 +80,29 @@ public class SuggestionDAO {
         for (Suggestion suggestion : Database.SUGGESTIONS.values())
             if (suggestion.getCampId().equals(campId) && suggestion.getStatus() == status)
                 suggestions.add(suggestion);
-        
+
         return suggestions;
     }
 
-    public static ArrayList<Suggestion> getSuggestionsbyCampIdAndStatusAndCreatorId(String campId, SuggestionStatus status, String creatorId) {
+    /**
+     * Retrieve all Suggestions from the database using the Camp ID, Status and
+     * Creator ID
+     * 
+     * @param campId    The Camp ID of the Suggestion
+     * @param status    The Status of the Suggestion
+     * @param creatorId The User ID of the Committee that created the Suggestion
+     * @return ArrayList<Suggestion> The list of Suggestions with Camp ID, Status
+     *         and Creator ID
+     */
+    public static ArrayList<Suggestion> getSuggestionsbyCampIdAndStatusAndCreatorId(String campId,
+            SuggestionStatus status, String creatorId) {
         ArrayList<Suggestion> suggestions = new ArrayList<>();
 
         for (Suggestion suggestion : Database.SUGGESTIONS.values())
-            if (suggestion.getCampId().equals(campId) && suggestion.getStatus() == status && suggestion.getCreatorId().equals(creatorId))
+            if (suggestion.getCampId().equals(campId) && suggestion.getStatus() == status
+                    && suggestion.getCreatorId().equals(creatorId))
                 suggestions.add(suggestion);
-        
+
         return suggestions;
     }
 

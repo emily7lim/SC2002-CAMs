@@ -13,13 +13,20 @@ import model.enums.SuggestionStatus;
  * @since 2023-10-31
  */
 public class Suggestion implements Serializable {
-	protected static final long serialVersionUID = 4L; // Serializable Unique Identifier
-	private String suggestionId; // ID of the Suggestion
-	private String campId; // ID of the Suggestion Camp
-	private String creatorId; // ID of the Suggestion Creator
-	private String responderId; // ID of the Suggestion Responder
-	private String message; // Message of the Suggestion
-	private SuggestionStatus status; // Status of the Suggestion
+	/** Serializable Unique Identifier */
+	protected static final long serialVersionUID = 4L; 	
+	/** ID of the Suggestion */
+	private String suggestionId; 						
+	/** ID of the Suggestion Camp */
+	private String campId; 								
+	/** ID of the Suggestion Creator */
+	private String creatorId;					 		
+	/** ID of the Suggestion Responder */
+	private String responderId; 						
+	/** Message of the Suggestion */
+	private String message; 							
+	/** Status of the Suggestion */
+	private SuggestionStatus status; 					
 
 	/**
 	 * Constructs and initializes a Suggestion object with Camp ID, Creator ID and

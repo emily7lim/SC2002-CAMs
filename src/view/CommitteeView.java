@@ -17,6 +17,7 @@ import utils.HelperUtil;
  * @since 2023-11-04
  */
 public class CommitteeView extends StudentView {
+    /** Committee Menu Title */
     private final String MENU_TITLE = "Committee Menu";
 
     /**

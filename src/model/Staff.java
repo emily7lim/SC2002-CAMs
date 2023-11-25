@@ -13,8 +13,10 @@ import model.enums.Role;
  * @since 2023-10-26
  */
 public class Staff extends User {
-    protected static final long serialVersionUID = 5L; // Serializable Unique Identifier
-    private ArrayList<String> createdCampIds; // The Created Camp IDs of the Staff
+    /** Serializable Unique Identifier */
+    protected static final long serialVersionUID = 5L;
+    /** The Created Camp IDs of the Staff */
+    private ArrayList<String> createdCampIds;
 
     /**
      * Constructs and initializes a Staff object with User ID, Name, Password and

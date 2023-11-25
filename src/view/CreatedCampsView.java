@@ -16,10 +16,22 @@ import utils.HelperUtil;
  * @since 2023-11-02
  */
 public class CreatedCampsView extends MainView {
+    /**
+     * Created Camps Menu Title
+     */
     private final String MENU_TITLE = "Manage Created Camps";
 
+    /**
+     * User ID of the logged in User
+     */
     private String userId;
+    /**
+     * CommonUse object for generic view functions
+     */
     private CommonUse common;
+    /**
+     * FilterCampsView object for Filter Camps Menu
+     */
     private FilterCampsView filterCampsView;
 
     /**

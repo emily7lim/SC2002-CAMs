@@ -18,11 +18,26 @@ import java.util.*;
  * @since 2023-11-02
  */
 public class StaffView extends MainView {
+    /**
+     * Staff Menu Title
+     */
     private final String MENU_TITLE = "Staff Menu";
 
+    /**
+     * User ID of the logged in User
+     */
     private String userId;
+    /**
+     * CommonUse object for generic view functions
+     */
     private CommonUse common;
+    /**
+     * CreatedCampsView object for Staff's Created Camps Menu 
+     */
     private CreatedCampsView createdCampsView;
+    /**
+     * FilterCampsView object for Filter Camps Menu
+     */
     private FilterCampsView filterCampsView;
 
     /**

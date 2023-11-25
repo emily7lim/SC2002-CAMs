@@ -8,6 +8,7 @@ import database.EnquiryDAO;
 
 /**
  * EnquiryController class to manage Enquiries from Student
+ * 
  * @author Kevin, Chloie, Owen
  * @version 1.1.8
  * @since 2023-11-01
@@ -15,9 +16,10 @@ import database.EnquiryDAO;
 public class EnquiryController {
     /**
      * Creates a new Enquiry and add to the database
+     * 
      * @param enquiryId The Enquiry ID of the new Enquiry
      * @param creatorId The User ID of the creator of the new Enquiry
-     * @param message The message of the new Enquiry
+     * @param message   The message of the new Enquiry
      */
     public static String createEnquiry(String campId, String creatorId, String message) {
         Enquiry enquiry = new Enquiry(campId, creatorId, message);
@@ -28,6 +30,7 @@ public class EnquiryController {
 
     /**
      * Retrieves a list of all Enquiries from the database
+     * 
      * @return ArrayList<Enquiry> The list of all the Enquiries
      */
     public static ArrayList<Enquiry> getAllEnquiries() {
@@ -36,6 +39,7 @@ public class EnquiryController {
 
     /**
      * Retrieves a list of all Enquiries from the database with Camp ID
+     * 
      * @param campId The Camp ID of the Enquiry
      * @return ArrayList<Enquiry> The list of all the Enquiries
      */
@@ -45,6 +49,7 @@ public class EnquiryController {
 
     /**
      * Retrieves a list of all pending Enquiries from the database with Camp ID
+     * 
      * @param campId The Camp ID of the Enquiry
      * @return ArrayList<Enquiry> The list of all the Enquiries
      */
@@ -54,6 +59,7 @@ public class EnquiryController {
 
     /**
      * Retrieves a list of all replied Enquiries from the database with Camp ID
+     * 
      * @param campId The Camp ID of the Enquiry
      * @return ArrayList<Enquiry> The list of all the Enquiries
      */
@@ -63,6 +69,7 @@ public class EnquiryController {
 
     /**
      * Retrieves a list of all Enquiries from the database with Creator ID
+     * 
      * @param creatorId The User ID of the Creator of the Enquiry
      * @return ArrayList<Enquiry> The list of all the Enquiries
      */
@@ -70,9 +77,10 @@ public class EnquiryController {
         return EnquiryDAO.getEnquiriesByCreatorIdAndCampId(creatorId, campId);
     }
 
-    
     /**
-     * Retrieves a list of all pending Enquiries from the database with Creator ID and Camp ID
+     * Retrieves a list of all pending Enquiries from the database with Creator ID
+     * and Camp ID
+     * 
      * @param creatorId
      * @param campId
      * @return ArrayList<Enquiry>
@@ -82,7 +90,9 @@ public class EnquiryController {
     }
 
     /**
-     * Retrieves a list of replied Enquiries from the database with Creator ID and Camp ID
+     * Retrieves a list of replied Enquiries from the database with Creator ID and
+     * Camp ID
+     * 
      * @param creatorId
      * @param campId
      * @return ArrayList<Enquiry>
@@ -92,7 +102,8 @@ public class EnquiryController {
     }
 
     /**
-     * Finds an Enquiry from the database by the Enquiry ID 
+     * Finds an Enquiry from the database by the Enquiry ID
+     * 
      * @param enquiryId The Enquiry Id of the Enquiry
      * @return Enquiry The corresponding Enquiry object, NULL if not found
      */
@@ -102,12 +113,14 @@ public class EnquiryController {
 
     /**
      * Updates the message of an Enquiry
+     * 
      * @param enquiryId The Enquiry ID of the Enquiry
-     * @param message The new message of the Enquiry
+     * @param message   The new message of the Enquiry
      * @return boolean Whether the Enquiry message was successfully updated
      */
     public static boolean updateEnquiryMessage(String enquiryId, String message) {
-        if (!checkEnquiryExists(enquiryId)) return false;
+        if (!checkEnquiryExists(enquiryId))
+            return false;
 
         EnquiryDAO.updateEnquiryMessage(enquiryId, message);
         return true;
@@ -115,13 +128,15 @@ public class EnquiryController {
 
     /**
      * Updates the reply to an Enquiry
-     * @param enquiryId The Enquiry ID of the Enquiry
-     * @param reply The reply to the Enquiry
+     * 
+     * @param enquiryId   The Enquiry ID of the Enquiry
+     * @param reply       The reply to the Enquiry
      * @param responderId The User ID of the User adding the reply
      * @return boolean Whether the Enquiry reply was successfully updated
      */
     public static boolean replyEnquiry(String enquiryId, String reply, String responderId) {
-        if (!checkEnquiryExists(enquiryId)) return false;
+        if (!checkEnquiryExists(enquiryId))
+            return false;
 
         EnquiryDAO.updateEnquiryResponse(enquiryId, reply, EnquiryStatus.CLOSED, responderId);
         return true;
@@ -129,11 +144,13 @@ public class EnquiryController {
 
     /**
      * Deletes an Enquiry from the database
+     * 
      * @param enquiryId The Enquiry ID of the Enquiry
      * @return boolean Whether the Enquiry was successfully deleted
      */
     public static boolean deleteEnquiry(String enquiryId) {
-        if (!checkEnquiryExists(enquiryId)) return false;
+        if (!checkEnquiryExists(enquiryId))
+            return false;
 
         EnquiryDAO.deleteEnquiry(enquiryId);
         return true;
@@ -141,6 +158,7 @@ public class EnquiryController {
 
     /**
      * Check if the Enquiry with Enquiry ID exists in the database
+     * 
      * @param enquiryId The Enquiry ID of the Enquiry
      * @return boolean Whether the Enquiry exists in the database
      */

@@ -13,13 +13,20 @@ import model.enums.Role;
  * @since 2023-10-23
  */
 public class User implements Serializable {
-    protected static final long serialVersionUID = 1L; // Serializable Unique Identifier
-    protected String userId; // ID of the User
-    protected String name; // Name of the User
-    protected String password; // Password of the User
-    protected Faculty faculty; // Faculty of the User
-    protected Role role; // Role of the User
-    protected int loginCount; // Number of times User has logged in
+    /** Serializable Unique Identifier */
+    protected static final long serialVersionUID = 1L;
+    /** ID of the User */
+    protected String userId;
+    /** Name of the User */
+    protected String name;
+    /** Password of the User */
+    protected String password;
+    /** Faculty of the User */
+    protected Faculty faculty;
+    /** Role of the User */
+    protected Role role;
+    /** Number of times User has logged in */
+    protected int loginCount;
 
     /**
      * Constructs and initializes a User object with User ID, Name, Password,

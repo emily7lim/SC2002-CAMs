@@ -20,13 +20,21 @@ import view.FilterObj;
  * @since 2023-11-03
  */
 public class ReportController {
-    // relative path
+    /**
+     * Relative path
+     */
     private static final String basePath = "./src/report/";
-    // the folder to store reports into
+    /**
+     * The folder to store reports into
+     */
     private static final String folder = "reportfiles";
-    // default file output if not specified in methods
+    /**
+     * Default file output if not specified in methods
+     */
     private static final ReportOutputType reportOutputType = ReportOutputType.TXT;
-    // default file name used if not specified in methods
+    /**
+     * Default file name used if not specified in methods
+     */
     private static final String baseFilename = "report";
 
     /**

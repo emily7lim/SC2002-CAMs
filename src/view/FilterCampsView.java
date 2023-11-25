@@ -17,8 +17,17 @@ import utils.HelperUtil;
  * @since 2023-11-22
  */
 public class FilterCampsView extends MainView {
+    /**
+     * Filter Camps Menu Title
+     */
     private String title;
+    /**
+     * CommonUse object for generic view functions
+     */
     private CommonUse common;
+    /**
+     * List of Camps to be filtered
+     */
     private ArrayList<Camp> camps;
 
     /**

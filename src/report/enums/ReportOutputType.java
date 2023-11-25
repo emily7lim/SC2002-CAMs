@@ -8,9 +8,12 @@ package report.enums;
  * @since 2023-11-03
  */
 public enum ReportOutputType {
+    /** .txt Report Output Type */
     TXT("txt"),
+    /** .csv Report Output Type */
     CSV("csv");
 
+    /** The file extension associated with the report output type */
     private final String reportOutputTypeStr;
 
     /**

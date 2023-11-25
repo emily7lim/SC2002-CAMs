@@ -10,7 +10,6 @@ import view.AppView;
  * @since 2023-10-30
  */
 public class App {
-
     /**
      * Main function of the application
      * 
