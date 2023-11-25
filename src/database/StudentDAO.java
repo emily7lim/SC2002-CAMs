@@ -8,6 +8,13 @@ import model.Student;
 import model.User;
 import model.enums.Role;
 
+/**
+ * Database file for Student
+ * 
+ * @author Owen, Chloie
+ * @version 1.2.3
+ * @since 2023-11-01
+ */
 public class StudentDAO {
     public static List<Role> studentRoles = Arrays.asList(Role.STUDENT, Role.COMMITTEE);
 

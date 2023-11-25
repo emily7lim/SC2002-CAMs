@@ -3,6 +3,13 @@ package database;
 import model.User;
 import model.enums.Role;
 
+/**
+ * Database file for User
+ * 
+ * @author Chloie
+ * @version 1.1.5
+ * @since 2023-10-30
+ */
 public class UserDAO {
     /** 
      * Adds a user to the database

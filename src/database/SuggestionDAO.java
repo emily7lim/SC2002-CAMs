@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import model.Suggestion;
 import model.enums.SuggestionStatus;
 
+/**
+ * Database file for Staff
+ * 
+ * @author Owen, Chloie
+ * @version 1.4.3
+ * @since 2023-11-02
+ */
 public class SuggestionDAO {
     /**
      * Adds a Suggestion to the database

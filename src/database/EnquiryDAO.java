@@ -4,7 +4,13 @@ import java.util.ArrayList;
 
 import model.Enquiry;
 import model.enums.EnquiryStatus;
-
+/**
+ * Database file for Enquiry
+ * 
+ * @author Owen, Chloie
+ * @version 1.4.3
+ * @since 2023-11-02
+ */
 public class EnquiryDAO {
     /**
      * Adds an Enquiry to the database

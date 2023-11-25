@@ -14,6 +14,13 @@ import model.*;
 import model.enums.Faculty;
 import utils.ForDate;
 
+/**
+ * Database file
+ * 
+ * @author Owen, Chloie
+ * @version 1.3.7
+ * @since 2023-10-30
+ */
 public class Database {
     /**
      * The folder where the database files are saved

@@ -6,6 +6,13 @@ import model.Staff;
 import model.User;
 import model.enums.Role;
 
+/**
+ * Database file for Staff
+ * 
+ * @author Owen, Chloie
+ * @version 1.2.1
+ * @since 2023-11-01
+ */
 public class StaffDAO {
     public static Role staffRole = Role.STAFF;
     

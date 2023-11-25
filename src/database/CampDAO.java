@@ -5,7 +5,13 @@ import java.util.Date;
 
 import model.Camp;
 import model.enums.Faculty;
-
+/**
+ * Database file for Camps
+ * 
+ * @author Owen, Chloie
+ * @version 1.4.5
+ * @since 2023-11-01
+ */
 public class CampDAO {
     /**
      * Adds a Camp to the database
