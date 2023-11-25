@@ -4,7 +4,7 @@ package report.writer;
  * Defines methods for classes that write reports to files.
  * Implementing classes should provide methods to write report data to specified files.
  * 
- * @author Choh Lit Han Owen
+ * @author Owen
  * @version 1.0
  * @since 2023-11-03
  */

@@ -15,7 +15,7 @@ import view.FilterObj;
  * such as camp lists and performance reports.
  * Only has static methods
  * 
- * @author Choh Lit Han Owen
+ * @author Owen
  * @version 1.3.1
  * @since 2023-11-03
  */

@@ -19,7 +19,7 @@ import view.FilterObj;
  * Generates report content for different report types,
  * Only has static methods
  * 
- * @author Choh Lit Han Owen
+ * @author Owen
  * @version 1.2.2
  * @since 2023-11-03
  */
@@ -41,11 +41,11 @@ public class Report {
                 // if no filter selected then just print camp details
                 return Report.generateCampDetailsReport(camps, filterObj, reportOutputType);
             case PERFORMANCE_REPORT:
-                return Report.generateCampCommitteePerformanceReport(camps, reportOutputType); // TODO if need filter
+                return Report.generateCampCommitteePerformanceReport(camps, reportOutputType);
             case ENQUIRIES_REPORT:
-                return Report.generateEnquiryReport(camps, reportOutputType); // TODO if need filter
+                return Report.generateEnquiryReport(camps, reportOutputType);
             case SUGGESTION_REPORT:
-                return Report.generateSuggestionReport(camps, reportOutputType); // TODO if need filter
+                return Report.generateSuggestionReport(camps, reportOutputType);
             default:
                 break;
         }

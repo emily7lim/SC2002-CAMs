@@ -3,7 +3,7 @@ package report.enums;
 /**
  * Represents different types of report files.
  * 
- * @author Choh Lit Han Owen
+ * @author Owen
  * @version 1.0
  * @since 2023-11-03
  */
